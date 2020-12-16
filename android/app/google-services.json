@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "74705835108",
+    "project_id": "toulouzen-36fa1",
+    "storage_bucket": "toulouzen-36fa1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74705835108:android:8699ac124108547de03b71",
+        "android_client_info": {
+          "package_name": "com.toulouzen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74705835108-hk9grbg7gap1ptcrnqhskuiik322sm0g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQtHXsHSB3bclc637t5T6i3hTTZo44jAc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74705835108-hk9grbg7gap1ptcrnqhskuiik322sm0g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "74705835108-e5msui5g1fkb0e1geb0lutebtscsaq3b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ToulouZen"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

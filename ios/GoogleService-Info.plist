@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>74705835108-e5msui5g1fkb0e1geb0lutebtscsaq3b.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.74705835108-e5msui5g1fkb0e1geb0lutebtscsaq3b</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCE-KihYba5ky6xGMyIidiT9p_jvDDEVV0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>74705835108</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ToulouZen</string>
+	<key>PROJECT_ID</key>
+	<string>toulouzen-36fa1</string>
+	<key>STORAGE_BUCKET</key>
+	<string>toulouzen-36fa1.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:74705835108:ios:df511856de2556f5e03b71</string>
+</dict>
+</plist>
