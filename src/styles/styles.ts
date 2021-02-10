@@ -4,7 +4,7 @@ import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants/Constants'
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.white
+        backgroundColor: COLORS.blackBackground
     },
     containerPadding: {
         paddingVertical: WINDOW_WIDTH * 0.01,
@@ -45,32 +45,57 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
         elevation: 3,
         shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 15,
+        shadowOpacity: 0.25,
+        shadowRadius: 5,
+        shadowOffset: {
+            width: 0,
+            height: 5
+        },
         borderWidth: 1,
         borderRadius: 5,
         borderColor: COLORS.black,
-        fontSize: WINDOW_WIDTH * 0.06,
+        fontSize: WINDOW_WIDTH * 0.04,
     },
     logsInputLabel: {
-        fontSize: WINDOW_WIDTH * 0.05,
+        fontSize: WINDOW_WIDTH * 0.04,
         marginBottom: WINDOW_WIDTH * 0.01,
+        marginLeft: WINDOW_WIDTH * 0.01,
         color: COLORS.black,
     },
     logsButton: {
         width: WINDOW_WIDTH * 0.6,
         paddingVertical: WINDOW_WIDTH * 0.01,
         paddingHorizontal: WINDOW_WIDTH * 0.02,
-        backgroundColor: COLORS.black,
+        backgroundColor: COLORS.raspberry,
         shadowColor: '#000',
         shadowOpacity: 0.1,
         shadowRadius: 15,
-        borderRadius: 5
+        borderRadius: 5,
     },
     logsButtonText: {
-        fontSize: WINDOW_WIDTH * 0.08,
+        fontSize: WINDOW_WIDTH * 0.07,
         fontWeight: 'bold',
         color: '#fff',
         textAlign: 'center'
+    },
+    stayConnected: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: WINDOW_WIDTH * 0.02
+    },
+    stayConnectedText: {
+        fontSize: WINDOW_WIDTH * 0.05,
+        color: COLORS.black,
+        fontWeight: 'bold',
+        marginRight: WINDOW_WIDTH * 0.01
+    },
+    menuItemView: {
+        width: WINDOW_WIDTH * 0.12,
+        height: WINDOW_WIDTH * 0.12,
+        borderRadius: WINDOW_WIDTH * 0.06,
+        backgroundColor: COLORS.raspberry,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })

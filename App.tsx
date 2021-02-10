@@ -15,23 +15,45 @@ import { styles } from './src/styles/styles';
 import HomeScreen from './src/screens/app/HomeScreen';
 import LoginScreen from './src/screens/logs/LoginScreen';
 import SignupScreen from './src/screens/logs/SignupScreen';
+import { AuthContextProvider } from './src/contexts/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { COLORS } from './src/constants/Constants';
 
-const LogStack = createStackNavigator();
-function MyLogStack() {
-  return (
-    <LogStack.Navigator>
-      <LogStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-      <LogStack.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }} />
-    </LogStack.Navigator>
-  )
-}
 
-function App() {
+
+const App = () => {
+
+  const [token, setToken] = React.useState<string | null>(null)
+
+  React.useEffect(() => {
+    getToken()
+  }, [])
+
+  const getToken = async () => {
+    const token = await AsyncStorage.getItem('ToulouzenToken')
+    setToken(token)
+  }
+
+  const LogStack = createStackNavigator();
+  function MyLogStack() {
+    return (
+      <LogStack.Navigator initialRouteName={token == "autolog" ? 'App' : 'Login'}>
+        <LogStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <LogStack.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }} />
+        <LogStack.Screen name="App" component={HomeScreen} options={{ headerShown: false }} />
+      </LogStack.Navigator>
+    )
+  }
+
   return (
-    <NavigationContainer>
-      <StatusBar barStyle="dark-content" />
-      <MyLogStack />
-    </NavigationContainer>
+    <SafeAreaView style={styles.container}>
+      <AuthContextProvider>
+        <NavigationContainer>
+          <StatusBar barStyle="dark-content" />
+          <MyLogStack />
+        </NavigationContainer>
+      </AuthContextProvider>
+    </SafeAreaView>
   )
 }
 

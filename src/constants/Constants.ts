@@ -6,6 +6,7 @@ export const WINDOW_HEIGHT = Dimensions.get('window').height
 export const COLORS = {
     raspberry: '#b01848',
     black: '#000000',
+    blackBackground: '#202020',
     white: '#ffffff',
     green: '#A5EAC6',
     nude: '#FFDFD3',
