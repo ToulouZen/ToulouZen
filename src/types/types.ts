@@ -1,6 +1,11 @@
 export type RootStackParamsList = {
-    Login: undefined,
-    Signup: undefined,
+    UserType: undefined,
+    Login: {
+        userType: string
+    },
+    Signup: {
+        userType: string
+    },
     App: undefined
 }
 

@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackScreenProps } from '@react-navigation/stack';
-import React from 'react';
-import { Alert, Image, Switch, Text, TouchableOpacity, View } from 'react-native';
-import { Input } from 'react-native-elements';
+import React, { useRef } from 'react';
+import { Alert, Image, Switch, Text, TouchableOpacity, View, TextInput, ScrollView } from 'react-native';
+import { Icon, Input } from 'react-native-elements';
 import { COLORS, WINDOW_WIDTH } from '../../constants/Constants';
 import { useAuth } from '../../contexts/AuthContext';
 import { styles } from '../../styles/styles';
@@ -16,6 +16,7 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
     const [mail, setMail] = React.useState<string>('')
     const [password, setPassword] = React.useState<string>('')
     const [switched, setSwitched] = React.useState<boolean>(false)
+    const [showPassword, setShowPassword] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         if (switched) {
@@ -54,36 +55,53 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
     }
 
     return (
-        <View style={styles.container}>
-            <Image style={styles.logo} source={require('../../img/ToulouZenPink.png')} />
-            <View style={[styles.container, { backgroundColor: COLORS.blackBackground }]}>
-                <Input value={mail} onChangeText={mail => setMail(mail)} placeholder="jeanne_dupont@gmail.com"
-                    inputContainerStyle={[styles.containerPadding, styles.logsInput]} containerStyle={{ width: WINDOW_WIDTH * 0.9, alignSelf: 'center' }}
-                    label="Identifiant" labelStyle={[styles.logsInputLabel, { color: COLORS.white }]}
+        <ScrollView style={styles.container}>
+            <View style={styles.container}>
+                <Image
+                    style={styles.logoHeader}
+                    source={require('../../img/logo_toulouzen.png')}
+                    resizeMode="contain"
                 />
-                <Input value={password} onChangeText={password => setPassword(password)} secureTextEntry={true}
-                    inputContainerStyle={[styles.containerPadding, styles.logsInput]} containerStyle={{ width: WINDOW_WIDTH * 0.9, alignSelf: 'center' }}
-                    label="Mot de passe" labelStyle={[styles.logsInputLabel, { color: COLORS.white }]}
+                <Image
+                    style={{ width: WINDOW_WIDTH }}
+                    source={require('../../img/Courbe.png')}
+                    resizeMode="contain"
                 />
-            </View>
-            <View style={[styles.container, { backgroundColor: COLORS.blackBackground, alignItems: 'center', justifyContent: 'center' }]}>
-                <TouchableOpacity style={[{ marginBottom: WINDOW_WIDTH * 0.1 }]} onPress={() => resetPassword()}>
-                    <Text style={[styles.logsButtonText, { fontFamily: 'Montserrat', textDecorationLine: 'underline', fontSize: WINDOW_WIDTH * 0.04, fontStyle: "italic" }]}>Mot de passe oublié</Text>
-                </TouchableOpacity>
-                <View style={styles.stayConnected}>
-                    <Text style={[styles.stayConnectedText, { color: '#fff' }]}>Rester connectée</Text>
-                    <Switch ios_backgroundColor="#fff" thumbColor={COLORS.blackBackground} trackColor={{ false: COLORS.black, true: COLORS.raspberry }} value={switched} onValueChange={switched => setSwitched(switched)} />
+                <View style={styles.container}>
+                    <View style={{ width: WINDOW_WIDTH * 0.85, alignSelf: 'center' }}>
+                        <Text style={[styles.logTitle, styles.containerMargin]}>Connexion</Text>
+                    </View>
+                    <View style={styles.container}>
+                        <TextInput value={mail} onChangeText={mail => setMail(mail)} placeholder="E-mail"
+                            style={[styles.logInputs, styles.containerMargin, { padding: WINDOW_WIDTH * 0.04 }]}
+                        />
+                        <View style={[styles.logInputs, styles.containerMargin, { flexDirection: 'row' }]}>
+                            <TextInput value={password} secureTextEntry={!showPassword} onChangeText={password => setPassword(password)} placeholder="Mot de passe"
+                                style={styles.logPasswordInput}
+                            />
+                            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}
+                                style={{ marginHorizontal: WINDOW_WIDTH * 0.02 }}
+                            >
+                                <Icon name={showPassword ? "eye" : "eye-off"} type="feather" size={WINDOW_WIDTH * 0.07} />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={[styles.containerMargin, { width: WINDOW_WIDTH * 0.8, alignSelf: 'center', alignItems: 'flex-end' }]}>
+                            <Text style={[styles.logTexts, { textDecorationLine: 'underline' }]}>Mot de passe oublié</Text>
+                        </View>
+                        <TouchableOpacity onPress={() => login()}
+                            style={[styles.logButtons, styles.containerMargin]}>
+                            <Text style={styles.userTypeTextPassagere}>Me connecter</Text>
+                        </TouchableOpacity>
+                        <View style={[styles.container, { alignItems: 'center', justifyContent: 'center' }]}>
+                            <Text style={styles.logTexts}>Je n'ai pas de compte</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('Signup', { userType: route.params.userType })}>
+                                <Text style={[styles.logTexts, { color: COLORS.peach, textDecorationLine: 'underline', fontSize: WINDOW_WIDTH * 0.055 }]}> Je souhaite m'inscrire</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
             </View>
-            <View style={[styles.container, { backgroundColor: COLORS.blackBackground, alignItems: 'center', justifyContent: 'center' }]}>
-                <TouchableOpacity onPress={() => login()} style={[styles.logsButton, { marginBottom: WINDOW_WIDTH * 0.02 }]}>
-                    <Text style={[styles.logsButtonText, { fontFamily: 'Montserrat' }]}>Connexion</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Signup')} style={[styles.logsButton, { marginTop: WINDOW_WIDTH * 0.02 }]}>
-                    <Text style={[styles.logsButtonText, { fontFamily: 'Montserrat' }]}>Inscription</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+        </ScrollView>
     )
 }
 

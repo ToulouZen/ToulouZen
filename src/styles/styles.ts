@@ -2,13 +2,21 @@ import { StyleSheet } from 'react-native'
 import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants/Constants'
 
 export const styles = StyleSheet.create({
+    containerMargin: {
+        margin: WINDOW_WIDTH * 0.02
+    },
     container: {
         flex: 1,
-        backgroundColor: COLORS.blackBackground
+        backgroundColor: COLORS.white
     },
     containerPadding: {
         paddingVertical: WINDOW_WIDTH * 0.01,
         paddingHorizontal: WINDOW_WIDTH * 0.02,
+    },
+    logoHeader: {
+        width: WINDOW_WIDTH * 0.7,
+        alignSelf: 'center',
+        marginTop: WINDOW_HEIGHT * 0.03,
     },
     logo: {
         marginVertical: WINDOW_HEIGHT * 0.05,
@@ -41,42 +49,11 @@ export const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 15,
     },
-    logsInput: {
-        backgroundColor: '#fff',
-        elevation: 3,
-        shadowColor: '#000',
-        shadowOpacity: 0.25,
-        shadowRadius: 5,
-        shadowOffset: {
-            width: 0,
-            height: 5
-        },
-        borderWidth: 1,
-        borderRadius: 5,
-        borderColor: COLORS.black,
-        fontSize: WINDOW_WIDTH * 0.04,
-    },
     logsInputLabel: {
         fontSize: WINDOW_WIDTH * 0.04,
         marginBottom: WINDOW_WIDTH * 0.01,
         marginLeft: WINDOW_WIDTH * 0.01,
         color: COLORS.black,
-    },
-    logsButton: {
-        width: WINDOW_WIDTH * 0.6,
-        paddingVertical: WINDOW_WIDTH * 0.01,
-        paddingHorizontal: WINDOW_WIDTH * 0.02,
-        backgroundColor: COLORS.raspberry,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 15,
-        borderRadius: 5,
-    },
-    logsButtonText: {
-        fontSize: WINDOW_WIDTH * 0.07,
-        fontWeight: 'bold',
-        color: '#fff',
-        textAlign: 'center'
     },
     stayConnected: {
         flexDirection: 'row',
@@ -97,5 +74,72 @@ export const styles = StyleSheet.create({
         backgroundColor: COLORS.raspberry,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    logTitle: {
+        fontWeight: 'bold',
+        fontSize: WINDOW_WIDTH * 0.06,
+        color: COLORS.peach
+    },
+    logButtons: {
+        width: WINDOW_WIDTH * 0.8,
+        borderColor: COLORS.peach,
+        borderWidth: 1,
+        borderRadius: 50,
+        backgroundColor: COLORS.peach,
+        padding: WINDOW_WIDTH * 0.04,
+        alignItems: 'center',
+        alignSelf: 'center',
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowColor: '#000',
+        elevation: 5
+    },
+    logInputs: {
+        width: WINDOW_WIDTH * 0.8,
+        borderColor: COLORS.darkGrey,
+        borderWidth: 3,
+        borderRadius: 50,
+        backgroundColor: COLORS.lightGrey,
+        alignItems: 'center',
+        alignSelf: 'center',
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowColor: '#000',
+        elevation: 5,
+        fontSize: WINDOW_WIDTH * 0.04,
+        fontWeight: 'bold',
+        color: '#000'
+    },
+    logPasswordInput: {
+        fontSize: WINDOW_WIDTH * 0.04,
+        fontWeight: 'bold',
+        color: '#000',
+        flex: 1,
+        padding: WINDOW_WIDTH * 0.04,
+        borderTopLeftRadius: 50,
+        borderBottomLeftRadius: 50
+    },
+    logTexts: {
+        fontSize: WINDOW_WIDTH * 0.045,
+        fontWeight: 'bold',
+        color: '#000',
+    },
+    userTypeTextConductrice: {
+        color: COLORS.peach,
+        fontSize: WINDOW_WIDTH * 0.06,
+        fontWeight: 'bold'
+    },
+    userTypeTextPassagere: {
+        color: COLORS.white,
+        fontSize: WINDOW_WIDTH * 0.06,
+        fontWeight: 'bold'
     }
 })

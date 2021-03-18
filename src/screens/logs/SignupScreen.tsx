@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Image, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, ScrollView, Switch, Text, TouchableOpacity, View, TextInput } from 'react-native';
 import { Avatar, Input, Icon } from 'react-native-elements';
 import { COLORS, WINDOW_WIDTH } from '../../constants/Constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
@@ -12,13 +12,14 @@ import { RootStackParamsList } from '../../types/types';
 type Props = StackScreenProps<RootStackParamsList, 'Signup'>
 
 const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
-    const [firstname, setFirstname] = React.useState<string>('Jeanne')
-    const [lastname, setLastname] = React.useState<string>('Dupont')
-    const [age, setAge] = React.useState<string>('21')
-    const [mail, setMail] = React.useState<string>('jeanne_dupont@gmail.com')
-    const [password, setPassword] = React.useState<string>('password')
-    const [passwordConfirmation, setPasswordConfirmation] = React.useState<string>('password')
+    const [firstname, setFirstname] = React.useState<string>('')
+    const [lastname, setLastname] = React.useState<string>('')
+    const [age, setAge] = React.useState<string>('')
+    const [mail, setMail] = React.useState<string>('')
+    const [password, setPassword] = React.useState<string>('')
+    const [passwordConfirmation, setPasswordConfirmation] = React.useState<string>('')
     const [switched, setSwitched] = React.useState<boolean>(false)
+    const [showPassword, setShowPassword] = React.useState<boolean>(false)
 
     const auth = useAuth()
     // avatar: {},
@@ -52,54 +53,50 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
     }
 
     return (
-        <View style={[styles.container, { backgroundColor: COLORS.nude }]}>
-            <Avatar
-                containerStyle={styles.avatar}
-                icon={{ type: "simple-line-icon", name: "user-female", size: WINDOW_WIDTH * 0.25, color: COLORS.white }}
-                size="large"
-                activeOpacity={0}
-            >
-                <View style={[styles.avatarEdit, { position: 'absolute', bottom: 0 }]}>
-                    <MaterialIcons name="mode-edit" color={COLORS.white} size={WINDOW_WIDTH * 0.05} />
+        <ScrollView style={styles.container}>
+            <View style={styles.container}>
+                <Image
+                    style={{ width: WINDOW_WIDTH }}
+                    source={require('../../img/Courbe.png')}
+                    resizeMode="contain"
+                />
+                <View style={{ width: WINDOW_WIDTH * 0.85, alignSelf: 'center' }}>
+                    <Text style={[styles.logTitle, styles.containerMargin]}>INSCRIPTION</Text>
                 </View>
-            </Avatar>
-            <ScrollView style={[styles.container, { backgroundColor: COLORS.nude }]}>
-                <Input value={firstname} onChangeText={firstname => setFirstname(firstname)} placeholder="Jeanne"
-                    inputContainerStyle={[styles.containerPadding, styles.logsInput]} containerStyle={{ width: WINDOW_WIDTH * 0.9, alignSelf: 'center' }}
-                    label="Prénom" labelStyle={styles.logsInputLabel}
+                <TextInput value={lastname} onChangeText={lastname => setLastname(lastname)} placeholder="Nom"
+                    style={[styles.logInputs, styles.containerMargin, { padding: WINDOW_WIDTH * 0.04 }]}
                 />
-                <Input value={lastname} onChangeText={lastname => setLastname(lastname)} placeholder="Dupont"
-                    inputContainerStyle={[styles.containerPadding, styles.logsInput]} containerStyle={{ width: WINDOW_WIDTH * 0.9, alignSelf: 'center' }}
-                    label="Nom" labelStyle={styles.logsInputLabel}
+                <TextInput value={firstname} onChangeText={firstname => setFirstname(firstname)} placeholder="Prénom"
+                    style={[styles.logInputs, styles.containerMargin, { padding: WINDOW_WIDTH * 0.04 }]}
                 />
-                <Input value={age} keyboardType="numeric" onChangeText={age => setAge(age)} placeholder="18"
-                    inputContainerStyle={[styles.containerPadding, styles.logsInput]} containerStyle={{ width: WINDOW_WIDTH * 0.9, alignSelf: 'center' }}
-                    label="Age" labelStyle={styles.logsInputLabel}
+                <TextInput value={age} onChangeText={age => setAge(age)} placeholder="Age"
+                    style={[styles.logInputs, styles.containerMargin, { padding: WINDOW_WIDTH * 0.04 }]} keyboardType="numeric"
                 />
-                <Input value={mail} onChangeText={mail => setMail(mail)} placeholder="jeanne_dupont@gmail.com"
-                    inputContainerStyle={[styles.containerPadding, styles.logsInput]} containerStyle={{ width: WINDOW_WIDTH * 0.9, alignSelf: 'center' }}
-                    label="E-mail" labelStyle={styles.logsInputLabel}
+                <TextInput value={mail} onChangeText={mail => setMail(mail)} placeholder="E-mail"
+                    style={[styles.logInputs, styles.containerMargin, { padding: WINDOW_WIDTH * 0.04 }]}
                 />
-                <Input value={password} onChangeText={password => setPassword(password)} secureTextEntry
-                    inputContainerStyle={[styles.containerPadding, styles.logsInput]} containerStyle={{ width: WINDOW_WIDTH * 0.9, alignSelf: 'center' }}
-                    label="Mot de passe" labelStyle={styles.logsInputLabel}
-                />
-                <Input value={passwordConfirmation} onChangeText={passwordConfirmation => setPasswordConfirmation(passwordConfirmation)} secureTextEntry
-                    inputContainerStyle={[styles.containerPadding, styles.logsInput]} containerStyle={{ width: WINDOW_WIDTH * 0.9, alignSelf: 'center' }}
-                    label="Confirmation du mot de passe" labelStyle={styles.logsInputLabel}
-                />
-            </ScrollView>
-            <View style={[{ alignItems: 'center', justifyContent: 'center' }]}>
-                <View style={styles.stayConnected}>
-                    <Text style={styles.stayConnectedText}>Rester connectée</Text>
-                    <Switch ios_backgroundColor="#fff" thumbColor={COLORS.blackBackground} trackColor={{ false: COLORS.black, true: COLORS.raspberry }} value={switched} onValueChange={switched => setSwitched(switched)} />
+                <View style={[styles.logInputs, styles.containerMargin, { flexDirection: 'row' }]}>
+                    <TextInput value={password} secureTextEntry={!showPassword} onChangeText={password => setPassword(password)} placeholder="Mot de passe"
+                        style={styles.logPasswordInput}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}
+                        style={{ marginHorizontal: WINDOW_WIDTH * 0.02 }}
+                    >
+                        <Icon name={showPassword ? "eye" : "eye-off"} type="feather" size={WINDOW_WIDTH * 0.07} />
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={[styles.logsButton, { marginBottom: WINDOW_WIDTH * 0.02 }]} onPress={() => signup()}>
-                    <Text style={styles.logsButtonText}>Valider</Text>
-                </TouchableOpacity>
-            </View>
+                <TextInput value={passwordConfirmation} onChangeText={passwordConfirmation => setPasswordConfirmation(passwordConfirmation)} placeholder="Confirmation du mot de passe"
+                    style={[styles.logInputs, styles.containerMargin, { padding: WINDOW_WIDTH * 0.04 }]}
+                />
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => signup()}
+                        style={[styles.logButtons, styles.containerMargin]}>
+                        <Text style={styles.userTypeTextPassagere}>Validation</Text>
+                    </TouchableOpacity>
+                </View>
 
-        </View>
+            </View>
+        </ScrollView>
     )
 }
 

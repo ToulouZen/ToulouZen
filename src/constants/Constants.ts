@@ -11,4 +11,8 @@ export const COLORS = {
     green: '#A5EAC6',
     nude: '#FFDFD3',
     pink: '#FFC8B6',
+    peach: '#ef7c55',
+    blue: '#49a987',
+    lightGrey: '#eeeeee',
+    darkGrey: '#888888'
 }
