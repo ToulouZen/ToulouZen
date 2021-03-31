@@ -5,6 +5,7 @@ import MapViewDirections from 'react-native-maps-directions';
 import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants/Constants';
 import GetLocation from 'react-native-get-location'
 import { useFirestore } from '../contexts/FirestoreContext';
+import { Checkpoint } from '../types/types';
 
 const origin = { latitude: 43.604652, longitude: 1.444209 };
 const destination = { latitude: 37.771707, longitude: -122.4053769 };
@@ -22,7 +23,12 @@ const stylesCustom = StyleSheet.create({
 const GOOGLE_MAPS_API_KEY_IOS = "AIzaSyCE-KihYba5ky6xGMyIidiT9p_jvDDEVV0"
 const GOOGLE_MAPS_API_KEY_ANDROID = "AIzaSyDQtHXsHSB3bclc637t5T6i3hTTZo44jAc"
 
-const Map = () => {
+type Props = {
+  handleCard: (checkpoint: Checkpoint) => void
+  closeCard: () => void
+}
+
+const Map: React.FC<Props> = ({ handleCard, closeCard }) => {
 
   const [userLocation, setUserLocation] = React.useState<{ latitude: number, longitude: number }>()
   const [userLocationFound, setUserLocationFound] = React.useState<boolean>(false)
@@ -53,6 +59,8 @@ const Map = () => {
   return (
     <View style={stylesCustom.container}>
       <MapView
+        onPanDrag={() => closeCard()}
+        showsPointsOfInterest={false}
         provider={PROVIDER_GOOGLE}
         style={stylesCustom.map}
         initialRegion={{
@@ -72,7 +80,7 @@ const Map = () => {
         {
           firestore.checkPoints.map((checkpoint) => {
             return (
-              <Marker key={checkpoint.name} 
+              <Marker key={checkpoint.name} onPress={() => handleCard(checkpoint)}
                 coordinate={{ latitude: checkpoint.latitude, longitude: checkpoint.longitude }}>
                 <Image source={require('../img/checkpointMarker.png')} resizeMode="contain"
                   style={{ width: WINDOW_WIDTH * 0.1, height: WINDOW_WIDTH * 0.1 }} />

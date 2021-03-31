@@ -11,7 +11,7 @@ type Props = {
 
 const HeaderMap: React.FC<Props> = ({ navigation }) => {
     return (
-        <View style={[{ position: 'absolute', top: 0, flexDirection: 'row', justifyContent: 'space-between', padding: WINDOW_WIDTH * 0.03, width: WINDOW_WIDTH }]}>
+        <View style={[{flexDirection: 'row', justifyContent: 'space-between', padding: WINDOW_WIDTH * 0.03, width: WINDOW_WIDTH }]}>
             <TouchableOpacity onPress={() => navigation.openDrawer()}>
                 <Icon type="entypo" name="menu" size={WINDOW_WIDTH * 0.1} color={COLORS.blackBackground} />
             </TouchableOpacity>
