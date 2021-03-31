@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useRef } from 'react';
-import { Alert, Image, Switch, Text, TouchableOpacity, View, TextInput, ScrollView } from 'react-native';
+import { Alert, Image, Text, TouchableOpacity, View, TextInput, ScrollView } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
-import { COLORS, WINDOW_WIDTH } from '../../constants/Constants';
+import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../constants/Constants';
 import { useAuth } from '../../contexts/AuthContext';
 import { styles } from '../../styles/styles';
 import { RootStackParamsList } from '../../types/types';
@@ -13,8 +13,8 @@ type Props = StackScreenProps<RootStackParamsList, 'Login'>
 
 const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
 
-    const [mail, setMail] = React.useState<string>('')
-    const [password, setPassword] = React.useState<string>('')
+    const [mail, setMail] = React.useState<string>('titi@gmail.com')
+    const [password, setPassword] = React.useState<string>('password')
     const [switched, setSwitched] = React.useState<boolean>(false)
     const [showPassword, setShowPassword] = React.useState<boolean>(false)
 
@@ -38,10 +38,15 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
 
     const login = async () => {
         try {
-            await auth.signIn(mail, password)
+            auth.signIn(mail, password)
+                .then(() => {
+                    console.log("then")
+                    auth.getUserInfo()
+                }).then(() => {
+                    navigation.navigate('App')
+                    reset()
+                })
 
-            navigation.navigate('App')
-            reset()
         } catch (e) {
             // e.code = "auth/user-not-found"
             // e.message = "There is no user record corresponding to this identifier. The user may have been deleted."
@@ -82,7 +87,8 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
                             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}
                                 style={{ marginHorizontal: WINDOW_WIDTH * 0.02 }}
                             >
-                                <Icon name={showPassword ? "eye" : "eye-off"} type="feather" size={WINDOW_WIDTH * 0.07} />
+                                <Image source={(showPassword ? require('../../img/Password_show.png') : require('../../img/Password_hide.png'))} resizeMode="contain"
+                                    style={{ width: WINDOW_WIDTH * 0.08, height: WINDOW_WIDTH * 0.08, tintColor: COLORS.black }} />
                             </TouchableOpacity>
                         </View>
                         <View style={[styles.containerMargin, { width: WINDOW_WIDTH * 0.8, alignSelf: 'center', alignItems: 'flex-end' }]}>
@@ -92,6 +98,23 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
                             style={[styles.logButtons, styles.containerMargin]}>
                             <Text style={styles.userTypeTextPassagere}>Me connecter</Text>
                         </TouchableOpacity>
+                        <View style={{ alignSelf: 'center', marginVertical: WINDOW_HEIGHT * 0.03 }}>
+                            <Text style={styles.logTexts}>ou me connecter avec</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 5 }}>
+                                <TouchableOpacity>
+                                    <Image source={require('../../img/google.png')} resizeMode="contain"
+                                        style={{ width: WINDOW_WIDTH * 0.07, height: WINDOW_WIDTH * 0.07, tintColor: COLORS.bluePrimary }} />
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <Image source={require('../../img/facebook.png')} resizeMode="contain"
+                                        style={{ width: WINDOW_WIDTH * 0.07, height: WINDOW_WIDTH * 0.07, tintColor: COLORS.bluePrimary }} />
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <Image source={require('../../img/twitter.png')} resizeMode="contain"
+                                        style={{ width: WINDOW_WIDTH * 0.07, height: WINDOW_WIDTH * 0.07, tintColor: COLORS.bluePrimary }} />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                         <View style={[styles.container, { alignItems: 'center', justifyContent: 'center' }]}>
                             <Text style={styles.logTexts}>Je n'ai pas de compte</Text>
                             <TouchableOpacity onPress={() => navigation.navigate('Signup', { userType: route.params.userType })}>

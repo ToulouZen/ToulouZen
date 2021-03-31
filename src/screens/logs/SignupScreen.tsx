@@ -82,7 +82,8 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
                     <TouchableOpacity onPress={() => setShowPassword(!showPassword)}
                         style={{ marginHorizontal: WINDOW_WIDTH * 0.02 }}
                     >
-                        <Icon name={showPassword ? "eye" : "eye-off"} type="feather" size={WINDOW_WIDTH * 0.07} />
+                        <Image source={(showPassword ? require('../../img/Password_show.png') : require('../../img/Password_hide.png'))} resizeMode="contain"
+                            style={{ width: WINDOW_WIDTH * 0.08, height: WINDOW_WIDTH * 0.08, tintColor: COLORS.black }} />
                     </TouchableOpacity>
                 </View>
                 <TextInput value={passwordConfirmation} onChangeText={passwordConfirmation => setPasswordConfirmation(passwordConfirmation)} placeholder="Confirmation du mot de passe"

@@ -53,12 +53,11 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     }, [])
 
     const register = async (email: string, password: string, firstname: string, lastname: string, age: number) => {
-       // console.log(email, password, firstname, lastname, age);
+        // console.log(email, password, firstname, lastname, age);
 
         const register = await firebaseAuth().createUserWithEmailAndPassword(email, password)
         usersCollection.doc(register.user.uid).get()
             .then(async (documentSnapshot) => {
-                console.log(documentSnapshot);
 
                 if (!documentSnapshot.exists) {
                     usersCollection.doc(register.user.uid).set({ uid: register.user.uid, mail: register.user.email, firstname, lastname, age })

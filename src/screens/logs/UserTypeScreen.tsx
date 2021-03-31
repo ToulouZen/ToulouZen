@@ -20,7 +20,7 @@ const UserTypeScreen: React.FC<Props> = ({ navigation, route }) => {
                 source={require('../../img/Courbe.png')}
                 resizeMode="contain"
             />
-            <View style={[styles.container]}>
+            <View style={[styles.container, {marginTop: WINDOW_WIDTH * 0.12}]}>
                 <View style={{ width: WINDOW_WIDTH * 0.85, alignSelf: 'center' }}>
                     <Text style={[styles.logTitle, styles.containerMargin]}>JE SUIS ...</Text>
                 </View>

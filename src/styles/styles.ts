@@ -10,8 +10,7 @@ export const styles = StyleSheet.create({
         backgroundColor: COLORS.white
     },
     containerPadding: {
-        paddingVertical: WINDOW_WIDTH * 0.01,
-        paddingHorizontal: WINDOW_WIDTH * 0.02,
+        padding: WINDOW_WIDTH * 0.02,
     },
     logoHeader: {
         width: WINDOW_WIDTH * 0.7,
@@ -128,7 +127,7 @@ export const styles = StyleSheet.create({
         borderBottomLeftRadius: 50
     },
     logTexts: {
-        fontSize: WINDOW_WIDTH * 0.045,
+        fontSize: WINDOW_WIDTH * 0.042,
         fontWeight: 'bold',
         color: '#000',
     },
@@ -141,5 +140,51 @@ export const styles = StyleSheet.create({
         color: COLORS.white,
         fontSize: WINDOW_WIDTH * 0.06,
         fontWeight: 'bold'
+    },
+    inputAddress: {
+        backgroundColor: '#dddddd',
+        color: '#000',
+        fontSize: WINDOW_WIDTH * 0.04,
+        fontWeight: 'bold',
+        alignSelf: 'center',
+        width: WINDOW_WIDTH * 0.7
+    },
+    shadowContainer: {
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        shadowOffset: {
+            width: 0,
+            height: 5
+        }
+    },
+    startButton: {
+        flexDirection: 'row',
+        borderColor: COLORS.peach,
+        borderRadius: 20,
+        borderWidth: 1,
+        backgroundColor: '#ddd',
+        justifyContent: 'space-between',
+        width: WINDOW_WIDTH * 0.5,
+        alignSelf: 'flex-end',
+        alignItems: 'center'
+    },
+    drawer: {
+        backgroundColor: '#fff',
+        width: WINDOW_WIDTH * 0.7
+    },
+    drawerCustomItem: {
+        padding: WINDOW_WIDTH * 0.05,
+    },
+    drawerCustomItemText: {
+        color: COLORS.blackBackground,
+        fontSize: WINDOW_WIDTH * 0.07,
+        fontWeight: 'bold'
+    },
+    checkpointCardView: {
+        backgroundColor: '#fff',
+        borderRadius: 15,
+        width: WINDOW_WIDTH * 0.8,
     }
 })

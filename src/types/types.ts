@@ -6,7 +6,8 @@ export type RootStackParamsList = {
     Signup: {
         userType: string
     },
-    App: undefined
+    App: undefined,
+    Home: undefined
 }
 
 export type User = {
@@ -14,4 +15,10 @@ export type User = {
     lastname: string,
     age: number,
     mail: string,
+}
+
+export type Checkpoint = {
+    name: string,
+    latitude: number,
+    longitude: number,
 }
