@@ -662,6 +662,8 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
+  - RNCPicker (1.14.0):
+    - React-Core
   - RNFBApp (10.7.0):
     - Firebase/CoreOnly (~> 7.6.0)
     - React-Core
@@ -741,6 +743,7 @@ DEPENDENCIES:
   - ReactNativeGetLocation (from `../node_modules/react-native-get-location`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
@@ -848,6 +851,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNCPicker:
+    :path: "../node_modules/@react-native-picker/picker"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBAuth:
@@ -928,6 +933,7 @@ SPEC CHECKSUMS:
   ReactNativeGetLocation: 7ed719807f65206e20b6793896372b11ad835d6d
   RNCAsyncStorage: 0701cb7395f06d744184641241888a0eec0e2f2a
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
+  RNCPicker: 1a266981fc99330c252f5f98b3f09a377a35d88c
   RNFBApp: d75aa9756bca20df2c902a3f7e11bc276f03c65b
   RNFBAuth: 77664661b9b75a8af2c194145cc4af52c151f2ac
   RNFBFirestore: a767270f495a44465dda98de30ad4ea4b82f091e

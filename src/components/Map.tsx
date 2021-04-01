@@ -1,5 +1,5 @@
 import React from 'react'
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
+import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps'
 import { Image, Platform, StyleSheet, View } from 'react-native'
 import MapViewDirections from 'react-native-maps-directions';
 import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants/Constants';
@@ -8,7 +8,6 @@ import { useFirestore } from '../contexts/FirestoreContext';
 import { Checkpoint } from '../types/types';
 
 const origin = { latitude: 43.604652, longitude: 1.444209 };
-const destination = { latitude: 37.771707, longitude: -122.4053769 };
 const stylesCustom = StyleSheet.create({
   container: {
     height: WINDOW_HEIGHT,
@@ -25,20 +24,21 @@ const GOOGLE_MAPS_API_KEY_ANDROID = "AIzaSyDQtHXsHSB3bclc637t5T6i3hTTZo44jAc"
 
 type Props = {
   handleCard: (checkpoint: Checkpoint) => void
-  closeCard: () => void
+  closeCard: () => void,
+  destination?: Checkpoint,
+  region: Region
 }
 
-const Map: React.FC<Props> = ({ handleCard, closeCard }) => {
+const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region }) => {
 
   const [userLocation, setUserLocation] = React.useState<{ latitude: number, longitude: number }>()
   const [userLocationFound, setUserLocationFound] = React.useState<boolean>(false)
-
   const firestore = useFirestore()
 
   React.useEffect(() => {
-    console.log(firestore.checkPoints)
     getUserLocation()
   }, [])
+
 
   const getUserLocation = () => {
     GetLocation.getCurrentPosition({
@@ -63,12 +63,7 @@ const Map: React.FC<Props> = ({ handleCard, closeCard }) => {
         showsPointsOfInterest={false}
         provider={PROVIDER_GOOGLE}
         style={stylesCustom.map}
-        initialRegion={{
-          latitude: 43.604652,
-          longitude: 1.444209,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
+        region={region}
       >
         {
           userLocationFound &&
@@ -88,13 +83,16 @@ const Map: React.FC<Props> = ({ handleCard, closeCard }) => {
             )
           })
         }
-        {/* <MapViewDirections
-          origin={origin}
-          destination={destination}
-          strokeColor="red"
-          strokeWidth={5}
-          apikey={Platform.OS == "android" ? GOOGLE_MAPS_API_KEY_ANDROID : GOOGLE_MAPS_API_KEY_IOS}
-        /> */}
+        {
+          destination != undefined &&
+          <MapViewDirections
+            origin={origin}
+            destination={destination!}
+            strokeColor="red"
+            strokeWidth={3}
+            apikey={Platform.OS == "android" ? GOOGLE_MAPS_API_KEY_ANDROID : GOOGLE_MAPS_API_KEY_IOS}
+          />
+        }
       </MapView>
     </View>
   )
