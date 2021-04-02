@@ -13,7 +13,7 @@ type Props = StackScreenProps<RootStackParamsList, 'Login'>
 
 const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
 
-    const [mail, setMail] = React.useState<string>('titi@gmail.com')
+    const [mail, setMail] = React.useState<string>('jeanne.dupont@gmail.com')
     const [password, setPassword] = React.useState<string>('password')
     const [switched, setSwitched] = React.useState<boolean>(false)
     const [showPassword, setShowPassword] = React.useState<boolean>(false)

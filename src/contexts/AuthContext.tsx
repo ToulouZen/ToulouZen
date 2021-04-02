@@ -6,8 +6,8 @@ import React, { createContext, useContext, useEffect } from 'react';
 type AuthContextType = {
     isSignedIn: boolean;
     user?: FirebaseAuthTypes.User | { uid: string | null };
-    userInfo?: { firstname: string | null, lastname: string | null }
-    register: (email: string, password: string, firstname: string, lastname: string, age: number) => Promise<void>;
+    userInfo?: { firstname: string | null, lastname: string | null, mail: string | null, age: number | null, userType: string | null }
+    register: (email: string, password: string, firstname: string, lastname: string, age: number, userType: string) => Promise<void>;
     signIn: (email: string, password: string) => Promise<void>;
     signOut: () => Promise<void>;
     getUserInfo: () => void
@@ -28,7 +28,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     const [auth, setAuth] = React.useState<{ user?: FirebaseAuthTypes.User | { uid: string | null }; isSignedIn: boolean }>({
         isSignedIn: false,
     })
-    const [userInfo, setUserInfo] = React.useState<{ firstname: string | null, lastname: string | null, mail: string | null, age: number | null }>({ firstname: '', lastname: '', mail: '', age: 0 })
+    const [userInfo, setUserInfo] = React.useState<{ firstname: string | null, lastname: string | null, mail: string | null, age: number | null, userType: string | null }>({ firstname: '', lastname: '', mail: '', age: 0, userType: '' })
 
     const usersCollection = firestore().collection('users')
 
@@ -52,7 +52,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
         return unsubscribe
     }, [])
 
-    const register = async (email: string, password: string, firstname: string, lastname: string, age: number) => {
+    const register = async (email: string, password: string, firstname: string, lastname: string, age: number, userType: string) => {
         // console.log(email, password, firstname, lastname, age);
 
         const register = await firebaseAuth().createUserWithEmailAndPassword(email, password)
@@ -60,8 +60,8 @@ export const AuthContextProvider: React.FC = ({ children }) => {
             .then(async (documentSnapshot) => {
 
                 if (!documentSnapshot.exists) {
-                    usersCollection.doc(register.user.uid).set({ uid: register.user.uid, mail: register.user.email, firstname, lastname, age })
-                    setUserInfo({ firstname, lastname, mail: email, age })
+                    usersCollection.doc(register.user.uid).set({ uid: register.user.uid, mail: register.user.email, firstname, lastname, age, userType })
+                    setUserInfo({ firstname, lastname, mail: email, age, userType })
                     await AsyncStorage.setItem('ToulouzenUserUID', register.user.uid)
                     await AsyncStorage.setItem('ToulouzenFirstname', firstname)
                     await AsyncStorage.setItem('ToulouzenLastname', lastname)
@@ -77,13 +77,14 @@ export const AuthContextProvider: React.FC = ({ children }) => {
         usersCollection.doc(signIn.user.uid).get()
             .then(async (documentSnapshot) => {
                 const data = documentSnapshot.data()
-                setUserInfo({ firstname: data?.firstname, lastname: data?.lastname, mail: data?.mail, age: data?.age })
+                setUserInfo({ firstname: data?.firstname, lastname: data?.lastname, mail: data?.mail, age: data?.age, userType: data?.userType })
 
                 await AsyncStorage.setItem('ToulouzenUserUID', signIn.user.uid)
                 await AsyncStorage.setItem('ToulouzenFirstname', data?.firstname)
                 await AsyncStorage.setItem('ToulouzenLastname', data?.lastname)
                 await AsyncStorage.setItem('ToulouzenEmail', email)
                 await AsyncStorage.setItem('ToulouzenAge', data?.age.toString())
+                await AsyncStorage.setItem('ToulouzenUserType', data?.userType)
             })
     }
 
@@ -97,8 +98,9 @@ export const AuthContextProvider: React.FC = ({ children }) => {
         const lastname = await AsyncStorage.getItem('ToulouzenLastname')
         const mail = await AsyncStorage.getItem('ToulouzenEmail')
         const age = await AsyncStorage.getItem('ToulouzenAge')
+        const userType = await AsyncStorage.getItem('ToulouzenUserType')
         setAuth({ user: { uid: uid }, isSignedIn: true })
-        setUserInfo({ firstname, lastname, mail, age: Number(age) })
+        setUserInfo({ firstname, lastname, mail, age: Number(age), userType })
     }
 
     return (

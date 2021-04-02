@@ -8,12 +8,13 @@ import { styles } from '../styles/styles';
 import { Checkpoint } from '../types/types';
 
 type Props = {
-    handleRegion: (checkpoint: Checkpoint) => void
+    handleRegion: (checkpoint: Checkpoint) => void,
+    goTo: (checkpoint: Checkpoint) => void
 }
 
 const TIMES = ["20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "00:00", "00:30", "01:00", "01:30", "02:00"];
 
-const NavigationComponent: React.FC<Props> = ({ handleRegion }) => {
+const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo }) => {
     const [departureDestination, setDepartureDestination] = React.useState<string>('Votre position')
     const [arrivalDestination, setArrivalDestination] = React.useState<Checkpoint>()
     const [isVisible, setIsVisible] = React.useState<boolean>(false)
@@ -31,6 +32,10 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion }) => {
         }
     }, [arrivalDestination])
 
+    React.useEffect(() => {
+        refArrivalDestination.current?.blur()
+    }, [isVisible])
+
     return (
         <View style={{ position: 'absolute', bottom: 0, width: WINDOW_WIDTH, height: WINDOW_HEIGHT * 0.4, backgroundColor: '#fff', borderTopRightRadius: 15, borderTopLeftRadius: 15 }}>
             <Overlay isVisible={isVisible} >
@@ -42,6 +47,7 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion }) => {
                             selectedValue={arrivalDestination?.name}
                             onValueChange={(itemValue) => {
                                 const index = firestore.checkPoints.findIndex((checkpoint) => checkpoint.name == itemValue)
+                                goTo(firestore.checkPoints[index])
                                 setArrivalDestination(firestore.checkPoints[index])
 
                             }
@@ -69,7 +75,7 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion }) => {
                     }
                     <Icon onPress={() => {
                         if (isPosition) {
-                            refDepartureDestination.current?.blur()
+                            refArrivalDestination.current?.blur()
                             setIsPosition(false)
                         }
                         if (isTime) {

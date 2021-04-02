@@ -67,7 +67,11 @@ const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region }) =>
       >
         {
           userLocationFound &&
-          <Marker coordinate={{ latitude: userLocation!.latitude, longitude: userLocation!.longitude }}>
+          // <Marker coordinate={{ latitude: userLocation!.latitude, longitude: userLocation!.longitude }}>
+          //   <Image source={require('../img/Localisation.png')} resizeMode="contain"
+          //     style={{ width: WINDOW_WIDTH * 0.1, height: WINDOW_WIDTH * 0.1, tintColor: COLORS.peach }} />
+          // </Marker>
+          <Marker coordinate={{ latitude: 43.604652, longitude: 1.444209 }}>
             <Image source={require('../img/Localisation.png')} resizeMode="contain"
               style={{ width: WINDOW_WIDTH * 0.1, height: WINDOW_WIDTH * 0.1, tintColor: COLORS.peach }} />
           </Marker>

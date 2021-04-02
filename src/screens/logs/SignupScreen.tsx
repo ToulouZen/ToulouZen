@@ -36,7 +36,7 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
 
     const signup = async () => {
         try {
-            await auth.register(mail, password, firstname, lastname, Number(age))
+            await auth.register(mail, password, firstname, lastname, Number(age), route.params.userType)
             Alert.alert("Votre espace personnalisé a été créée", "Nous vous souhaitons la bienvenue dans la famille Toulou'Zen !", [
                 {
                     text: 'Super !',
