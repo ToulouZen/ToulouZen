@@ -1,8 +1,6 @@
 export type RootStackParamsList = {
     UserType: undefined,
-    Login: {
-        userType: string
-    },
+    Login: undefined
     Signup: {
         userType: string
     },
@@ -21,4 +19,21 @@ export type Checkpoint = {
     name: string,
     latitude: number,
     longitude: number,
+}
+
+export type Path = {
+    id: string,
+    userId: string,
+    userLastname: string,
+    userFirstname: string,
+    arrivalDestination: Checkpoint,
+    departureDestination: Checkpoint,
+    timeDeparture: string,
+    pickedBy: {
+        userId: string,
+        userLastname: string,
+        userFirstname: string
+    },
+    distance: number,
+    duration: number
 }

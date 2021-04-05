@@ -20,17 +20,17 @@ const UserTypeScreen: React.FC<Props> = ({ navigation, route }) => {
                 source={require('../../img/Courbe.png')}
                 resizeMode="contain"
             />
-            <View style={[styles.container, {marginTop: WINDOW_WIDTH * 0.12}]}>
+            <View style={[styles.container, { marginTop: WINDOW_WIDTH * 0.12 }]}>
                 <View style={{ width: WINDOW_WIDTH * 0.85, alignSelf: 'center' }}>
                     <Text style={[styles.logTitle, styles.containerMargin]}>JE SUIS ...</Text>
                 </View>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Login', { userType: "driver" })}
+                    onPress={() => navigation.navigate('Signup', { userType: "driver" })}
                     style={[styles.logButtons, styles.containerMargin, { backgroundColor: COLORS.lightGrey }]}>
                     <Text style={styles.userTypeTextConductrice}>Conductrice</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Login', { userType: "passenger" })}
+                    onPress={() => navigation.navigate('Signup', { userType: "passenger" })}
                     style={[styles.logButtons, styles.containerMargin]}>
                     <Text style={styles.userTypeTextPassagere}>Passagère</Text>
                 </TouchableOpacity>

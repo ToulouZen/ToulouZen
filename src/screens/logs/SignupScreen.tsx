@@ -86,9 +86,17 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
                             style={{ width: WINDOW_WIDTH * 0.08, height: WINDOW_WIDTH * 0.08, tintColor: COLORS.black }} />
                     </TouchableOpacity>
                 </View>
-                <TextInput value={passwordConfirmation} onChangeText={passwordConfirmation => setPasswordConfirmation(passwordConfirmation)} placeholder="Confirmation du mot de passe"
-                    style={[styles.logInputs, styles.containerMargin, { padding: WINDOW_WIDTH * 0.04 }]}
-                />
+                <View style={[styles.logInputs, styles.containerMargin, { flexDirection: 'row' }]}>
+                    <TextInput value={passwordConfirmation} secureTextEntry={!showPassword} onChangeText={passwordConfirmation => setPasswordConfirmation(passwordConfirmation)} placeholder="Confirmation du mot de passe"
+                        style={styles.logPasswordInput}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}
+                        style={{ marginHorizontal: WINDOW_WIDTH * 0.02 }}
+                    >
+                        <Image source={(showPassword ? require('../../img/Password_show.png') : require('../../img/Password_hide.png'))} resizeMode="contain"
+                            style={{ width: WINDOW_WIDTH * 0.08, height: WINDOW_WIDTH * 0.08, tintColor: COLORS.black }} />
+                    </TouchableOpacity>
+                </View>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity onPress={() => signup()}
                         style={[styles.logButtons, styles.containerMargin]}>

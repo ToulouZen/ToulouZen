@@ -6,6 +6,7 @@ import { DrawerDescriptorMap, DrawerNavigationHelpers } from '@react-navigation/
 import DrawerItemCustom from '../components/DrawerItemCustom';
 import { CommonActions, DrawerActions, DrawerNavigationState, ParamListBase } from '@react-navigation/native';
 import { useAuth } from '../contexts/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type PropsDrawer = Omit<DrawerContentOptions, 'contentContainerStyle' | 'style'> & {
     state: DrawerNavigationState<ParamListBase>;
@@ -16,6 +17,21 @@ const CustomDrawer: React.FC<PropsDrawer> = ({ state, descriptors, navigation })
 
     const [isSwitched, setIsSwitched] = React.useState<boolean>(false)
     const auth = useAuth()
+
+    React.useEffect(() => {
+        if (auth.userInfo?.userType == "driver") {
+            setIsSwitched(false)
+        } else {
+            setIsSwitched(true)
+        }
+        _setUserType(auth.userInfo?.userType)
+    }, [auth.userInfo?.userType])
+
+    const _setUserType = async (userType: string | null | undefined) => {
+        if (typeof userType == "string") {
+            AsyncStorage.setItem('ToulouzenUserType', userType).then(() => auth.getUserInfo())
+        }
+    }
 
     return (
         <DrawerContentScrollView contentContainerStyle={{ flex: 1, paddingTop: 0, justifyContent: 'space-between' }} {...state} {...descriptors} {...navigation}>
@@ -37,10 +53,10 @@ const CustomDrawer: React.FC<PropsDrawer> = ({ state, descriptors, navigation })
                     })
                 }
             </View>
-            <View style={{ flexDirection: 'row', backgroundColor: COLORS.peach, alignItems: 'center', padding: WINDOW_WIDTH * 0.07 }}>
-                <Text>Conductrice</Text>
-                <Switch value={isSwitched} onValueChange={(isSwitched) => setIsSwitched(isSwitched)} thumbColor="#000" />
-                <Text>Passagère</Text>
+            <View style={{ flexDirection: 'row', backgroundColor: COLORS.peach, alignItems: 'center', justifyContent: 'space-between', paddingVertical: WINDOW_WIDTH * 0.07, paddingHorizontal: WINDOW_WIDTH * 0.02 }}>
+                <Text style={{ color: "#fff", fontSize: WINDOW_WIDTH * 0.04, fontWeight: '700' }}>Conductrice</Text>
+                <Switch value={isSwitched} onValueChange={(isSwitched) => setIsSwitched(isSwitched)} thumbColor="#000" ios_backgroundColor="#fff" trackColor={{ false: "#fff", true: "#fff" }} />
+                <Text style={{ color: "#fff", fontSize: WINDOW_WIDTH * 0.04, fontWeight: '700' }}>Passagère</Text>
             </View>
         </DrawerContentScrollView>
     )

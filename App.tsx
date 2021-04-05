@@ -54,7 +54,7 @@ const App = () => {
   const LogStack = createStackNavigator();
   function MyLogStack() {
     return (
-      <LogStack.Navigator initialRouteName="UserType">
+      <LogStack.Navigator initialRouteName="Login">
         <LogStack.Screen name="UserType" component={UserTypeScreen} options={{ headerShown: false }} />
         <LogStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <LogStack.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }} />

@@ -7,12 +7,12 @@ import { Icon } from 'react-native-elements';
 import Map from '../../components/Map';
 import HeaderMap from '../../components/HeaderMap';
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { Checkpoint, RootStackParamsList } from '../../types/types';
+import { Checkpoint, Path, RootStackParamsList } from '../../types/types';
 import { useAuth } from '../../contexts/AuthContext';
 import NavigationComponent from '../../components/NavigationComponent';
 import CheckpointCard from '../../components/CheckpointCard';
 import { Region } from 'react-native-maps';
-import PassengerComponent from '../../components/PassengerComponent';
+import PathsComponent from '../../components/PathsComponent';
 
 type Props = DrawerScreenProps<RootStackParamsList, 'Home'>
 
@@ -22,6 +22,9 @@ const HomeScreen: React.FC<Props> = ({ navigation, route }) => {
     const [showCheckpointCard, setShowCheckpointCard] = React.useState<boolean>(false)
     const [checkpointToGo, setCheckpointToGo] = React.useState<Checkpoint>()
     const [region, setRegion] = React.useState<Region>({ latitude: 43.604652, longitude: 1.444209, latitudeDelta: 0.0922, longitudeDelta: 0.0421 })
+    const [durationPath, setDurationPath] = React.useState<number>(0)
+    const [distancePath, setDistancePath] = React.useState<number>(0)
+    const [passengerPosition, setPassengerPosition] = React.useState<Checkpoint>()
 
     const auth = useAuth()
 
@@ -42,10 +45,20 @@ const HomeScreen: React.FC<Props> = ({ navigation, route }) => {
         setCheckpointToGo(checkpoint)
     }
 
+    const getInfoPath = (distance: number, duration: number) => {
+        setDistancePath(distance)
+        setDurationPath(duration)
+    }
+
+    const handlePath = (path: Path) => {
+        setCheckpointToGo(path.arrivalDestination)
+        setPassengerPosition(path.departureDestination)
+    }
+
     return (
         <>
             <View style={styles.container}>
-                <Map handleCard={handleCard} closeCard={closeCard} destination={checkpointToGo} region={region} />
+                <Map handleCard={handleCard} closeCard={closeCard} destination={checkpointToGo} region={region} getInfoPath={getInfoPath} passengerPosition={passengerPosition} />
                 <View style={{ position: 'absolute', top: 0, }}>
                     <HeaderMap navigation={navigation} />
                     {showCheckpointCard &&
@@ -54,11 +67,11 @@ const HomeScreen: React.FC<Props> = ({ navigation, route }) => {
                 </View>
                 {
                     auth.userInfo?.userType == "passenger" &&
-                    <NavigationComponent handleRegion={handleRegion} goTo={goTo} />
+                    <NavigationComponent handleRegion={handleRegion} goTo={goTo} distance={distancePath} duration={durationPath} />
                 }
                 {
                     auth.userInfo?.userType == "driver" &&
-                    <PassengerComponent />
+                    <PathsComponent handlePath={handlePath} />
                 }
             </View>
         </>

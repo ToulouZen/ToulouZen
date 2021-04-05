@@ -6,6 +6,7 @@ import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants/Constants';
 import GetLocation from 'react-native-get-location'
 import { useFirestore } from '../contexts/FirestoreContext';
 import { Checkpoint } from '../types/types';
+import { useAuth } from '../contexts/AuthContext';
 
 const origin = { latitude: 43.604652, longitude: 1.444209 };
 const stylesCustom = StyleSheet.create({
@@ -26,14 +27,18 @@ type Props = {
   handleCard: (checkpoint: Checkpoint) => void
   closeCard: () => void,
   destination?: Checkpoint,
-  region: Region
+  passengerPosition?: Checkpoint,
+  region: Region,
+  getInfoPath: (distance: number, duration: number) => void
 }
 
-const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region }) => {
+const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region, getInfoPath, passengerPosition }) => {
 
   const [userLocation, setUserLocation] = React.useState<{ latitude: number, longitude: number }>()
   const [userLocationFound, setUserLocationFound] = React.useState<boolean>(false)
+
   const firestore = useFirestore()
+  const auth = useAuth()
 
   React.useEffect(() => {
     getUserLocation()
@@ -46,7 +51,6 @@ const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region }) =>
       timeout: 15000,
     })
       .then(location => {
-        console.log(location)
         setUserLocation({ latitude: location.latitude, longitude: location.longitude })
         setUserLocationFound(true)
       })
@@ -81,20 +85,33 @@ const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region }) =>
             return (
               <Marker key={checkpoint.name} onPress={() => handleCard(checkpoint)}
                 coordinate={{ latitude: checkpoint.latitude, longitude: checkpoint.longitude }}>
-                <Image source={require('../img/checkpointMarker.png')} resizeMode="contain"
-                  style={{ width: WINDOW_WIDTH * 0.1, height: WINDOW_WIDTH * 0.1 }} />
+                <Image source={(checkpoint.latitude == destination?.latitude && checkpoint.longitude == destination?.longitude && checkpoint.name == destination?.name ? require('../img/Flag.png') : require('../img/checkpointMarker.png'))}
+                  resizeMode="contain"
+                  style={{ width: WINDOW_WIDTH * 0.1, height: WINDOW_WIDTH * 0.1, tintColor: (checkpoint.latitude == destination?.latitude && checkpoint.longitude == destination.longitude && checkpoint.name == destination.name ? COLORS.blue : undefined) }} />
               </Marker>
             )
           })
         }
         {
-          destination != undefined &&
+          auth.userInfo?.userType == "passenger" && destination != undefined && userLocation != undefined &&
           <MapViewDirections
-            origin={origin}
-            destination={destination!}
+            origin={userLocation}
+            destination={destination}
             strokeColor="red"
             strokeWidth={3}
             apikey={Platform.OS == "android" ? GOOGLE_MAPS_API_KEY_ANDROID : GOOGLE_MAPS_API_KEY_IOS}
+            onReady={({ distance, duration }) => getInfoPath(distance, duration)}
+          />
+        }
+        {
+          auth.userInfo?.userType == "driver" && destination != undefined && passengerPosition != undefined &&
+          <MapViewDirections
+            origin={passengerPosition}
+            destination={destination}
+            strokeColor="red"
+            strokeWidth={3}
+            apikey={Platform.OS == "android" ? GOOGLE_MAPS_API_KEY_ANDROID : GOOGLE_MAPS_API_KEY_IOS}
+            onReady={({ distance, duration }) => getInfoPath(distance, duration)}
           />
         }
       </MapView>

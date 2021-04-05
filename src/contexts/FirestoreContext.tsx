@@ -1,40 +1,38 @@
 import { FirebaseAuthTypes } from '@react-native-firebase/auth'
 import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { Checkpoint, User } from '../types/types'
-import { toCheckpoint } from '../functions/utils'
+import { Checkpoint, Path, User } from '../types/types'
+import { toCheckpoint, toPath } from '../functions/utils'
+import { useAuth } from './AuthContext'
 
 type FirestoreContextType = {
-    user: User,
     checkPoints: Checkpoint[],
-    getUser: (mail: string, password: string) => void,
+    createPath: (departureDestination: Checkpoint, arrivalDestination: Checkpoint, timeDeparture: string, distance: number, duration: number) => void
+    paths: Path[]
 }
 
 const defaultFirestoreState: FirestoreContextType = {
-    user: { firstname: '', lastname: '', age: 0, mail: '' },
     checkPoints: [],
-    getUser: async () => undefined
+    createPath: async () => undefined,
+    paths: []
 }
 
 const FirestoreContext = createContext<FirestoreContextType>(defaultFirestoreState)
 
 export const FirestoreContextProvider: React.FC = ({ children }) => {
 
-    const [user, setUser] = useState<User>({ firstname: '', lastname: '', age: 0, mail: '' })
     const [checkPoints, setCheckPoints] = useState<Checkpoint[]>([])
+    const [paths, setPaths] = useState<Path[]>([])
+
+    const auth = useAuth()
 
     useEffect(() => {
         getAllCheckpoints()
+        getPaths()
     }, [])
 
-    const usersCollection = firestore().collection('users')
     const checkpointsCollection = firestore().collection('checkpoints')
-
-    const getUser = async (mail: string, password: string) => {
-        const users = (await usersCollection.where('mail', '==', mail).where('password', '==', password).limit(1).get()).docs
-        const userData = users.map((user) => user.data())
-        console.log(userData);
-    }
+    const pathsCollection = firestore().collection('paths')
 
     const getAllCheckpoints = async () => {
         const checkpoints = (await checkpointsCollection.get()).docs
@@ -42,12 +40,28 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
         setCheckPoints(checkpointsData)
     }
 
+    const createPath = async (departureDestination: Checkpoint, arrivalDestination: Checkpoint, timeDeparture: string, distance: number, duration: number) => {
+        const created = await pathsCollection.add({ userId: auth.user?.uid, userLastname: auth.userInfo?.lastname, userFirstname: auth.userInfo?.firstname, departureDestination, arrivalDestination, timeDeparture, pickedBy: { userId: null, userLastname: null, userFirstname: null }, distance, duration })
+        console.log("CREATE PATH => ", created)
+    }
+
+    const getPaths = async () => {
+        const paths = (await pathsCollection.where("pickedBy", "==", { userId: null, userLastname: null, userFirstname: null }).get()).docs
+        console.log(paths)
+        const pathsData = paths.map((path) => toPath(path.data(), path.id))
+        setPaths(pathsData)
+    }
+
+    const pickPath = async (path: Path) => {
+
+    }
+
     return (
         <FirestoreContext.Provider
             value={{
-                user,
                 checkPoints,
-                getUser
+                createPath,
+                paths
             }}>
             {children}
         </FirestoreContext.Provider>

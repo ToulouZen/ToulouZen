@@ -53,8 +53,6 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     }, [])
 
     const register = async (email: string, password: string, firstname: string, lastname: string, age: number, userType: string) => {
-        // console.log(email, password, firstname, lastname, age);
-
         const register = await firebaseAuth().createUserWithEmailAndPassword(email, password)
         usersCollection.doc(register.user.uid).get()
             .then(async (documentSnapshot) => {
@@ -67,6 +65,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
                     await AsyncStorage.setItem('ToulouzenLastname', lastname)
                     await AsyncStorage.setItem('ToulouzenEmail', email)
                     await AsyncStorage.setItem('ToulouzenAge', age.toString())
+                    await AsyncStorage.setItem('ToulouzenUserType', userType)
 
                 }
             })

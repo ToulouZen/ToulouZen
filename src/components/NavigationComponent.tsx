@@ -9,18 +9,21 @@ import { Checkpoint } from '../types/types';
 
 type Props = {
     handleRegion: (checkpoint: Checkpoint) => void,
-    goTo: (checkpoint: Checkpoint) => void
+    goTo: (checkpoint: Checkpoint) => void,
+    distance?: number,
+    duration?: number
 }
 
 const TIMES = ["20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "00:00", "00:30", "01:00", "01:30", "02:00"];
 
-const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo }) => {
+const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, duration }) => {
     const [departureDestination, setDepartureDestination] = React.useState<string>('Votre position')
     const [arrivalDestination, setArrivalDestination] = React.useState<Checkpoint>()
     const [isVisible, setIsVisible] = React.useState<boolean>(false)
     const [isPosition, setIsPosition] = React.useState<boolean>(false)
     const [isTime, setIsTime] = React.useState<boolean>(false)
     const [timeDeparture, setTimeDeparture] = React.useState<string>('Maintenant')
+    const [driverFound, setDriverFound] = React.useState<boolean>(false)
     const refDepartureDestination = React.createRef<TextInput>()
     const refArrivalDestination = React.createRef<TextInput>()
 
@@ -110,6 +113,10 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo }) => {
                             <Image source={require('../img/arrow.png')} resizeMode="contain" style={{ width: WINDOW_WIDTH * 0.06, height: WINDOW_WIDTH * 0.06, tintColor: COLORS.peach, transform: [{ rotate: '90deg' }] }} />
                         </TouchableOpacity>
                     </View>
+                    <TouchableOpacity onPress={() => firestore.createPath({ latitude: 43.604652, longitude: 1.444209, name: "Position du passager" }, arrivalDestination!, timeDeparture, distance!, duration!)}
+                        style={[styles.logButtons, styles.containerMargin]}>
+                        <Text style={styles.userTypeTextPassagere}>Trouver ma chauffeuse</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
             <View style={[styles.containerPadding, { backgroundColor: 'rgba(230,230,230,0.5)', flex: 1 }]}>

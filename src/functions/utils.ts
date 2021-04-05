@@ -1,4 +1,4 @@
-import { Checkpoint } from './../types/types';
+import { Checkpoint, Path } from './../types/types';
 export const toCheckpoint = (data: any) => {
     const checkpoint: Checkpoint = {
         latitude: data.latitude,
@@ -6,4 +6,24 @@ export const toCheckpoint = (data: any) => {
         name: data.name
     }
     return checkpoint
+}
+
+export const toPath = (data: any, id: any) => {
+    const path: Path = {
+        id: id,
+        userId: data.userId,
+        userFirstname: data.userFirstname,
+        userLastname: data.userLastname,
+        arrivalDestination: data.arrivalDestination,
+        departureDestination: data.departureDestination,
+        timeDeparture: data.timeDeparture,
+        pickedBy: {
+            userId: data.pickedBy.userId,
+            userLastname: data.pickedBy.userLastname,
+            userFirstname: data.pickedBy.userFirstname,
+        },
+        distance: data.distance,
+        duration: data.duration
+    }
+    return path
 }

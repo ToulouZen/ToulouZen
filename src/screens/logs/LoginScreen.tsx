@@ -13,7 +13,7 @@ type Props = StackScreenProps<RootStackParamsList, 'Login'>
 
 const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
 
-    const [mail, setMail] = React.useState<string>('jeanne.dupont@gmail.com')
+    const [mail, setMail] = React.useState<string>('lisa_dupond@gmail.com')
     const [password, setPassword] = React.useState<string>('password')
     const [switched, setSwitched] = React.useState<boolean>(false)
     const [showPassword, setShowPassword] = React.useState<boolean>(false)
@@ -117,7 +117,7 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
                         </View>
                         <View style={[styles.container, { alignItems: 'center', justifyContent: 'center' }]}>
                             <Text style={styles.logTexts}>Je n'ai pas de compte</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('Signup', { userType: route.params.userType })}>
+                            <TouchableOpacity onPress={() => navigation.navigate('UserType')}>
                                 <Text style={[styles.logTexts, { color: COLORS.peach, textDecorationLine: 'underline', fontSize: WINDOW_WIDTH * 0.055 }]}> Je souhaite m'inscrire</Text>
                             </TouchableOpacity>
                         </View>
