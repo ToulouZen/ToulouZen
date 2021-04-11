@@ -36,6 +36,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
         const unsubscribe = firebaseAuth().onAuthStateChanged((_user) => {
             if (_user) {
                 // user is logged in
+
                 setAuth({
                     user: _user,
                     isSignedIn: true

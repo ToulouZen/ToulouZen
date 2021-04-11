@@ -186,5 +186,12 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 15,
         width: WINDOW_WIDTH * 0.8,
+    },
+    deconnectionView: {
+        backgroundColor: COLORS.peach,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: WINDOW_WIDTH * 0.07,
+        paddingHorizontal: WINDOW_WIDTH * 0.02
     }
 })

@@ -33,7 +33,7 @@ const PathsComponent: React.FC<Props> = ({ handlePath }) => {
                 />
             </View>
             <View style={[styles.containerPadding, { backgroundColor: 'rgba(230,230,230,0.5)', flex: 1 }]}>
-                <TouchableOpacity style={[styles.logButtons]} onPress={() => console.log(pathPicked)}>
+                <TouchableOpacity style={[styles.logButtons]} onPress={() => firestore.pickPath(pathPicked!)}>
                     <Text>Valider la course</Text>
                 </TouchableOpacity>
 

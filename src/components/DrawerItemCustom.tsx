@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
+import { COLORS } from '../constants/Constants';
 import { styles } from '../styles/styles';
 
 type Props = {
@@ -11,8 +12,8 @@ type Props = {
 const DrawerItemCustom: React.FC<Props> = ({ title, onPress, focused }) => {
 
     return (
-        <TouchableOpacity style={styles.drawerCustomItem} onPress={() => onPress()}>
-            <Text style={styles.drawerCustomItemText}>{title}</Text>
+        <TouchableOpacity style={[styles.drawerCustomItem, { backgroundColor: focused ? COLORS.bluePrimary : COLORS.white }]} onPress={() => onPress()}>
+            <Text style={[styles.drawerCustomItemText, { color: focused ? COLORS.white : COLORS.black }]}>{title}</Text>
         </TouchableOpacity>
     )
 }

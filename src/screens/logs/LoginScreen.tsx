@@ -29,7 +29,6 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
     const setToken = async () => {
         await AsyncStorage.setItem('ToulouzenToken', 'autolog')
     }
-    const resetPassword = () => { }
 
     const reset = () => {
         setMail('')

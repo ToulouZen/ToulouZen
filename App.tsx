@@ -21,9 +21,10 @@ import UserTypeScreen from './src/screens/logs/UserTypeScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SafeAreaView from 'react-native-safe-area-view';
-import HeaderMap from './src/components/HeaderMap';
 import CustomDrawer from './src/components/CustomDrawer';
 import { FirestoreContextProvider } from './src/contexts/FirestoreContext';
+import PathsScreen from './src/screens/app/PathsScreen';
+import SettingsScreen from './src/screens/app/SettingsScreen';
 
 
 
@@ -45,8 +46,9 @@ const App = () => {
     return (
       <AppStack.Navigator drawerContent={props => <CustomDrawer {...props} />}
         drawerStyle={styles.drawer} initialRouteName="Home">
-        <AppStack.Screen name="Home" component={HomeScreen} options={{ drawerLabel: "Vos courses" }} />
-        <AppStack.Screen name="Test" component={HeaderMap} options={{ drawerLabel: "Vos tests" }} />
+        <AppStack.Screen name="Home" component={HomeScreen} options={{ drawerLabel: "Accueil" }} />
+        <AppStack.Screen name="Paths" component={PathsScreen} options={{ drawerLabel: "Mes courses" }} />
+        <AppStack.Screen name="Settings" component={SettingsScreen} options={{ drawerLabel: "Mes paramètres" }} />
       </AppStack.Navigator>
     )
   }

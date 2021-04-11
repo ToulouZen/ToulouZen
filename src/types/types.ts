@@ -5,7 +5,9 @@ export type RootStackParamsList = {
         userType: string
     },
     App: undefined,
-    Home: undefined
+    Home: undefined,
+    Paths: undefined,
+    Settings: undefined
 }
 
 export type User = {
@@ -28,6 +30,7 @@ export type Path = {
     userFirstname: string,
     arrivalDestination: Checkpoint,
     departureDestination: Checkpoint,
+    dateDeparture: string,
     timeDeparture: string,
     pickedBy: {
         userId: string,

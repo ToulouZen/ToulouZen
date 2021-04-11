@@ -13,6 +13,7 @@ import NavigationComponent from '../../components/NavigationComponent';
 import CheckpointCard from '../../components/CheckpointCard';
 import { Region } from 'react-native-maps';
 import PathsComponent from '../../components/PathsComponent';
+import { useFirestore } from '../../contexts/FirestoreContext';
 
 type Props = DrawerScreenProps<RootStackParamsList, 'Home'>
 
@@ -27,6 +28,7 @@ const HomeScreen: React.FC<Props> = ({ navigation, route }) => {
     const [passengerPosition, setPassengerPosition] = React.useState<Checkpoint>()
 
     const auth = useAuth()
+    const firestore = useFirestore()
 
     const handleCard = (checkpoint: Checkpoint) => {
         setCheckpointSelected(checkpoint)
@@ -70,7 +72,7 @@ const HomeScreen: React.FC<Props> = ({ navigation, route }) => {
                     <NavigationComponent handleRegion={handleRegion} goTo={goTo} distance={distancePath} duration={durationPath} />
                 }
                 {
-                    auth.userInfo?.userType == "driver" &&
+                    auth.userInfo?.userType == "driver" && firestore.paths.length != 0  &&
                     <PathsComponent handlePath={handlePath} />
                 }
             </View>

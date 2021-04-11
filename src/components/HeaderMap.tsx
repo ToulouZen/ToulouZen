@@ -6,12 +6,12 @@ import { COLORS, WINDOW_WIDTH } from '../constants/Constants'
 import { RootStackParamsList } from '../types/types'
 
 type Props = {
-    navigation: DrawerNavigationProp<RootStackParamsList, "Home">
+    navigation: DrawerNavigationProp<RootStackParamsList, "Home" | "Paths" | "Settings">
 }
 
 const HeaderMap: React.FC<Props> = ({ navigation }) => {
     return (
-        <View style={[{flexDirection: 'row', justifyContent: 'space-between', padding: WINDOW_WIDTH * 0.03, width: WINDOW_WIDTH }]}>
+        <View style={[{ flexDirection: 'row', justifyContent: 'space-between', padding: WINDOW_WIDTH * 0.03, width: WINDOW_WIDTH }]}>
             <TouchableOpacity onPress={() => navigation.openDrawer()}>
                 <Icon type="entypo" name="menu" size={WINDOW_WIDTH * 0.1} color={COLORS.blackBackground} />
             </TouchableOpacity>

@@ -16,6 +16,7 @@ export const toPath = (data: any, id: any) => {
         userLastname: data.userLastname,
         arrivalDestination: data.arrivalDestination,
         departureDestination: data.departureDestination,
+        dateDeparture: data.dateDeparture,
         timeDeparture: data.timeDeparture,
         pickedBy: {
             userId: data.pickedBy.userId,
