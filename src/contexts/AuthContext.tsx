@@ -10,7 +10,8 @@ type AuthContextType = {
     register: (email: string, password: string, firstname: string, lastname: string, age: number, userType: string) => Promise<void>;
     signIn: (email: string, password: string) => Promise<void>;
     signOut: () => Promise<void>;
-    getUserInfo: () => void
+    getUserInfo: () => void,
+    updateUser: (mail: string, firstname: string, lastname: string, age: number, userType: string) => Promise<void>
 }
 
 const defaultAuthState: AuthContextType = {
@@ -18,7 +19,8 @@ const defaultAuthState: AuthContextType = {
     register: async () => undefined,
     signIn: async () => undefined,
     signOut: async () => undefined,
-    getUserInfo: async () => undefined
+    getUserInfo: async () => undefined,
+    updateUser: async () => undefined
 }
 
 const AuthContext = createContext<AuthContextType>(defaultAuthState)
@@ -88,6 +90,19 @@ export const AuthContextProvider: React.FC = ({ children }) => {
             })
     }
 
+    const updateUser = async (mail: string, firstname: string, lastname: string, age: number, userType: string) => {
+        firebaseAuth().currentUser?.updateEmail(mail)
+        usersCollection.doc(auth.user!.uid!).set({ mail, firstname, lastname, age, userType })
+            .then(async () => {
+                setUserInfo({ firstname: firstname, lastname: lastname, mail: mail, age: age, userType: userType })
+                await AsyncStorage.setItem('ToulouzenFirstname', firstname)
+                await AsyncStorage.setItem('ToulouzenLastname', lastname)
+                await AsyncStorage.setItem('ToulouzenEmail', mail)
+                await AsyncStorage.setItem('ToulouzenAge', age.toString())
+                await AsyncStorage.setItem('ToulouzenUserType', userType)
+            })
+    }
+
     const signOut = async () => {
         await firebaseAuth().signOut()
     }
@@ -112,7 +127,8 @@ export const AuthContextProvider: React.FC = ({ children }) => {
                 register,
                 signIn,
                 signOut,
-                getUserInfo
+                getUserInfo,
+                updateUser
             }}>
             {children}
         </AuthContext.Provider>

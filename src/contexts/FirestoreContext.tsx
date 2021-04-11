@@ -48,6 +48,7 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
     }, [auth.userInfo?.userType])
 
     useEffect(() => {
+        console.log("actualpathid", actualPathId)
         if (actualPathId != undefined) {
             getActualPathInfo()
         }
@@ -84,7 +85,9 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
     const getActualPathInfo = async () => {
         // Un subscriber est utilisé pour mettre à jour les données automatiquement
         const subscriber = pathsCollection.doc(actualPathId).onSnapshot(querySnapshot => {
-            setActualPath(toPath(querySnapshot.data(), actualPathId))
+            if (querySnapshot.exists) {
+                setActualPath(toPath(querySnapshot.data(), actualPathId))
+            }
         })
 
         return () => subscriber()
@@ -107,11 +110,20 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
         // Un subscriber est utilisé pour mettre à jour les données automatiquement
         const subscriber = pathsCollection.where("userId", "==", auth.user?.uid).onSnapshot(querySnapshot => {
             const pathsData = querySnapshot.docs.map((path) => toPath(path.data(), path.id))
-            setPassengerPaths(pathsData.sort((pathA, pathB) => {
+            const pathsDataSort = pathsData.sort((pathA, pathB) => {
                 const timeA = new Date(moment(pathA.timeDeparture).format()).getTime()
                 const timeB = new Date(moment(pathB.timeDeparture).format()).getTime()
                 return moment(timeB).diff(moment(timeA))
-            }))
+            })
+            const date = moment(new Date()).format("YYYY-MM-DD")
+            const actualPath = pathsDataSort.find((path) => path.dateDeparture == date && path.pickedBy.userId == null)
+            if (actualPath != undefined) {
+                setActualPathId(actualPath.id)
+            } else {
+                setActualPathId(undefined)
+                setActualPath(undefined)
+            }
+            setPassengerPaths(pathsDataSort)
         })
         return () => subscriber()
     }

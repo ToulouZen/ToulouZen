@@ -38,8 +38,17 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, du
         refArrivalDestination.current?.blur()
     }, [isVisible])
 
+    React.useEffect(() => {
+        reset()
+    }, [firestore.actualPath])
+
+    const reset = () => {
+        setArrivalDestination(undefined)
+        setTimeDeparture('Maintenant')
+    }
+
     return (
-        <View style={{ position: 'absolute', bottom: 0, width: WINDOW_WIDTH, height: WINDOW_HEIGHT * 0.4, backgroundColor: '#fff', borderTopRightRadius: 15, borderTopLeftRadius: 15 }}>
+        <View style={{ position: 'absolute', bottom: 0, width: WINDOW_WIDTH, height: (firestore.actualPath == undefined ? WINDOW_HEIGHT * 0.4 : WINDOW_HEIGHT * 0.3), backgroundColor: '#fff', borderTopRightRadius: 15, borderTopLeftRadius: 15 }}>
             <Overlay isVisible={isVisible} >
                 <>
                     {
@@ -123,13 +132,13 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, du
                             </View>
                         </>
                         : (firestore.actualPath.pickedBy.userId == null ?
-                            <View>
-                                <Text>En attente de prise en charge</Text>
+                            <View style={{ alignItems: 'center', height: WINDOW_HEIGHT * 0.1, justifyContent: 'space-around' }}>
+                                <Text style={{ color: COLORS.peach, fontSize: WINDOW_WIDTH * 0.06, fontWeight: 'bold' }}>En attente de prise en charge</Text>
                                 <ActivityIndicator size="large" />
                             </View>
                             :
-                            <View>
-                                <Text>{firestore.actualPath.pickedBy.userFirstname} viendra vous récupérer à l'heure demandée</Text>
+                            <View style={{ alignItems: 'center', height: WINDOW_HEIGHT * 0.2 }}>
+                                <Text style={{ color: COLORS.peach, fontSize: WINDOW_WIDTH * 0.06, fontWeight: 'bold' }}>{firestore.actualPath.pickedBy.userFirstname} viendra vous récupérer à l'heure demandée</Text>
                             </View>
                         )
                 }
@@ -140,7 +149,7 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, du
                     <Text style={{ fontSize: WINDOW_WIDTH * 0.05, marginLeft: WINDOW_WIDTH * 0.05, color: COLORS.bluePrimary }}>Destinations enregistrées</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </View >
     )
 }
 

@@ -18,21 +18,9 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
     const [mail, setMail] = React.useState<string>('')
     const [password, setPassword] = React.useState<string>('')
     const [passwordConfirmation, setPasswordConfirmation] = React.useState<string>('')
-    const [switched, setSwitched] = React.useState<boolean>(false)
     const [showPassword, setShowPassword] = React.useState<boolean>(false)
 
     const auth = useAuth()
-    // avatar: {},
-    React.useEffect(() => {
-        if (switched) {
-            setToken()
-        }
-    }, [switched])
-
-
-    const setToken = async () => {
-        await AsyncStorage.setItem('MoneyTrackToken', 'autolog')
-    }
 
     const signup = async () => {
         try {
