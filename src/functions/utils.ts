@@ -24,7 +24,10 @@ export const toPath = (data: any, id: any) => {
             userFirstname: data.pickedBy.userFirstname,
         },
         distance: data.distance,
-        duration: data.duration
+        duration: data.duration,
+        state: data.state,
+        startAt: data.startAt,
+        endAt: data.endAt
     }
     return path
 }

@@ -12,7 +12,8 @@ type FirestoreContextType = {
     paths: Path[],
     pickPath: (path: Path) => void,
     actualPath: Path | undefined,
-    passengerPaths: Path[]
+    passengerPaths: Path[],
+    deletePath: (pathId: string) => void
 }
 
 const defaultFirestoreState: FirestoreContextType = {
@@ -21,7 +22,8 @@ const defaultFirestoreState: FirestoreContextType = {
     paths: [],
     pickPath: async () => undefined,
     actualPath: undefined,
-    passengerPaths: []
+    passengerPaths: [],
+    deletePath: async () => undefined
 }
 
 const FirestoreContext = createContext<FirestoreContextType>(defaultFirestoreState)
@@ -72,13 +74,15 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
             timeDeparture = moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
         } else {
             timeDeparture = moment(new Date(dateDeparture + "T" + time + ":00")).format("YYYY-MM-DD HH:mm:ss")
-
         }
 
-
-        const result = await pathsCollection.add({ userId: auth.user?.uid, userLastname: auth.userInfo?.lastname, userFirstname: auth.userInfo?.firstname, departureDestination, arrivalDestination, dateDeparture, timeDeparture, pickedBy: { userId: null, userLastname: null, userFirstname: null }, distance, duration })
+        const result = await pathsCollection.add({ userId: auth.user?.uid, userLastname: auth.userInfo?.lastname, userFirstname: auth.userInfo?.firstname, departureDestination, arrivalDestination, dateDeparture, timeDeparture, pickedBy: { userId: null, userLastname: null, userFirstname: null }, distance, duration, state: "WAITING", startAt: null, endAt: null })
         // Récupération de l'identifiant du trajet afin d'utiliser la fonction getActualPathInfo
         setActualPathId(result.id)
+    }
+
+    const deletePath = async (pathId: string) => {
+        await pathsCollection.doc(pathId).delete()
     }
 
     // Récupération des données du dernier trajet programmé par une passagère ToulouZen
@@ -146,7 +150,8 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
                 paths,
                 pickPath,
                 actualPath,
-                passengerPaths
+                passengerPaths,
+                deletePath
             }}>
             {children}
         </FirestoreContext.Provider>

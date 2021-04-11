@@ -38,5 +38,8 @@ export type Path = {
         userFirstname: string
     },
     distance: number,
-    duration: number
+    duration: number,
+    state: string,
+    startAt: string,
+    endAt: string
 }
