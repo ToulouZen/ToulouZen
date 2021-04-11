@@ -66,7 +66,15 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
     // Création d'un trajet par une passagère ToulouZen
     const createPath = async (departureDestination: Checkpoint, arrivalDestination: Checkpoint, time: string, distance: number, duration: number) => {
         const dateDeparture = moment(new Date()).format("YYYY-MM-DD")
-        const timeDeparture = moment(new Date(dateDeparture + "T" + time + ":00")).format("YYYY-MM-DD HH:mm:ss")
+        let timeDeparture = ''
+        if (time == "Maintenant") {
+            timeDeparture = moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+        } else {
+            timeDeparture = moment(new Date(dateDeparture + "T" + time + ":00")).format("YYYY-MM-DD HH:mm:ss")
+
+        }
+
+
         const result = await pathsCollection.add({ userId: auth.user?.uid, userLastname: auth.userInfo?.lastname, userFirstname: auth.userInfo?.firstname, departureDestination, arrivalDestination, dateDeparture, timeDeparture, pickedBy: { userId: null, userLastname: null, userFirstname: null }, distance, duration })
         // Récupération de l'identifiant du trajet afin d'utiliser la fonction getActualPathInfo
         setActualPathId(result.id)
