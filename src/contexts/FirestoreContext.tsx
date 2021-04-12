@@ -54,7 +54,6 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
     }, [auth.userInfo?.userType])
 
     useEffect(() => {
-        console.log("actualpathid", actualPathId)
         if (actualPathId != undefined) {
             getActualPathInfo()
         }
@@ -137,7 +136,7 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
     }
 
     const getDriverPaths = async () => {
-        const subscriber = pathsCollection.where("pickedBy", "==", { userId: auth.user?.uid, userFirstname: auth.userInfo?.firstname, userLastname: auth.userInfo?.lastname }).onSnapshot(querySnapshot => {
+        const subscriber = pathsCollection.where("pickedBy", "==", { userId: auth.user!.uid!, userFirstname: auth.userInfo!.firstname!, userLastname: auth.userInfo!.lastname! }).onSnapshot(querySnapshot => {
             const pathsData = querySnapshot.docs.map((path) => toPath(path.data(), path.id))
             const pathsDataSort = pathsData.sort((pathA, pathB) => {
                 const timeA = new Date(moment(pathA.timeDeparture).format()).getTime()
