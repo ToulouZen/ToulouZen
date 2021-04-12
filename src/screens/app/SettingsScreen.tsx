@@ -19,8 +19,8 @@ const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
     const [ageText, setAgeText] = React.useState<string>(auth.userInfo!.age!.toString())
     const [mailText, setMailText] = React.useState<string>(auth.userInfo!.mail!)
     const [userTypeText, setUserTypeText] = React.useState<string>(auth.userInfo!.userType!)
-    const [buttonTitle, setButtonTitle] = React.useState<string>('Sauvegardé')
-    const [disableButton, setDisableButton] = React.useState<boolean>(false)
+    const [buttonTitle, setButtonTitle] = React.useState<string>('Sauvegarder')
+    const [disableButton, setDisableButton] = React.useState<boolean>(true)
 
     React.useEffect(() => {
         getButtonTitle()
@@ -35,7 +35,7 @@ const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
             setButtonTitle('Sauvegarder')
             setDisableButton(false)
         } else {
-            setButtonTitle('Sauvegardé')
+            // setButtonTitle('Sauvegardé')
         }
     }
 

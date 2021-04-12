@@ -8,17 +8,25 @@ import PathComponent from './PathComponent'
 
 type Props = {
     handlePath: (path: Path) => void
+    navigation: any
 }
 
-const PathsComponent: React.FC<Props> = ({ handlePath }) => {
+const PathsComponent: React.FC<Props> = ({ handlePath, navigation }) => {
 
     const [pathPicked, setPathPicked] = React.useState<Path>()
     const firestore = useFirestore()
 
+    const pathChoosed = (pathPicked: Path) => {
+        firestore.pickPath(pathPicked!)
+        navigation.navigate('DriverConfirm', { path: pathPicked })
+    }
+
     return (
         <View style={{ position: 'absolute', bottom: 0, width: WINDOW_WIDTH, height: WINDOW_HEIGHT * 0.4, backgroundColor: '#fff', borderTopRightRadius: 15, borderTopLeftRadius: 15 }}>
-            <View style={[styles.containerPadding, { backgroundColor: "#fff", flex: 2 }]}>
-                <FlatList data={firestore.paths}
+            <View style={[styles.containerPadding, { backgroundColor: "transparent", flex: 2 }]}>
+                {
+                    firestore.paths.length > 0 ? (
+                        <FlatList data={firestore.paths}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item, index }) => {
                         return (
@@ -31,12 +39,22 @@ const PathsComponent: React.FC<Props> = ({ handlePath }) => {
                         )
                     }}
                 />
+                    )
+                    :
+                    (
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                            <Text style={styles.logTexts}>
+                                Aucun trajet disponible
+                            </Text>
+                        </View>
+                    )
+                }
+                
             </View>
             <View style={[styles.containerPadding, { backgroundColor: 'rgba(230,230,230,0.5)', flex: 1 }]}>
-                <TouchableOpacity style={[styles.logButtons]} onPress={() => firestore.pickPath(pathPicked!)}>
+               <TouchableOpacity style={[styles.logButtons, firestore.paths.length == 0 ? styles.disabled : styles.logButtons]} onPress={() => pathChoosed(pathPicked!)} disabled={firestore.paths.length == 0}>
                     <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>Valider la course</Text>
                 </TouchableOpacity>
-
             </View>
         </View>
     )

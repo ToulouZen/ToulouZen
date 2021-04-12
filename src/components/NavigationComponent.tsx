@@ -94,7 +94,7 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, du
                         }
                         setIsVisible(false)
                     }}
-                        name="checkmark-circle" type="ionicon" size={WINDOW_WIDTH * 0.1} color="#00A3D8" />
+                        name="checkmark-circle" type="ionicon" size={WINDOW_WIDTH * 0.1} color="#52ad8d" />
                 </>
             </Overlay>
             <View style={[styles.shadowContainer, { backgroundColor: '#fff', paddingVertical: WINDOW_WIDTH * 0.06, borderTopRightRadius: 15, borderTopLeftRadius: 15 }]}>
@@ -126,7 +126,8 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, du
                                     </TouchableOpacity>
                                 </View>
                                 <TouchableOpacity onPress={() => firestore.createPath({ latitude: 43.604652, longitude: 1.444209, name: "Position du passager" }, arrivalDestination!, timeDeparture, distance!, duration!)}
-                                    style={[styles.logButtons, styles.containerMargin]}>
+                                    style={[styles.logButtons, arrivalDestination == undefined || departureDestination == undefined ? styles.disabled : styles.logButtons, styles.containerMargin]} 
+                                        disabled={arrivalDestination == undefined || departureDestination == undefined ? true : false}>
                                     <Text style={styles.userTypeTextPassagere}>Trouver ma chauffeuse</Text>
                                 </TouchableOpacity>
                             </View>

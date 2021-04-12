@@ -3,6 +3,7 @@ import React from 'react'
 import { View, TouchableOpacity, Image } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { COLORS, WINDOW_WIDTH } from '../constants/Constants'
+import { styles } from '../styles/styles'
 import { RootStackParamsList } from '../types/types'
 
 type Props = {
@@ -11,9 +12,9 @@ type Props = {
 
 const HeaderMap: React.FC<Props> = ({ navigation }) => {
     return (
-        <View style={[{ flexDirection: 'row', justifyContent: 'space-between', padding: WINDOW_WIDTH * 0.03, width: WINDOW_WIDTH }]}>
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                <Icon type="entypo" name="menu" size={WINDOW_WIDTH * 0.1} color={COLORS.blackBackground} />
+        <View style={[styles.shadowContainer, { flexDirection: 'row', justifyContent: 'space-between', padding: WINDOW_WIDTH * 0.03, width: WINDOW_WIDTH}]}>
+            <TouchableOpacity onPress={() => navigation.openDrawer()} style={styles.drawerIcon}>
+                <Icon type="entypo" name="menu" size={WINDOW_WIDTH * 0.1} color={COLORS.white} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.openDrawer()}>
                 <Image source={require('../img/Button_SOS.png')} resizeMode="contain"

@@ -25,6 +25,7 @@ import CustomDrawer from './src/components/CustomDrawer';
 import { FirestoreContextProvider } from './src/contexts/FirestoreContext';
 import PathsScreen from './src/screens/app/PathsScreen';
 import SettingsScreen from './src/screens/app/SettingsScreen';
+import DriverConfirmScreen from './src/screens/app/DriverConfirmScreen';
 
 
 
@@ -70,6 +71,7 @@ const App = () => {
       <FullAppStack.Navigator initialRouteName={token == "autolog" ? 'App' : 'Login'}>
         <FullAppStack.Screen name="Log" component={MyLogStack} options={{ headerShown: false }} />
         <FullAppStack.Screen name="App" component={MyAppStack} options={{ headerShown: false }} />
+        <FullAppStack.Screen name="DriverConfirm" component={DriverConfirmScreen} options={{ headerShown: false }} />
       </FullAppStack.Navigator>
     )
   }

@@ -58,7 +58,7 @@ const PathComponent: React.FC<Props> = ({ path, index, isPassenger, pathPicked }
                     <Collapsible collapsed={isCollapsed}>
                         <View style={styles.containerPadding}>
                             <Text style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500' }}>Départ : {path.departureDestination.name}</Text>
-                            <Text style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500' }}>Arrivée : {path.arrivalDestination.name}</Text>
+                            <Text style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500' }}>Arrivée : {path.arrivalDestination != null ? path.arrivalDestination.name  : "Narnia"}</Text>
                         </View>
                     </Collapsible>
                     <TouchableOpacity onPress={() => setIsCollapsed(!isCollapsed)}>
