@@ -7,6 +7,7 @@ export type RootStackParamsList = {
     App: undefined,
     Home: undefined,
     Paths: undefined,
+    DriverConfirm: undefined,
     Settings: undefined
 }
 

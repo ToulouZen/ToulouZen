@@ -73,7 +73,7 @@ const HomeScreen: React.FC<Props> = ({ navigation, route }) => {
                 }
                 {
                     auth.userInfo?.userType == "driver" &&
-                    <PathsComponent handlePath={handlePath} />
+                    <PathsComponent handlePath={handlePath} navigation={navigation} />
                 }
             </View>
         </>

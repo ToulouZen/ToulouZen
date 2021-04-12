@@ -94,7 +94,7 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, du
                         }
                         setIsVisible(false)
                     }}
-                        name="checkmark-circle" type="ionicon" size={WINDOW_WIDTH * 0.1} color="#00A3D8" />
+                        name="checkmark-circle" type="ionicon" size={WINDOW_WIDTH * 0.1} color="#52ad8d" />
                 </>
             </Overlay>
             <View style={[styles.shadowContainer, { backgroundColor: '#fff', paddingVertical: WINDOW_WIDTH * 0.06, borderTopRightRadius: 15, borderTopLeftRadius: 15 }]}>
