@@ -1,6 +1,6 @@
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
-import { ActivityIndicator, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native';
 import { Icon, Overlay } from 'react-native-elements';
 import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants/Constants';
 import { useFirestore } from '../contexts/FirestoreContext';
@@ -47,8 +47,20 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, du
         setTimeDeparture('Maintenant')
     }
 
+    const finishPath = () => {
+        Alert.alert('Fin du trajet', 'Êtes-vous arrivé au bon endroit et avez-vous terminé votre trajet ?', [
+            {
+                text: "Oui, c'est parfait",
+                onPress: () => firestore.endPath()
+            },
+            {
+                text: "Non, pas encore"
+            }
+        ])
+    }
+
     return (
-        <View style={{ position: 'absolute', bottom: 0, width: WINDOW_WIDTH, height: (firestore.actualPath == undefined ? WINDOW_HEIGHT * 0.4 : WINDOW_HEIGHT * 0.3), backgroundColor: '#fff', borderTopRightRadius: 15, borderTopLeftRadius: 15 }}>
+        <View style={{ position: 'absolute', bottom: 0, width: WINDOW_WIDTH, height: (firestore.actualPath == undefined ? WINDOW_HEIGHT * 0.4 : WINDOW_HEIGHT * 0.2), backgroundColor: '#fff', borderTopRightRadius: 15, borderTopLeftRadius: 15 }}>
             <Overlay isVisible={isVisible} >
                 <>
                     {
@@ -126,30 +138,37 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, du
                                     </TouchableOpacity>
                                 </View>
                                 <TouchableOpacity onPress={() => firestore.createPath({ latitude: 43.604652, longitude: 1.444209, name: "Position du passager" }, arrivalDestination!, timeDeparture, distance!, duration!)}
-                                    style={[styles.logButtons, arrivalDestination == undefined || departureDestination == undefined ? styles.disabled : styles.logButtons, styles.containerMargin]} 
-                                        disabled={arrivalDestination == undefined || departureDestination == undefined ? true : false}>
+                                    style={[styles.logButtons, arrivalDestination == undefined || departureDestination == undefined ? styles.disabled : styles.logButtons, styles.containerMargin]}
+                                    disabled={arrivalDestination == undefined || departureDestination == undefined ? true : false}>
                                     <Text style={styles.userTypeTextPassagere}>Trouver ma chauffeuse</Text>
                                 </TouchableOpacity>
                             </View>
                         </>
                         : (firestore.actualPath.pickedBy.userId == null ?
-                            <View style={{ alignItems: 'center', height: WINDOW_HEIGHT * 0.1, justifyContent: 'space-around' }}>
-                                <Text style={{ color: COLORS.peach, fontSize: WINDOW_WIDTH * 0.06, fontWeight: 'bold' }}>En attente de prise en charge</Text>
-                                <ActivityIndicator size="large" />
+                            <View style={{ alignItems: 'center', height: WINDOW_HEIGHT * 0.2 }}>
+                                <Text style={[styles.containerMargin, { color: COLORS.peach, fontSize: WINDOW_WIDTH * 0.06, fontWeight: 'bold' }]}>En attente de prise en charge</Text>
+                                <ActivityIndicator size="large" style={styles.containerMargin} />
                             </View>
                             :
                             <View style={{ alignItems: 'center', height: WINDOW_HEIGHT * 0.2 }}>
-                                <Text style={{ color: COLORS.peach, fontSize: WINDOW_WIDTH * 0.06, fontWeight: 'bold' }}>{firestore.actualPath.pickedBy.userFirstname} viendra vous récupérer à l'heure demandée</Text>
+                                <Text style={{ color: COLORS.peach, fontSize: WINDOW_WIDTH * 0.06, fontWeight: 'bold', textAlign: 'center' }}>{firestore.actualPath.pickedBy.userFirstname} est en route ...</Text>
+                                <TouchableOpacity onPress={() => finishPath()}
+                                    style={[styles.logButtons, styles.containerMargin, { backgroundColor: COLORS.bluePrimary, borderColor: undefined, borderWidth: undefined }]}>
+                                    <Text style={{ color: '#fff', fontSize: WINDOW_WIDTH * 0.06, fontWeight: 'bold', }}>Terminer la course</Text>
+                                </TouchableOpacity>
                             </View>
                         )
                 }
             </View>
-            <View style={[styles.containerPadding, { backgroundColor: 'rgba(230,230,230,0.5)', flex: 1 }]}>
-                <TouchableOpacity style={[styles.containerPadding, { flexDirection: 'row', alignItems: 'center' }]}>
-                    <Image source={require('../img/Favori.png')} resizeMode="contain" style={{ width: WINDOW_WIDTH * 0.08, height: WINDOW_WIDTH * 0.08, tintColor: COLORS.bluePrimary }} />
-                    <Text style={{ fontSize: WINDOW_WIDTH * 0.05, marginLeft: WINDOW_WIDTH * 0.05, color: COLORS.bluePrimary }}>Destinations enregistrées</Text>
-                </TouchableOpacity>
-            </View>
+            {
+                firestore.actualPath == undefined &&
+                <View style={[styles.containerPadding, { backgroundColor: 'rgba(230,230,230,0.5)', flex: 1 }]}>
+                    <TouchableOpacity style={[styles.containerPadding, { flexDirection: 'row', alignItems: 'center' }]}>
+                        <Image source={require('../img/Favori.png')} resizeMode="contain" style={{ width: WINDOW_WIDTH * 0.08, height: WINDOW_WIDTH * 0.08, tintColor: COLORS.bluePrimary }} />
+                        <Text style={{ fontSize: WINDOW_WIDTH * 0.05, marginLeft: WINDOW_WIDTH * 0.05, color: COLORS.bluePrimary }}>Destinations enregistrées</Text>
+                    </TouchableOpacity>
+                </View>
+            }
         </View >
     )
 }

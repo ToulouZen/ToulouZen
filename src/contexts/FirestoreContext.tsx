@@ -14,7 +14,8 @@ type FirestoreContextType = {
     actualPath: Path | undefined,
     passengerPaths: Path[],
     deletePath: (pathId: string) => void,
-    driverPaths: Path[]
+    driverPaths: Path[],
+    endPath: () => void
 }
 
 const defaultFirestoreState: FirestoreContextType = {
@@ -25,7 +26,8 @@ const defaultFirestoreState: FirestoreContextType = {
     actualPath: undefined,
     passengerPaths: [],
     deletePath: async () => undefined,
-    driverPaths: []
+    driverPaths: [],
+    endPath: async () => undefined
 }
 
 const FirestoreContext = createContext<FirestoreContextType>(defaultFirestoreState)
@@ -74,12 +76,12 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
         const dateDeparture = moment(new Date()).format("YYYY-MM-DD")
         let timeDeparture = ''
         if (time == "Maintenant") {
-            timeDeparture = moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+            timeDeparture = moment(new Date()).format("YYYY-MM-DD HH:mm")
         } else {
-            timeDeparture = moment(new Date(dateDeparture + "T" + time + ":00")).format("YYYY-MM-DD HH:mm:ss")
+            timeDeparture = moment(new Date(dateDeparture + "T" + time + ":00")).format("YYYY-MM-DD HH:mm")
         }
 
-        const result = await pathsCollection.add({ userId: auth.user?.uid, userLastname: auth.userInfo?.lastname, userFirstname: auth.userInfo?.firstname, departureDestination, arrivalDestination, dateDeparture, timeDeparture, pickedBy: { userId: null, userLastname: null, userFirstname: null }, distance, duration, state: "WAITING", startAt: null, endAt: null })
+        const result = await pathsCollection.add({ userId: auth.user?.uid, userLastname: auth.userInfo?.lastname, userFirstname: auth.userInfo?.firstname, departureDestination, arrivalDestination, dateDeparture, timeDeparture, pickedBy: { userId: null, userLastname: null, userFirstname: null }, distance, duration, state: "CREATED", startAt: null, endAt: null })
         // Récupération de l'identifiant du trajet afin d'utiliser la fonction getActualPathInfo
         setActualPathId(result.id)
     }
@@ -123,7 +125,7 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
                 return moment(timeB).diff(moment(timeA))
             })
             const date = moment(new Date()).format("YYYY-MM-DD")
-            const actualPath = pathsDataSort.find((path) => path.dateDeparture == date && path.pickedBy.userId == null)
+            const actualPath = pathsDataSort[0].dateDeparture == date && pathsDataSort[0].pickedBy.userId != null && pathsDataSort[0].state != "DONE" ? pathsDataSort[0] : undefined
             if (actualPath != undefined) {
                 setActualPathId(actualPath.id)
             } else {
@@ -136,7 +138,7 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
     }
 
     const getDriverPaths = async () => {
-        const subscriber = pathsCollection.where("pickedBy", "==", { userId: auth.user!.uid!, userFirstname: auth.userInfo!.firstname!, userLastname: auth.userInfo!.lastname! }).onSnapshot(querySnapshot => {
+        const subscriber = pathsCollection.where("pickedBy", "==", { userId: auth.user?.uid, userFirstname: auth.userInfo?.firstname, userLastname: auth.userInfo?.lastname }).onSnapshot(querySnapshot => {
             const pathsData = querySnapshot.docs.map((path) => toPath(path.data(), path.id))
             const pathsDataSort = pathsData.sort((pathA, pathB) => {
                 const timeA = new Date(moment(pathA.timeDeparture).format()).getTime()
@@ -163,7 +165,15 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
                 userLastname: auth.userInfo?.lastname,
                 userFirstname: auth.userInfo?.firstname
             },
-            state: "VALIDATED"
+            state: "STARTED",
+            startAt: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+        })
+    }
+
+    const endPath = async () => {
+        await pathsCollection.doc(actualPath!.id).update({
+            state: "DONE",
+            endAt: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
         })
     }
 
@@ -177,7 +187,8 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
                 actualPath,
                 passengerPaths,
                 deletePath,
-                driverPaths
+                driverPaths,
+                endPath
             }}>
             {children}
         </FirestoreContext.Provider>
