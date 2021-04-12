@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants/Constants'
 
 export const styles = StyleSheet.create({
@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
         alignSelf: 'center',
         width: WINDOW_WIDTH * 0.5,
         height: WINDOW_WIDTH * 0.5,
-        elevation: 3,
+        elevation: 6,
         shadowColor: '#000',
         shadowOpacity: 0.5,
         shadowRadius: 15,
@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
         borderRadius: WINDOW_WIDTH * 0.06,
         width: WINDOW_WIDTH * 0.12,
         height: WINDOW_WIDTH * 0.12,
-        elevation: 3,
+        elevation: 6,
         shadowColor: '#000',
         shadowOpacity: 0.5,
         shadowRadius: 15,
@@ -80,14 +80,15 @@ export const styles = StyleSheet.create({
         color: COLORS.peach
     },
     logButtons: {
-        width: WINDOW_WIDTH * 0.8,
+        width: Platform.OS == "ios" ? WINDOW_WIDTH * 0.8 : WINDOW_WIDTH * 0.7,
         borderColor: COLORS.peach,
         borderWidth: 1,
         borderRadius: 50,
         backgroundColor: COLORS.peach,
-        padding: WINDOW_WIDTH * 0.04,
+        padding: Platform.OS == "ios" ? WINDOW_WIDTH * 0.04 : WINDOW_WIDTH * 0.03,
         alignItems: 'center',
         alignSelf: 'center',
+        // Shadow
         shadowOpacity: 0.3,
         shadowRadius: 5,
         shadowOffset: {
@@ -95,7 +96,7 @@ export const styles = StyleSheet.create({
             height: 5,
         },
         shadowColor: '#000',
-        elevation: 5
+        elevation: 8
     },
     logInputs: {
         width: WINDOW_WIDTH * 0.8,
@@ -112,7 +113,7 @@ export const styles = StyleSheet.create({
             height: 5,
         },
         shadowColor: '#000',
-        elevation: 5,
+        elevation: 8,
         fontSize: WINDOW_WIDTH * 0.04,
         fontWeight: 'bold',
         color: '#000'
@@ -150,7 +151,7 @@ export const styles = StyleSheet.create({
         width: WINDOW_WIDTH * 0.7
     },
     shadowContainer: {
-        elevation: 5,
+        elevation: 8,
         shadowColor: '#000',
         shadowOpacity: 0.2,
         shadowRadius: 5,
@@ -179,8 +180,15 @@ export const styles = StyleSheet.create({
     },
     drawerCustomItemText: {
         color: COLORS.blackBackground,
-        fontSize: WINDOW_WIDTH * 0.07,
+        fontSize: Platform.OS == "ios" ? WINDOW_WIDTH * 0.07 : WINDOW_WIDTH * 0.05 ,
         fontWeight: 'bold'
+    },
+    drawerIcon: {
+        backgroundColor: COLORS.peach,
+        borderRadius: 50,
+        borderColor: '#FFF',
+        borderWidth: 1
+
     },
     checkpointCardView: {
         backgroundColor: '#fff',
