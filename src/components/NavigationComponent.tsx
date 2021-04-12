@@ -60,7 +60,7 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, du
     }
 
     return (
-        <View style={{ position: 'absolute', bottom: 0, width: WINDOW_WIDTH, height: (firestore.actualPath == undefined ? WINDOW_HEIGHT * 0.4 : WINDOW_HEIGHT * 0.2), backgroundColor: '#fff', borderTopRightRadius: 15, borderTopLeftRadius: 15 }}>
+        <View style={{ position: 'absolute', bottom: 0, width: WINDOW_WIDTH, height: (firestore.actualPath == undefined || (firestore.actualPath != undefined && firestore.actualPath.state == "DONE") ? WINDOW_HEIGHT * 0.4 : WINDOW_HEIGHT * 0.2), backgroundColor: '#fff', borderTopRightRadius: 15, borderTopLeftRadius: 15 }}>
             <Overlay isVisible={isVisible} >
                 <>
                     {
@@ -112,7 +112,7 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, du
             <View style={[styles.shadowContainer, { backgroundColor: '#fff', paddingVertical: WINDOW_WIDTH * 0.06, borderTopRightRadius: 15, borderTopLeftRadius: 15 }]}>
 
                 {
-                    firestore.actualPath == undefined ?
+                    firestore.actualPath == undefined || (firestore.actualPath != undefined && firestore.actualPath.state == "DONE") ?
                         <>
                             <View style={{ flexDirection: "column", alignItems: "center", height: WINDOW_WIDTH * 0.16, width: WINDOW_WIDTH * 0.10, position: "absolute", paddingTop: WINDOW_WIDTH * 0.08 }}>
                                 { /* icon + divider + point */}
@@ -161,7 +161,7 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, du
                 }
             </View>
             {
-                firestore.actualPath == undefined &&
+                firestore.actualPath == undefined || (firestore.actualPath != undefined && firestore.actualPath.state == "DONE") &&
                 <View style={[styles.containerPadding, { backgroundColor: 'rgba(230,230,230,0.5)', flex: 1 }]}>
                     <TouchableOpacity style={[styles.containerPadding, { flexDirection: 'row', alignItems: 'center' }]}>
                         <Image source={require('../img/Favori.png')} resizeMode="contain" style={{ width: WINDOW_WIDTH * 0.08, height: WINDOW_WIDTH * 0.08, tintColor: COLORS.bluePrimary }} />

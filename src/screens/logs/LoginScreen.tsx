@@ -38,7 +38,6 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
     const login = async () => {
         auth.signIn(mail, password)
             .then(() => {
-                console.log("then")
                 auth.getUserInfo()
             }).then(() => {
                 navigation.navigate('App')
@@ -99,7 +98,7 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
                         </View>
                         <TouchableOpacity onPress={() => login()}
                             style={[styles.logButtons, mail.length == 0 || password.length == 0 ? styles.disabled : styles.logButtons, styles.containerMargin]}
-                            disabled={mail.length == 0 || password.length == 0}    
+                            disabled={mail.length == 0 || password.length == 0}
                         >
                             <Text style={styles.userTypeTextPassagere}>Me connecter</Text>
                         </TouchableOpacity>

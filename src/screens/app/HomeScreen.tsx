@@ -14,10 +14,14 @@ import CheckpointCard from '../../components/CheckpointCard';
 import { Region } from 'react-native-maps';
 import PathsComponent from '../../components/PathsComponent';
 import { useFirestore } from '../../contexts/FirestoreContext';
+import { useIsFocused } from '@react-navigation/core';
 
-type Props = DrawerScreenProps<RootStackParamsList, 'Home'>
+type PropsView = {
+    nav: DrawerScreenProps<RootStackParamsList, 'Home'>
+    focused: boolean
+}
 
-const HomeScreen: React.FC<Props> = ({ navigation, route }) => {
+const HomeScreenView: React.FC<PropsView> = ({ nav: { navigation, route }, focused }) => {
 
     const [checkpointSelected, setCheckpointSelected] = React.useState<Checkpoint>()
     const [showCheckpointCard, setShowCheckpointCard] = React.useState<boolean>(false)
@@ -29,6 +33,23 @@ const HomeScreen: React.FC<Props> = ({ navigation, route }) => {
 
     const auth = useAuth()
     const firestore = useFirestore()
+
+    React.useEffect(() => {
+        if (auth.userInfo != undefined && auth.userInfo.userType != undefined && auth.userInfo.userType == "passenger") {
+            firestore.getPassengerPaths()
+        }
+        if (auth.userInfo != undefined && auth.userInfo.userType != undefined && auth.userInfo?.userType == "driver") {
+            firestore.getDriverPaths()
+            firestore.getPaths()
+        }
+    }, [auth.userInfo])
+
+    React.useEffect(() => {
+        if (auth.userInfo?.userType == "driver" && firestore.actualPath != undefined && firestore.actualPath.state != "DONE") {
+            navigation.navigate('DriverConfirm')
+        }
+    }, [firestore.actualPath])
+
 
     const handleCard = (checkpoint: Checkpoint) => {
         setCheckpointSelected(checkpoint)
@@ -78,6 +99,13 @@ const HomeScreen: React.FC<Props> = ({ navigation, route }) => {
             </View>
         </>
     )
+}
+
+type Props = DrawerScreenProps<RootStackParamsList, 'Home'>
+
+const HomeScreen: React.FC<Props> = ({ navigation, route }) => {
+    const isFocused = useIsFocused()
+    return <HomeScreenView nav={{ navigation, route }} focused={isFocused} />
 }
 
 export default HomeScreen

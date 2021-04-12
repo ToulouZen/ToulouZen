@@ -15,7 +15,11 @@ type FirestoreContextType = {
     passengerPaths: Path[],
     deletePath: (pathId: string) => void,
     driverPaths: Path[],
-    endPath: () => void
+    endPath: () => void,
+    resetActualPathId: () => void,
+    getPassengerPaths: () => void,
+    getDriverPaths: () => void,
+    getPaths: () => void
 }
 
 const defaultFirestoreState: FirestoreContextType = {
@@ -27,7 +31,11 @@ const defaultFirestoreState: FirestoreContextType = {
     passengerPaths: [],
     deletePath: async () => undefined,
     driverPaths: [],
-    endPath: async () => undefined
+    endPath: async () => undefined,
+    resetActualPathId: () => undefined,
+    getPassengerPaths: () => undefined,
+    getDriverPaths: () => undefined,
+    getPaths: () => undefined
 }
 
 const FirestoreContext = createContext<FirestoreContextType>(defaultFirestoreState)
@@ -47,22 +55,19 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        if (auth.userInfo?.userType == "passenger") {
-            getPassengerPaths()
-        } else {
-            getDriverPaths()
-            getPaths()
-        }
-    }, [auth.userInfo?.userType])
-
-    useEffect(() => {
-        if (actualPathId != undefined) {
+        if (auth.userInfo != undefined && auth.userInfo.userType != undefined && actualPathId != undefined) {
             getActualPathInfo()
         }
     }, [actualPathId])
 
     const checkpointsCollection = firestore().collection('checkpoints')
     const pathsCollection = firestore().collection('paths')
+
+    const resetActualPathId = () => {
+        console.log("reset")
+        setActualPathId(undefined)
+        setActualPath(undefined)
+    }
 
     // Récupération des checkpoints (points d'intêret fréquentés par la population toulousaine)
     const getAllCheckpoints = async () => {
@@ -73,12 +78,15 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
 
     // Création d'un trajet par une passagère ToulouZen
     const createPath = async (departureDestination: Checkpoint, arrivalDestination: Checkpoint, time: string, distance: number, duration: number) => {
-        const dateDeparture = moment(new Date()).format("YYYY-MM-DD")
+        let dateDeparture = moment().format("YYYY-MM-DD")
+        if (["00:00", "00:30", "01:00", "01:30", "02:00"].includes(time)) {
+            dateDeparture = moment().add(1, 'day').format("YYYY-MM-DD")
+        }
         let timeDeparture = ''
         if (time == "Maintenant") {
-            timeDeparture = moment(new Date()).format("YYYY-MM-DD HH:mm")
+            timeDeparture = moment().format("YYYY-MM-DD HH:mm:ss")
         } else {
-            timeDeparture = moment(new Date(dateDeparture + "T" + time + ":00")).format("YYYY-MM-DD HH:mm")
+            timeDeparture = moment(new Date(dateDeparture + "T" + time + ":00")).format("YYYY-MM-DD HH:mm:ss")
         }
 
         const result = await pathsCollection.add({ userId: auth.user?.uid, userLastname: auth.userInfo?.lastname, userFirstname: auth.userInfo?.firstname, departureDestination, arrivalDestination, dateDeparture, timeDeparture, pickedBy: { userId: null, userLastname: null, userFirstname: null }, distance, duration, state: "CREATED", startAt: null, endAt: null })
@@ -120,19 +128,19 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
         const subscriber = pathsCollection.where("userId", "==", auth.user?.uid).onSnapshot(querySnapshot => {
             const pathsData = querySnapshot.docs.map((path) => toPath(path.data(), path.id))
             const pathsDataSort = pathsData.sort((pathA, pathB) => {
-                const timeA = new Date(moment(pathA.timeDeparture).format()).getTime()
-                const timeB = new Date(moment(pathB.timeDeparture).format()).getTime()
-                return moment(timeB).diff(moment(timeA))
+                return moment(pathB.timeDeparture).unix() - moment(pathA.timeDeparture).unix()
             })
-            const date = moment(new Date()).format("YYYY-MM-DD")
-            const actualPath = pathsDataSort[0].dateDeparture == date && pathsDataSort[0].pickedBy.userId != null && pathsDataSort[0].state != "DONE" ? pathsDataSort[0] : undefined
-            if (actualPath != undefined) {
-                setActualPathId(actualPath.id)
-            } else {
-                setActualPathId(undefined)
-                setActualPath(undefined)
+            if (pathsDataSort.length != 0) {
+                const date = moment().format("YYYY-MM-DD")
+                const actualPath = pathsDataSort[0]
+                if (actualPath.dateDeparture == date && actualPath.state != "DONE") {
+                    setActualPathId(actualPath.id)
+                } else {
+                    setActualPathId(undefined)
+                    setActualPath(undefined)
+                }
             }
-            setPassengerPaths(pathsDataSort)
+            setPassengerPaths(pathsData)
         })
         return () => subscriber()
     }
@@ -141,25 +149,23 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
         const subscriber = pathsCollection.where("pickedBy", "==", { userId: auth.user?.uid, userFirstname: auth.userInfo?.firstname, userLastname: auth.userInfo?.lastname }).onSnapshot(querySnapshot => {
             const pathsData = querySnapshot.docs.map((path) => toPath(path.data(), path.id))
             const pathsDataSort = pathsData.sort((pathA, pathB) => {
-                const timeA = new Date(moment(pathA.timeDeparture).format()).getTime()
-                const timeB = new Date(moment(pathB.timeDeparture).format()).getTime()
-                return moment(timeB).diff(moment(timeA))
+                return moment(pathB.timeDeparture).unix() - moment(pathA.timeDeparture).unix()
             })
-            const date = moment(new Date()).format("YYYY-MM-DD")
-            const actualPath = pathsDataSort.find((path) => path.dateDeparture == date && path.pickedBy.userId == null)
-            if (actualPath != undefined) {
-                setActualPathId(actualPath.id)
-            } else {
-                setActualPathId(undefined)
-                setActualPath(undefined)
+            if (pathsDataSort.length != 0) {
+                const date = moment().format("YYYY-MM-DD")
+                const actualPath = pathsDataSort[0]
+                if (actualPath.dateDeparture == date) {
+                    setActualPathId(actualPath.id)
+                }
             }
+
             setDriverPaths(pathsDataSort)
         })
         return () => subscriber()
     }
 
     const pickPath = async (path: Path) => {
-        await pathsCollection.doc(path.id).update({
+        pathsCollection.doc(path.id).update({
             pickedBy: {
                 userId: auth.user?.uid,
                 userLastname: auth.userInfo?.lastname,
@@ -167,15 +173,19 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
             },
             state: "STARTED",
             startAt: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
-        }).then(() => {
+        }).then(async () => {
+            const actualPath = (await pathsCollection.doc(path.id).get()).data()
             setActualPathId(path.id)
+            setActualPath(toPath(actualPath, path.id))
         })
     }
 
     const endPath = async () => {
-        await pathsCollection.doc(actualPath!.id).update({
+        pathsCollection.doc(actualPath!.id).update({
             state: "DONE",
             endAt: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+        }).then(() => {
+            resetActualPathId()
         })
     }
 
@@ -190,7 +200,11 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
                 passengerPaths,
                 deletePath,
                 driverPaths,
-                endPath
+                endPath,
+                resetActualPathId,
+                getPassengerPaths,
+                getDriverPaths,
+                getPaths
             }}>
             {children}
         </FirestoreContext.Provider>

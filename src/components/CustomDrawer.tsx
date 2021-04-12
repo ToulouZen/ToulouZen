@@ -41,7 +41,7 @@ const CustomDrawer: React.FC<PropsDrawer> = ({ state, descriptors, navigation })
     }
 
     return (
-        <DrawerContentScrollView contentContainerStyle={{ flex: 1, paddingTop: 0, justifyContent: 'space-between' }} {...state} {...descriptors} {...navigation}>
+        <DrawerContentScrollView bounces={false} contentContainerStyle={{ flex: 1, paddingTop: 0, justifyContent: 'space-between' }} {...state} {...descriptors} {...navigation}>
             <View>
                 <View style={{ flexDirection: 'row', backgroundColor: COLORS.peach, alignItems: 'center' }}>
                     <Image source={require('../img/logo.png')} resizeMode="contain" style={{ width: WINDOW_WIDTH * 0.15, height: WINDOW_WIDTH * 0.15, tintColor: '#fff', margin: WINDOW_WIDTH * 0.07 }} />

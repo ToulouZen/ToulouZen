@@ -105,7 +105,11 @@ export const AuthContextProvider: React.FC = ({ children }) => {
                 await AsyncStorage.setItem('ToulouzenEmail', email)
                 await AsyncStorage.setItem('ToulouzenAge', data?.age.toString())
                 await AsyncStorage.setItem('ToulouzenUserType', data?.userType)
-            }).catch(e => {
+            })
+            .then(() => {
+                getUserInfo()
+            })
+            .catch(e => {
                 if (e.code == "auth/user-not-found") {
                     Alert.alert('Utilisateur', 'Ce compte n\'existe pas !')
                 }

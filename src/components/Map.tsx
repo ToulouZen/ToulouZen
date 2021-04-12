@@ -24,12 +24,12 @@ const GOOGLE_MAPS_API_KEY_IOS = "AIzaSyCE-KihYba5ky6xGMyIidiT9p_jvDDEVV0"
 const GOOGLE_MAPS_API_KEY_ANDROID = "AIzaSyDQtHXsHSB3bclc637t5T6i3hTTZo44jAc"
 
 type Props = {
-  handleCard: (checkpoint: Checkpoint) => void
-  closeCard: () => void,
+  handleCard?: (checkpoint: Checkpoint) => void
+  closeCard?: () => void,
   destination?: Checkpoint,
   passengerPosition?: Checkpoint,
   region: Region,
-  getInfoPath: (distance: number, duration: number) => void
+  getInfoPath?: (distance: number, duration: number) => void
 }
 
 const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region, getInfoPath, passengerPosition }) => {
@@ -43,7 +43,6 @@ const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region, getI
   React.useEffect(() => {
     getUserLocation()
   }, [])
-
 
   const getUserLocation = () => {
     GetLocation.getCurrentPosition({
@@ -63,7 +62,7 @@ const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region, getI
   return (
     <View style={stylesCustom.container}>
       <MapView
-        onPanDrag={() => closeCard()}
+        onPanDrag={() => closeCard != undefined ? closeCard() : undefined}
         showsPointsOfInterest={false}
         provider={PROVIDER_GOOGLE}
         style={stylesCustom.map}
@@ -71,19 +70,22 @@ const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region, getI
       >
         {
           userLocationFound &&
-          // <Marker coordinate={{ latitude: userLocation!.latitude, longitude: userLocation!.longitude }}>
-          //   <Image source={require('../img/Localisation.png')} resizeMode="contain"
-          //     style={{ width: WINDOW_WIDTH * 0.1, height: WINDOW_WIDTH * 0.1, tintColor: COLORS.peach }} />
-          // </Marker>
-          <Marker coordinate={{ latitude: 43.604652, longitude: 1.444209 }}>
+          <Marker coordinate={{ latitude: userLocation!.latitude, longitude: userLocation!.longitude }}>
             <Image source={require('../img/Localisation.png')} resizeMode="contain"
               style={{ width: WINDOW_WIDTH * 0.1, height: WINDOW_WIDTH * 0.1, tintColor: COLORS.peach }} />
           </Marker>
         }
         {
+          passengerPosition != undefined &&
+          <Marker coordinate={{ latitude: passengerPosition.latitude, longitude: passengerPosition.longitude }}>
+            <Image source={require('../img/Localisation.png')} resizeMode="contain"
+              style={{ width: WINDOW_WIDTH * 0.1, height: WINDOW_WIDTH * 0.1, tintColor: COLORS.bluePrimary }} />
+          </Marker>
+        }
+        {
           firestore.checkPoints.map((checkpoint) => {
             return (
-              <Marker key={checkpoint.name} onPress={() => handleCard(checkpoint)}
+              <Marker key={checkpoint.name} onPress={() => handleCard != undefined ? handleCard(checkpoint) : undefined}
                 coordinate={{ latitude: checkpoint.latitude, longitude: checkpoint.longitude }}>
                 <Image source={(checkpoint.latitude == destination?.latitude && checkpoint.longitude == destination?.longitude && checkpoint.name == destination?.name ? require('../img/Flag.png') : require('../img/checkpointMarker.png'))}
                   resizeMode="contain"
@@ -100,7 +102,7 @@ const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region, getI
             strokeColor="red"
             strokeWidth={3}
             apikey={Platform.OS == "android" ? GOOGLE_MAPS_API_KEY_ANDROID : GOOGLE_MAPS_API_KEY_IOS}
-            onReady={({ distance, duration }) => getInfoPath(distance, duration)}
+            onReady={({ distance, duration }) => getInfoPath != undefined ? getInfoPath(distance, duration) : undefined}
           />
         }
         {
@@ -111,7 +113,7 @@ const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region, getI
             strokeColor="red"
             strokeWidth={3}
             apikey={Platform.OS == "android" ? GOOGLE_MAPS_API_KEY_ANDROID : GOOGLE_MAPS_API_KEY_IOS}
-            onReady={({ distance, duration }) => getInfoPath(distance, duration)}
+            onReady={({ distance, duration }) => getInfoPath != undefined ? getInfoPath(distance, duration) : undefined}
           />
         }
       </MapView>

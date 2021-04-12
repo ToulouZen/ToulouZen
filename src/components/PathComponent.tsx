@@ -21,6 +21,8 @@ const PathComponent: React.FC<Props> = ({ path, index, isPassenger, pathPicked }
 
     const firestore = useFirestore()
 
+    const date = moment(new Date()).format("YYYY-MM-DD")
+
     const deletePath = () => {
         Alert.alert('Suppression du trajet', 'Êtes-vous certaine de vouloir annuler ce trajet ?', [
             {
@@ -38,7 +40,7 @@ const PathComponent: React.FC<Props> = ({ path, index, isPassenger, pathPicked }
             <View style={{ flexDirection: 'row' }}>
                 <View style={[styles.container, styles.containerPadding]}>
                     <Text style={{ fontSize: WINDOW_WIDTH * 0.06, fontWeight: 'bold' }}>{isPassenger ? "Moi" : path.userFirstname}</Text>
-                    <Text style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500', color: COLORS.bluePrimary }}>{isPassenger ? "Le " + moment(path.dateDeparture).format("DD/MM/YYYY") + " à " + moment(path.timeDeparture).format("HH:mm") : "Départ à " + moment(path.timeDeparture).format("HH:mm")}</Text>
+                    <Text style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500', color: COLORS.bluePrimary }}>{path.dateDeparture != date ? "Le " + moment(path.dateDeparture).format("DD/MM/YYYY") + " à " + moment(path.timeDeparture).format("HH:mm") : "Départ à " + moment(path.timeDeparture).format("HH:mm")}</Text>
                 </View>
                 <View style={[styles.containerPadding, { justifyContent: 'center', alignItems: 'center' }]}>
                     {

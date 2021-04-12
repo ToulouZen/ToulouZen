@@ -1,14 +1,15 @@
+import { DrawerNavigationProp } from '@react-navigation/drawer'
 import React from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants/Constants'
 import { useFirestore } from '../contexts/FirestoreContext'
 import { styles } from '../styles/styles'
-import { Path } from '../types/types'
+import { Path, RootStackParamsList } from '../types/types'
 import PathComponent from './PathComponent'
 
 type Props = {
     handlePath: (path: Path) => void
-    navigation: any
+    navigation: DrawerNavigationProp<RootStackParamsList, "Home">
 }
 
 const PathsComponent: React.FC<Props> = ({ handlePath, navigation }) => {
@@ -18,7 +19,7 @@ const PathsComponent: React.FC<Props> = ({ handlePath, navigation }) => {
 
     const pathChoosed = (pathPicked: Path) => {
         firestore.pickPath(pathPicked!)
-        navigation.navigate('DriverConfirm', { path: pathPicked })
+        navigation.navigate('DriverConfirm')
     }
 
     return (
@@ -27,32 +28,32 @@ const PathsComponent: React.FC<Props> = ({ handlePath, navigation }) => {
                 {
                     firestore.paths.length > 0 ? (
                         <FlatList data={firestore.paths}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item, index }) => {
-                        return (
-                            <TouchableOpacity onPress={() => {
-                                setPathPicked(item)
-                                handlePath(item)
-                            }}>
-                                <PathComponent path={item} index={index} pathPicked={pathPicked} />
-                            </TouchableOpacity>
-                        )
-                    }}
-                />
+                            keyExtractor={(item) => item.id}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <TouchableOpacity onPress={() => {
+                                        setPathPicked(item)
+                                        handlePath(item)
+                                    }}>
+                                        <PathComponent path={item} index={index} pathPicked={pathPicked} />
+                                    </TouchableOpacity>
+                                )
+                            }}
+                        />
                     )
-                    :
-                    (
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                            <Text style={styles.logTexts}>
-                                Aucun trajet disponible
+                        :
+                        (
+                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                <Text style={styles.logTexts}>
+                                    Aucun trajet disponible
                             </Text>
-                        </View>
-                    )
+                            </View>
+                        )
                 }
-                
+
             </View>
             <View style={[styles.containerPadding, { backgroundColor: 'rgba(230,230,230,0.5)', flex: 1 }]}>
-               <TouchableOpacity style={[styles.logButtons, firestore.paths.length == 0 ? styles.disabled : styles.logButtons]} onPress={() => pathChoosed(pathPicked!)} disabled={firestore.paths.length == 0}>
+                <TouchableOpacity style={[styles.logButtons, firestore.paths.length == 0 ? styles.disabled : styles.logButtons]} onPress={() => pathChoosed(pathPicked!)} disabled={firestore.paths.length == 0}>
                     <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>Valider la course</Text>
                 </TouchableOpacity>
             </View>

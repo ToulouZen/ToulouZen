@@ -40,7 +40,6 @@ const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
     }
 
     const updateUser = () => {
-        console.log("test update")
         auth.updateUser(mailText, firstnameText, lastnameText, Number(ageText), userTypeText)
     }
 
@@ -63,7 +62,7 @@ const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
                     />
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity disabled={disableButton} onPress={() => updateUser()}
-                            style={[styles.logButtons, disableButton ? styles.disabled :  styles.logButtons, styles.containerMargin]}>
+                            style={[styles.logButtons, disableButton ? styles.disabled : styles.logButtons, styles.containerMargin]}>
                             <Text style={styles.userTypeTextPassagere}>{buttonTitle}</Text>
                         </TouchableOpacity>
                     </View>
