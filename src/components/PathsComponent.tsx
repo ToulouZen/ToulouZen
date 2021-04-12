@@ -14,11 +14,12 @@ const PathsComponent: React.FC<Props> = ({ handlePath }) => {
 
     const [pathPicked, setPathPicked] = React.useState<Path>()
     const firestore = useFirestore()
-
     return (
         <View style={{ position: 'absolute', bottom: 0, width: WINDOW_WIDTH, height: WINDOW_HEIGHT * 0.4, backgroundColor: '#fff', borderTopRightRadius: 15, borderTopLeftRadius: 15 }}>
-            <View style={[styles.containerPadding, { backgroundColor: "#fff", flex: 2 }]}>
-                <FlatList data={firestore.paths}
+            <View style={[styles.containerPadding, { backgroundColor: "transparent", flex: 2 }]}>
+                {
+                    firestore.paths.length > 0 ? (
+                        <FlatList data={firestore.paths}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item, index }) => {
                         return (
@@ -31,9 +32,20 @@ const PathsComponent: React.FC<Props> = ({ handlePath }) => {
                         )
                     }}
                 />
+                    )
+                    :
+                    (
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                            <Text style={styles.logTexts}>
+                                Aucun trajet disponible
+                            </Text>
+                        </View>
+                    )
+                }
+                
             </View>
-            <View style={[styles.containerPadding, { backgroundColor: 'rgba(230,230,230,0.5)', flex: 1 }]}>
-                <TouchableOpacity style={[styles.logButtons]} onPress={() => firestore.pickPath(pathPicked!)}>
+            <View style={[styles.containerPadding, { backgroundColor: 'rgba(230,230,230,0.5)', flex: 1, justifyContent: 'center' }]}>
+                <TouchableOpacity style={[styles.logButtons, firestore.paths.length == 0 ? styles.disabled : styles.logButtons]} onPress={() => firestore.pickPath(pathPicked!)} disabled={firestore.paths.length == 0}>
                     <Text>Valider la course</Text>
                 </TouchableOpacity>
 

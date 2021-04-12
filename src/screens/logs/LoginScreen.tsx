@@ -94,7 +94,9 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
                             <Text style={[styles.logTexts, { textDecorationLine: 'underline' }]}>Mot de passe oublié</Text>
                         </View>
                         <TouchableOpacity onPress={() => login()}
-                            style={[styles.logButtons, styles.containerMargin]}>
+                            style={[styles.logButtons, mail.length == 0 || password.length == 0 ? styles.disabled : styles.logButtons, styles.containerMargin]}
+                            disabled={mail.length == 0 || password.length == 0}    
+                        >
                             <Text style={styles.userTypeTextPassagere}>Me connecter</Text>
                         </TouchableOpacity>
                         <View style={{ alignSelf: 'center', marginVertical: WINDOW_HEIGHT * 0.03 }}>

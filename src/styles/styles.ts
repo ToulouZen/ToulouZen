@@ -201,5 +201,10 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingVertical: WINDOW_WIDTH * 0.07,
         paddingHorizontal: WINDOW_WIDTH * 0.02
+    },
+    disabled: {
+       backgroundColor: COLORS.blackBackground,
+       opacity: 0.3,
+       borderColor: 'transparent'
     }
 })

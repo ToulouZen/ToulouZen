@@ -72,7 +72,7 @@ const HomeScreen: React.FC<Props> = ({ navigation, route }) => {
                     <NavigationComponent handleRegion={handleRegion} goTo={goTo} distance={distancePath} duration={durationPath} />
                 }
                 {
-                    auth.userInfo?.userType == "driver" && firestore.paths.length != 0  &&
+                    auth.userInfo?.userType == "driver" &&
                     <PathsComponent handlePath={handlePath} />
                 }
             </View>
