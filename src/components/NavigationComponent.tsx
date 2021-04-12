@@ -126,7 +126,10 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, du
                                     </TouchableOpacity>
                                 </View>
                                 <TouchableOpacity onPress={() => firestore.createPath({ latitude: 43.604652, longitude: 1.444209, name: "Position du passager" }, arrivalDestination!, timeDeparture, distance!, duration!)}
-                                    style={[styles.logButtons, styles.containerMargin]}>
+                                    style={[styles.logButtons, styles.containerMargin, {
+                                        backgroundColor: arrivalDestination == undefined || departureDestination == undefined ? COLORS.blackBackground :  COLORS.peach, 
+                                        opacity: arrivalDestination == undefined || departureDestination == undefined ? 0.3 : 1 }]} 
+                                        disabled={arrivalDestination == undefined || departureDestination == undefined ? true : false}>
                                     <Text style={styles.userTypeTextPassagere}>Trouver ma chauffeuse</Text>
                                 </TouchableOpacity>
                             </View>
