@@ -80,7 +80,7 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
                         <Text style={[styles.logTitle, styles.containerMargin]}>Connexion</Text>
                     </View>
                     <View style={styles.container}>
-                        <TextInput value={mail} onChangeText={mail => setMail(mail)} placeholder="E-mail"
+                        <TextInput value={mail} keyboardType="email-address" onChangeText={mail => setMail(mail)} placeholder="E-mail"
                             style={[styles.logInputs, styles.containerMargin, { padding: WINDOW_WIDTH * 0.04 }]}
                         />
                         <View style={[styles.logInputs, styles.containerMargin, { flexDirection: 'row' }]}>
