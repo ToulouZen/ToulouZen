@@ -13,7 +13,8 @@ type FirestoreContextType = {
     pickPath: (path: Path) => void,
     actualPath: Path | undefined,
     passengerPaths: Path[],
-    deletePath: (pathId: string) => void
+    deletePath: (pathId: string) => void,
+    driverPaths: Path[]
 }
 
 const defaultFirestoreState: FirestoreContextType = {
@@ -23,7 +24,8 @@ const defaultFirestoreState: FirestoreContextType = {
     pickPath: async () => undefined,
     actualPath: undefined,
     passengerPaths: [],
-    deletePath: async () => undefined
+    deletePath: async () => undefined,
+    driverPaths: []
 }
 
 const FirestoreContext = createContext<FirestoreContextType>(defaultFirestoreState)
@@ -33,6 +35,7 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
     const [checkPoints, setCheckPoints] = useState<Checkpoint[]>([])
     const [paths, setPaths] = useState<Path[]>([])
     const [passengerPaths, setPassengerPaths] = useState<Path[]>([])
+    const [driverPaths, setDriverPaths] = useState<Path[]>([])
     const [actualPathId, setActualPathId] = useState<string>()
     const [actualPath, setActualPath] = useState<Path>()
     const auth = useAuth()
@@ -45,6 +48,7 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
         if (auth.userInfo?.userType == "passenger") {
             getPassengerPaths()
         } else {
+            getDriverPaths()
             getPaths()
         }
     }, [auth.userInfo?.userType])
@@ -132,13 +136,35 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
         return () => subscriber()
     }
 
+    const getDriverPaths = async () => {
+        const subscriber = pathsCollection.where("pickedBy", "==", { userId: auth.user?.uid, userFirstname: auth.userInfo?.firstname, userLastname: auth.userInfo?.lastname }).onSnapshot(querySnapshot => {
+            const pathsData = querySnapshot.docs.map((path) => toPath(path.data(), path.id))
+            const pathsDataSort = pathsData.sort((pathA, pathB) => {
+                const timeA = new Date(moment(pathA.timeDeparture).format()).getTime()
+                const timeB = new Date(moment(pathB.timeDeparture).format()).getTime()
+                return moment(timeB).diff(moment(timeA))
+            })
+            const date = moment(new Date()).format("YYYY-MM-DD")
+            const actualPath = pathsDataSort.find((path) => path.dateDeparture == date && path.pickedBy.userId == null)
+            if (actualPath != undefined) {
+                setActualPathId(actualPath.id)
+            } else {
+                setActualPathId(undefined)
+                setActualPath(undefined)
+            }
+            setDriverPaths(pathsDataSort)
+        })
+        return () => subscriber()
+    }
+
     const pickPath = async (path: Path) => {
         await pathsCollection.doc(path.id).update({
             pickedBy: {
                 userId: auth.user?.uid,
                 userLastname: auth.userInfo?.lastname,
                 userFirstname: auth.userInfo?.firstname
-            }
+            },
+            state: "VALIDATED"
         })
     }
 
@@ -151,7 +177,8 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
                 pickPath,
                 actualPath,
                 passengerPaths,
-                deletePath
+                deletePath,
+                driverPaths
             }}>
             {children}
         </FirestoreContext.Provider>

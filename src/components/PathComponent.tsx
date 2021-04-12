@@ -12,9 +12,10 @@ type Props = {
     path: Path,
     index: number,
     isPassenger?: boolean,
+    pathPicked?: Path
 }
 
-const PathComponent: React.FC<Props> = ({ path, index, isPassenger }) => {
+const PathComponent: React.FC<Props> = ({ path, index, isPassenger, pathPicked }) => {
 
     const [isCollapsed, setIsCollapsed] = React.useState<boolean>(true)
 
@@ -33,7 +34,7 @@ const PathComponent: React.FC<Props> = ({ path, index, isPassenger }) => {
     }
 
     return (
-        <View style={[styles.containerPadding, styles.shadowContainer, styles.containerMargin, { backgroundColor: '#fff', borderRadius: 15 }]}>
+        <View style={[styles.containerPadding, styles.shadowContainer, styles.containerMargin, { backgroundColor: '#fff', borderRadius: 15, borderColor: path == pathPicked ? COLORS.peach : undefined, borderWidth: path == pathPicked ? 2 : undefined }]}>
             <View style={{ flexDirection: 'row' }}>
                 <View style={[styles.container, styles.containerPadding]}>
                     <Text style={{ fontSize: WINDOW_WIDTH * 0.06, fontWeight: 'bold' }}>{isPassenger ? "Moi" : path.userFirstname}</Text>
@@ -41,7 +42,7 @@ const PathComponent: React.FC<Props> = ({ path, index, isPassenger }) => {
                 </View>
                 <View style={[styles.containerPadding, { justifyContent: 'center', alignItems: 'center' }]}>
                     {
-                        path.state != "DONE" && path.dateDeparture == moment(new Date()).format("YYYY-MM-DD") &&
+                        isPassenger && path.state != "DONE" && path.dateDeparture == moment(new Date()).format("YYYY-MM-DD") &&
                         <TouchableOpacity onPress={() => deletePath()}
                             style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Icon name="close" type="ionicon" size={WINDOW_WIDTH * 0.08} color={COLORS.peach} />
@@ -53,16 +54,18 @@ const PathComponent: React.FC<Props> = ({ path, index, isPassenger }) => {
             </View>
             {
                 isPassenger &&
-                <Collapsible collapsed={isCollapsed}>
-                    <View style={styles.containerPadding}>
-                        <Text style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500' }}>Départ : {path.departureDestination.name}</Text>
-                        <Text style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500' }}>Arrivée : {path.arrivalDestination.name}</Text>
-                    </View>
-                </Collapsible>
+                <>
+                    <Collapsible collapsed={isCollapsed}>
+                        <View style={styles.containerPadding}>
+                            <Text style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500' }}>Départ : {path.departureDestination.name}</Text>
+                            <Text style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500' }}>Arrivée : {path.arrivalDestination.name}</Text>
+                        </View>
+                    </Collapsible>
+                    <TouchableOpacity onPress={() => setIsCollapsed(!isCollapsed)}>
+                        <Icon name={isCollapsed ? "chevron-down" : "chevron-up"} type="ionicon" size={WINDOW_WIDTH * 0.08} color={COLORS.peach} />
+                    </TouchableOpacity>
+                </>
             }
-            <TouchableOpacity onPress={() => setIsCollapsed(!isCollapsed)}>
-                <Icon name={isCollapsed ? "chevron-down" : "chevron-up"} type="ionicon" size={WINDOW_WIDTH * 0.08} color={COLORS.peach} />
-            </TouchableOpacity>
         </View>
     )
 }

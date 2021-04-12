@@ -1,6 +1,6 @@
 import React from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
-import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants/Constants'
+import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants/Constants'
 import { useFirestore } from '../contexts/FirestoreContext'
 import { styles } from '../styles/styles'
 import { Path } from '../types/types'
@@ -26,7 +26,7 @@ const PathsComponent: React.FC<Props> = ({ handlePath }) => {
                                 setPathPicked(item)
                                 handlePath(item)
                             }}>
-                                <PathComponent path={item} index={index} />
+                                <PathComponent path={item} index={index} pathPicked={pathPicked} />
                             </TouchableOpacity>
                         )
                     }}
@@ -34,7 +34,7 @@ const PathsComponent: React.FC<Props> = ({ handlePath }) => {
             </View>
             <View style={[styles.containerPadding, { backgroundColor: 'rgba(230,230,230,0.5)', flex: 1 }]}>
                 <TouchableOpacity style={[styles.logButtons]} onPress={() => firestore.pickPath(pathPicked!)}>
-                    <Text>Valider la course</Text>
+                    <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>Valider la course</Text>
                 </TouchableOpacity>
 
             </View>

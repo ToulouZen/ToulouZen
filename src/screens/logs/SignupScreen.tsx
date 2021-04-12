@@ -23,21 +23,38 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
     const auth = useAuth()
 
     const signup = async () => {
-        try {
-            await auth.register(mail, password, firstname, lastname, Number(age), route.params.userType)
-            Alert.alert("Votre espace personnalisé a été créée", "Nous vous souhaitons la bienvenue dans la famille Toulou'Zen !", [
-                {
-                    text: 'Super !',
-                    onPress: () => {
-                        navigation.navigate('App')
+        auth.register(mail, password, firstname, lastname, Number(age), route.params.userType)
+            .then(() => {
+                auth.getUserInfo()
+            })
+            .then(() => {
+                Alert.alert("Votre espace personnalisé a été créée", "Nous vous souhaitons la bienvenue dans la famille Toulou'Zen !", [
+                    {
+                        text: 'Super !',
+                        onPress: () => {
+                            navigation.navigate('App')
+                        }
                     }
+                ])
+            })
+            .catch(e => {
+                if (e.code == "auth/user-not-found") {
+                    Alert.alert('Utilisateur', 'Ce compte n\'existe pas !')
                 }
-            ])
-        } catch (e) {
-            console.log(e);
-            Alert.alert(e)
+                if (e.code == "auth/wrong-password") {
+                    Alert.alert('Mot de passe', 'Le mot de passe est incorrecte !')
+                }
+                if (e.code == 'auth/email-already-in-use') {
+                    Alert.alert('Adresse e-mail', 'Cette adresse e-mail est déjà utilisée !')
+                }
+                if (e.code == 'auth/invalid-email') {
+                    Alert.alert('Adresse e-mail', 'Cette adresse e-mail est invalide !');
+                }
+                if (e.code == 'auth/weak-password') {
+                    Alert.alert('Mot de passe', 'Le mot de passe utilisé est trop faible, privilégiez 8 caractères au minimum, en ajoutant des chiffres, majuscules et caractères spéciaux');
+                }
+            })
 
-        }
     }
 
     return (

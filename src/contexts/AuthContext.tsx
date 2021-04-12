@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebaseAuth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import React, { createContext, useContext, useEffect } from 'react';
+import { Alert } from 'react-native';
 
 type AuthContextType = {
     isSignedIn: boolean;
@@ -71,6 +72,23 @@ export const AuthContextProvider: React.FC = ({ children }) => {
                     await AsyncStorage.setItem('ToulouzenUserType', userType)
 
                 }
+            }).catch(e => {
+                if (e.code == "auth/user-not-found") {
+                    Alert.alert('Utilisateur', 'Ce compte n\'existe pas !')
+                }
+                if (e.code == "auth/wrong-password") {
+                    Alert.alert('Mot de passe', 'Le mot de passe est incorrecte !')
+                }
+                if (e.code == 'auth/email-already-in-use') {
+                    Alert.alert('Adresse e-mail', 'Cette adresse e-mail est déjà utilisée !')
+                }
+                if (e.code == 'auth/invalid-email') {
+                    Alert.alert('Adresse e-mail', 'Cette adresse e-mail est invalide !');
+                }
+                if (e.code == 'auth/weak-password') {
+                    Alert.alert('Mot de passe', 'Le mot de passe utilisé est trop faible, privilégiez 8 caractères au minimum, en ajoutant des chiffres, majuscules et caractères spéciaux');
+                }
+                console.error(e)
             })
     }
 
@@ -87,6 +105,23 @@ export const AuthContextProvider: React.FC = ({ children }) => {
                 await AsyncStorage.setItem('ToulouzenEmail', email)
                 await AsyncStorage.setItem('ToulouzenAge', data?.age.toString())
                 await AsyncStorage.setItem('ToulouzenUserType', data?.userType)
+            }).catch(e => {
+                if (e.code == "auth/user-not-found") {
+                    Alert.alert('Utilisateur', 'Ce compte n\'existe pas !')
+                }
+                if (e.code == "auth/wrong-password") {
+                    Alert.alert('Mot de passe', 'Le mot de passe est incorrecte !')
+                }
+                if (e.code == 'auth/email-already-in-use') {
+                    Alert.alert('Adresse e-mail', 'Cette adresse e-mail est déjà utilisée !')
+                }
+                if (e.code == 'auth/invalid-email') {
+                    Alert.alert('Adresse e-mail', 'Cette adresse e-mail est invalide !');
+                }
+                if (e.code == 'auth/weak-password') {
+                    Alert.alert('Mot de passe', 'Le mot de passe utilisé est trop faible, privilégiez 8 caractères au minimum, en ajoutant des chiffres, majuscules et caractères spéciaux');
+                }
+                console.error(e)
             })
     }
 

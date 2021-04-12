@@ -13,7 +13,7 @@ type Props = StackScreenProps<RootStackParamsList, 'Login'>
 
 const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
 
-    const [mail, setMail] = React.useState<string>('lisa_dupond@gmail.com')
+    const [mail, setMail] = React.useState<string>('jeanne.dupont@gmail.com')
     const [password, setPassword] = React.useState<string>('password')
     const [switched, setSwitched] = React.useState<boolean>(false)
     const [showPassword, setShowPassword] = React.useState<boolean>(false)
@@ -36,26 +36,30 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
     }
 
     const login = async () => {
-        try {
-            auth.signIn(mail, password)
-                .then(() => {
-                    console.log("then")
-                    auth.getUserInfo()
-                }).then(() => {
-                    navigation.navigate('App')
-                    reset()
-                })
-
-        } catch (e) {
-            // e.code = "auth/user-not-found"
-            // e.message = "There is no user record corresponding to this identifier. The user may have been deleted."
-            if (e.code === "auth/user-not-found") {
-                Alert.alert('Ce compte n\'existe pas')
-            }
-            else {
-                Alert.alert(e.message)
-            }
-        }
+        auth.signIn(mail, password)
+            .then(() => {
+                console.log("then")
+                auth.getUserInfo()
+            }).then(() => {
+                navigation.navigate('App')
+                reset()
+            }).catch(e => {
+                if (e.code == "auth/user-not-found") {
+                    Alert.alert('Utilisateur', 'Ce compte n\'existe pas !')
+                }
+                if (e.code == "auth/wrong-password") {
+                    Alert.alert('Mot de passe', 'Le mot de passe est incorrecte !')
+                }
+                if (e.code == 'auth/email-already-in-use') {
+                    Alert.alert('Adresse e-mail', 'Cette adresse e-mail est déjà utilisée !')
+                }
+                if (e.code == 'auth/invalid-email') {
+                    Alert.alert('Adresse e-mail', 'Cette adresse e-mail est invalide !');
+                }
+                if (e.code == 'auth/weak-password') {
+                    Alert.alert('Mot de passe', 'Le mot de passe utilisé est trop faible, privilégiez 8 caractères au minimum, en ajoutant des chiffres, majuscules et caractères spéciaux');
+                }
+            })
     }
 
     return (
