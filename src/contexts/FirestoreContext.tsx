@@ -167,6 +167,8 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
             },
             state: "STARTED",
             startAt: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+        }).then(() => {
+            setActualPathId(path.id)
         })
     }
 
