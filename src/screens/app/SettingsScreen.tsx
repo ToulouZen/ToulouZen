@@ -58,7 +58,7 @@ const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
                     <TextInput value={ageText} onChangeText={age => setAgeText(age)} placeholder="Age"
                         style={[styles.logInputs, { padding: WINDOW_WIDTH * 0.04, marginVertical: WINDOW_WIDTH * 0.04 }]} keyboardType="numeric"
                     />
-                    <TextInput value={mailText} onChangeText={mail => setMailText(mail)} placeholder="E-mail"
+                    <TextInput value={mailText} keyboardType="email-address" onChangeText={mail => setMailText(mail)} placeholder="E-mail"
                         style={[styles.logInputs, { padding: WINDOW_WIDTH * 0.04, marginVertical: WINDOW_WIDTH * 0.04 }]}
                     />
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
