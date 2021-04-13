@@ -140,7 +140,7 @@ const NavigationComponent: React.FC<Props> = ({ handleRegion, goTo, distance, du
                                 <TouchableOpacity onPress={() => firestore.createPath({ latitude: 43.604652, longitude: 1.444209, name: "Position du passager" }, arrivalDestination!, timeDeparture, distance!, duration!)}
                                     style={[styles.logButtons, arrivalDestination == undefined || departureDestination == undefined ? styles.disabled : styles.logButtons, styles.containerMargin]}
                                     disabled={arrivalDestination == undefined || departureDestination == undefined ? true : false}>
-                                    <Text style={styles.userTypeTextPassagere}>Trouver ma chauffeuse</Text>
+                                    <Text style={styles.userTypeTextPassagere}>Trouver ma conductrice</Text>
                                 </TouchableOpacity>
                             </View>
                         </>

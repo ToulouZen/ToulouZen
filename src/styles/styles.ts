@@ -139,8 +139,9 @@ export const styles = StyleSheet.create({
     },
     userTypeTextPassagere: {
         color: COLORS.white,
-        fontSize: WINDOW_WIDTH * 0.06,
-        fontWeight: 'bold'
+        fontSize: WINDOW_WIDTH * 0.05,
+        fontWeight: 'bold',
+        textAlign: 'center'
     },
     inputAddress: {
         backgroundColor: '#dddddd',
@@ -180,7 +181,7 @@ export const styles = StyleSheet.create({
     },
     drawerCustomItemText: {
         color: COLORS.blackBackground,
-        fontSize: Platform.OS == "ios" ? WINDOW_WIDTH * 0.07 : WINDOW_WIDTH * 0.05 ,
+        fontSize: Platform.OS == "ios" ? WINDOW_WIDTH * 0.07 : WINDOW_WIDTH * 0.05,
         fontWeight: 'bold'
     },
     drawerIcon: {
@@ -203,8 +204,8 @@ export const styles = StyleSheet.create({
         paddingHorizontal: WINDOW_WIDTH * 0.02
     },
     disabled: {
-       backgroundColor: COLORS.blackBackground,
-       opacity: 0.3,
-       borderColor: 'transparent'
+        backgroundColor: COLORS.blackBackground,
+        opacity: 0.3,
+        borderColor: 'transparent'
     }
 })

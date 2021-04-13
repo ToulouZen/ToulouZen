@@ -8,7 +8,8 @@ export type RootStackParamsList = {
     Home: undefined,
     Paths: undefined,
     DriverConfirm: undefined,
-    Settings: undefined
+    Settings: undefined,
+    PasswordReset: undefined
 }
 
 export type User = {

@@ -26,6 +26,7 @@ import { FirestoreContextProvider } from './src/contexts/FirestoreContext';
 import PathsScreen from './src/screens/app/PathsScreen';
 import SettingsScreen from './src/screens/app/SettingsScreen';
 import DriverConfirmScreen from './src/screens/app/DriverConfirmScreen';
+import PasswordResetScreen from './src/screens/logs/PasswordResetScreen';
 
 
 
@@ -72,6 +73,7 @@ const App = () => {
         <FullAppStack.Screen name="Log" component={MyLogStack} options={{ headerShown: false }} />
         <FullAppStack.Screen name="App" component={MyAppStack} options={{ headerShown: false }} />
         <FullAppStack.Screen name="DriverConfirm" component={DriverConfirmScreen} options={{ headerShown: false }} />
+        <FullAppStack.Screen name="PasswordReset" component={PasswordResetScreen} options={{ headerShown: false }} />
       </FullAppStack.Navigator>
     )
   }

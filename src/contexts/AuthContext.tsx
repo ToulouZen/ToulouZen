@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebaseAuth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { createContext, useContext, useEffect } from 'react';
 import { Alert } from 'react-native';
+import { RootStackParamsList } from '../types/types';
 
 type AuthContextType = {
     isSignedIn: boolean;
@@ -12,7 +14,8 @@ type AuthContextType = {
     signIn: (email: string, password: string) => Promise<void>;
     signOut: () => Promise<void>;
     getUserInfo: () => void,
-    updateUser: (mail: string, firstname: string, lastname: string, age: number, userType: string) => Promise<void>
+    updateUser: (mail: string, firstname: string, lastname: string, age: number, userType: string) => Promise<void>,
+    resetPassword: (mail: string, navigation: StackNavigationProp<RootStackParamsList, "PasswordReset">) => void
 }
 
 const defaultAuthState: AuthContextType = {
@@ -21,7 +24,8 @@ const defaultAuthState: AuthContextType = {
     signIn: async () => undefined,
     signOut: async () => undefined,
     getUserInfo: async () => undefined,
-    updateUser: async () => undefined
+    updateUser: async () => undefined,
+    resetPassword: () => undefined
 }
 
 const AuthContext = createContext<AuthContextType>(defaultAuthState)
@@ -157,6 +161,11 @@ export const AuthContextProvider: React.FC = ({ children }) => {
         setUserInfo({ firstname, lastname, mail, age: Number(age), userType })
     }
 
+    const resetPassword = async (mail: string, navigation: StackNavigationProp<RootStackParamsList, "PasswordReset">) => {
+        navigation.goBack()
+        return firebaseAuth().sendPasswordResetEmail(mail)
+    }
+
     return (
         <AuthContext.Provider
             value={{
@@ -167,7 +176,8 @@ export const AuthContextProvider: React.FC = ({ children }) => {
                 signIn,
                 signOut,
                 getUserInfo,
-                updateUser
+                updateUser,
+                resetPassword
             }}>
             {children}
         </AuthContext.Provider>

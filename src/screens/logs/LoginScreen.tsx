@@ -98,9 +98,10 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation, route }, focu
                                     style={{ width: WINDOW_WIDTH * 0.08, height: WINDOW_WIDTH * 0.08, tintColor: COLORS.black }} />
                             </TouchableOpacity>
                         </View>
-                        <View style={[styles.containerMargin, { width: WINDOW_WIDTH * 0.8, alignSelf: 'center', alignItems: 'flex-end' }]}>
+                        <TouchableOpacity onPress={() => navigation.navigate("PasswordReset")}
+                            style={[styles.containerMargin, { width: WINDOW_WIDTH * 0.8, alignSelf: 'center', alignItems: 'flex-end' }]}>
                             <Text style={[styles.logTexts, { textDecorationLine: 'underline' }]}>Mot de passe oublié</Text>
-                        </View>
+                        </TouchableOpacity>
                         <TouchableOpacity onPress={() => login()}
                             style={[styles.logButtons, mail.length == 0 || password.length == 0 ? styles.disabled : styles.logButtons, styles.containerMargin]}
                             disabled={mail.length == 0 || password.length == 0}

@@ -50,6 +50,7 @@ const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region, getI
       timeout: 15000,
     })
       .then(location => {
+        console.log(location)
         setUserLocation({ latitude: location.latitude, longitude: location.longitude })
         setUserLocationFound(true)
       })
@@ -85,7 +86,7 @@ const Map: React.FC<Props> = ({ handleCard, closeCard, destination, region, getI
         {
           firestore.checkPoints.map((checkpoint) => {
             return (
-              <Marker key={checkpoint.name} onPress={() => handleCard != undefined ? handleCard(checkpoint) : undefined}
+              <Marker key={checkpoint.name} onPress={() => handleCard != undefined && auth.userInfo?.userType == "passenger" ? handleCard(checkpoint) : undefined}
                 coordinate={{ latitude: checkpoint.latitude, longitude: checkpoint.longitude }}>
                 <Image source={(checkpoint.latitude == destination?.latitude && checkpoint.longitude == destination?.longitude && checkpoint.name == destination?.name ? require('../img/Flag.png') : require('../img/checkpointMarker.png'))}
                   resizeMode="contain"
