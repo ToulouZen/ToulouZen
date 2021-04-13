@@ -217,6 +217,10 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
     }
 
     const endPath = async () => {
+        // Local Notification
+        
+
+
         pathsCollection.doc(actualPath!.id).update({
             state: "DONE",
             endAt: moment().format("YYYY-MM-DD HH:mm:ss")
