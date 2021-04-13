@@ -19,7 +19,9 @@ type FirestoreContextType = {
     resetActualPathId: () => void,
     getPassengerPaths: () => void,
     getDriverPaths: () => void,
-    getPaths: () => void
+    getPaths: () => void,
+    getAllCheckpoints: () => void,
+    resetAll: () => void
 }
 
 const defaultFirestoreState: FirestoreContextType = {
@@ -35,7 +37,9 @@ const defaultFirestoreState: FirestoreContextType = {
     resetActualPathId: () => undefined,
     getPassengerPaths: () => undefined,
     getDriverPaths: () => undefined,
-    getPaths: () => undefined
+    getPaths: () => undefined,
+    getAllCheckpoints: () => undefined,
+    resetAll: () => undefined
 }
 
 const FirestoreContext = createContext<FirestoreContextType>(defaultFirestoreState)
@@ -51,8 +55,13 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
     const auth = useAuth()
 
     useEffect(() => {
-        getAllCheckpoints()
-    }, [])
+        console.log("checkpoints => ", checkPoints)
+        console.log("paths =>", paths)
+        console.log("driverPaths => ", driverPaths)
+        console.log("passengerPaths => ", passengerPaths)
+        console.log("actualPathId =>", actualPathId)
+        console.log("actualPath =>", actualPath)
+    })
 
     useEffect(() => {
         if (auth.userInfo != undefined && auth.userInfo.userType != undefined && actualPathId != undefined) {
@@ -64,9 +73,20 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
     const pathsCollection = firestore().collection('paths')
 
     const resetActualPathId = () => {
-        console.log("reset")
         setActualPathId(undefined)
         setActualPath(undefined)
+    }
+
+    const resetAll = () => {
+        getActualPathInfoUnsub()
+        getPathsUnsub()
+        getDriverPathsUnsub()
+        getPassengerPathsUnsub()
+        setCheckPoints([])
+        setPaths([])
+        setDriverPaths([])
+        setPassengerPaths([])
+        resetActualPathId()
     }
 
     // Récupération des checkpoints (points d'intêret fréquentés par la population toulousaine)
@@ -110,10 +130,14 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
         return () => subscriber()
     }
 
+    const getActualPathInfoUnsub = pathsCollection.doc(actualPathId).onSnapshot(querySnapshot => {
+
+    })
+
     // Récupération des trajets du jour disponible pour une conductrice ToulouZen
     const getPaths = async () => {
         // Date du jour
-        const date = moment(new Date()).format("YYYY-MM-DD")
+        const date = moment().format("YYYY-MM-DD")
         // Un subscriber est utilisé pour mettre à jour les données automatiquement
         const subscriber = pathsCollection.where("pickedBy", "==", { userId: null, userLastname: null, userFirstname: null }).where("dateDeparture", "==", date).onSnapshot(querySnapshot => {
             const pathsData = querySnapshot.docs.map((path) => toPath(path.data(), path.id))
@@ -121,6 +145,10 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
         })
         return () => subscriber()
     }
+
+    const getPathsUnsub = pathsCollection.onSnapshot(querySnapshot => {
+
+    })
 
     const getPassengerPaths = async () => {
         // Date du jour
@@ -145,6 +173,10 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
         return () => subscriber()
     }
 
+    const getPassengerPathsUnsub = pathsCollection.onSnapshot(querySnapshot => {
+
+    })
+
     const getDriverPaths = async () => {
         const subscriber = pathsCollection.where("pickedBy", "==", { userId: auth.user?.uid, userFirstname: auth.userInfo?.firstname, userLastname: auth.userInfo?.lastname }).onSnapshot(querySnapshot => {
             const pathsData = querySnapshot.docs.map((path) => toPath(path.data(), path.id))
@@ -164,6 +196,10 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
         return () => subscriber()
     }
 
+    const getDriverPathsUnsub = pathsCollection.onSnapshot(querySnapshot => {
+
+    })
+
     const pickPath = async (path: Path) => {
         pathsCollection.doc(path.id).update({
             pickedBy: {
@@ -172,7 +208,7 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
                 userFirstname: auth.userInfo?.firstname
             },
             state: "STARTED",
-            startAt: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+            startAt: moment().format("YYYY-MM-DD HH:mm:ss")
         }).then(async () => {
             const actualPath = (await pathsCollection.doc(path.id).get()).data()
             setActualPathId(path.id)
@@ -183,7 +219,7 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
     const endPath = async () => {
         pathsCollection.doc(actualPath!.id).update({
             state: "DONE",
-            endAt: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+            endAt: moment().format("YYYY-MM-DD HH:mm:ss")
         }).then(() => {
             resetActualPathId()
         })
@@ -204,7 +240,9 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
                 resetActualPathId,
                 getPassengerPaths,
                 getDriverPaths,
-                getPaths
+                getPaths,
+                getAllCheckpoints,
+                resetAll
             }}>
             {children}
         </FirestoreContext.Provider>

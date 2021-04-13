@@ -1,30 +1,35 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/core';
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useRef } from 'react';
 import { Alert, Image, Text, TouchableOpacity, View, TextInput, ScrollView } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
 import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../constants/Constants';
 import { useAuth } from '../../contexts/AuthContext';
+import { useFirestore } from '../../contexts/FirestoreContext';
 import { styles } from '../../styles/styles';
 import { RootStackParamsList } from '../../types/types';
 
 
-type Props = StackScreenProps<RootStackParamsList, 'Login'>
+type PropsView = {
+    nav: StackScreenProps<RootStackParamsList, 'Login'>,
+    focused: boolean
+}
 
-const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
+const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation, route }, focused }) => {
 
     const [mail, setMail] = React.useState<string>('jeanne.dupont@gmail.com')
     const [password, setPassword] = React.useState<string>('password')
     const [switched, setSwitched] = React.useState<boolean>(false)
     const [showPassword, setShowPassword] = React.useState<boolean>(false)
 
+    const auth = useAuth()
+
     React.useEffect(() => {
         if (switched) {
             setToken()
         }
     }, [switched])
-
-    const auth = useAuth()
 
     const setToken = async () => {
         await AsyncStorage.setItem('ToulouzenToken', 'autolog')
@@ -130,6 +135,12 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
             </View>
         </ScrollView>
     )
+}
+
+type Props = StackScreenProps<RootStackParamsList, 'Login'>
+const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
+    const isFocused = useIsFocused()
+    return <LoginScreenView nav={{ navigation, route }} focused={isFocused} />
 }
 
 export default LoginScreen

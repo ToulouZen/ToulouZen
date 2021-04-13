@@ -35,6 +35,7 @@ const HomeScreenView: React.FC<PropsView> = ({ nav: { navigation, route }, focus
     const firestore = useFirestore()
 
     React.useEffect(() => {
+        firestore.getAllCheckpoints()
         if (auth.userInfo != undefined && auth.userInfo.userType != undefined && auth.userInfo.userType == "passenger") {
             firestore.getPassengerPaths()
         }
@@ -42,7 +43,7 @@ const HomeScreenView: React.FC<PropsView> = ({ nav: { navigation, route }, focus
             firestore.getDriverPaths()
             firestore.getPaths()
         }
-    }, [auth.userInfo])
+    }, [focused])
 
     React.useEffect(() => {
         if (auth.userInfo?.userType == "driver" && firestore.actualPath != undefined && firestore.actualPath.state != "DONE") {

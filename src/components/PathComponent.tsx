@@ -21,7 +21,7 @@ const PathComponent: React.FC<Props> = ({ path, index, isPassenger, pathPicked }
 
     const firestore = useFirestore()
 
-    const date = moment(new Date()).format("YYYY-MM-DD")
+    const date = moment().format("YYYY-MM-DD")
 
     const deletePath = () => {
         Alert.alert('Suppression du trajet', 'Êtes-vous certaine de vouloir annuler ce trajet ?', [
@@ -44,7 +44,7 @@ const PathComponent: React.FC<Props> = ({ path, index, isPassenger, pathPicked }
                 </View>
                 <View style={[styles.containerPadding, { justifyContent: 'center', alignItems: 'center' }]}>
                     {
-                        isPassenger && path.state != "DONE" && path.dateDeparture == moment(new Date()).format("YYYY-MM-DD") &&
+                        isPassenger && path.state != "DONE" && path.dateDeparture == moment().format("YYYY-MM-DD") &&
                         <TouchableOpacity onPress={() => deletePath()}
                             style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Icon name="close" type="ionicon" size={WINDOW_WIDTH * 0.08} color={COLORS.peach} />

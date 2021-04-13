@@ -8,6 +8,7 @@ import { CommonActions, DrawerActions, DrawerNavigationState, ParamListBase } fr
 import { useAuth } from '../contexts/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from '../styles/styles';
+import { useFirestore } from '../contexts/FirestoreContext';
 
 type PropsDrawer = Omit<DrawerContentOptions, 'contentContainerStyle' | 'style'> & {
     state: DrawerNavigationState<ParamListBase>;
@@ -18,6 +19,8 @@ const CustomDrawer: React.FC<PropsDrawer> = ({ state, descriptors, navigation })
 
     const [isSwitched, setIsSwitched] = React.useState<boolean>(false)
     const auth = useAuth()
+    const firestore = useFirestore()
+
 
     React.useEffect(() => {
         if (auth.userInfo?.userType == "driver") {
@@ -35,6 +38,7 @@ const CustomDrawer: React.FC<PropsDrawer> = ({ state, descriptors, navigation })
     }
 
     const disconnect = async () => {
+        firestore.resetAll()
         await AsyncStorage.multiRemove(["ToulouzenUserUID", "ToulouzenFirstname", "ToulouzenLastname", "ToulouzenEmail", "ToulouzenAge", "ToulouzenUserType", "ToulouzenToken"])
         auth.signOut()
         navigation.navigate("Log", { screen: "Login" })
