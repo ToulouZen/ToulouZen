@@ -12,12 +12,12 @@ import { RootStackParamsList } from '../../types/types';
 type Props = StackScreenProps<RootStackParamsList, 'Signup'>
 
 const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
-    const [firstname, setFirstname] = React.useState<string>('')
-    const [lastname, setLastname] = React.useState<string>('')
-    const [age, setAge] = React.useState<string>('')
-    const [mail, setMail] = React.useState<string>('')
-    const [password, setPassword] = React.useState<string>('')
-    const [passwordConfirmation, setPasswordConfirmation] = React.useState<string>('')
+    const [firstname, setFirstname] = React.useState<string>('Angèle')
+    const [lastname, setLastname] = React.useState<string>('Mazio')
+    const [age, setAge] = React.useState<string>('27')
+    const [mail, setMail] = React.useState<string>('angele.mazio@gmail.com')
+    const [password, setPassword] = React.useState<string>('passwordSpe')
+    const [passwordConfirmation, setPasswordConfirmation] = React.useState<string>('passwordSpe')
     const [showPassword, setShowPassword] = React.useState<boolean>(false)
 
     const auth = useAuth()
@@ -105,7 +105,7 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity onPress={() => signup()}
                         style={[styles.logButtons, styles.containerMargin]}>
-                        <Text style={styles.userTypeTextPassagere}>Validation</Text>
+                        <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>Validation</Text>
                     </TouchableOpacity>
                 </View>
 

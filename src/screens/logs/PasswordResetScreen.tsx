@@ -54,7 +54,7 @@ const PasswordResetScreen: React.FC<Props> = ({ navigation, route }) => {
                             style={[styles.logButtons, mail.length == 0 ? styles.disabled : styles.logButtons, styles.containerMargin]}
                             disabled={mail.length == 0}
                         >
-                            <Text style={styles.userTypeTextPassagere}>Envoyer l'email</Text>
+                            <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>Envoyer l'email</Text>
                         </TouchableOpacity>
 
                     </View>

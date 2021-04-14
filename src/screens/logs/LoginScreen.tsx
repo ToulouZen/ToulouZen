@@ -106,7 +106,7 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation, route }, focu
                             style={[styles.logButtons, mail.length == 0 || password.length == 0 ? styles.disabled : styles.logButtons, styles.containerMargin]}
                             disabled={mail.length == 0 || password.length == 0}
                         >
-                            <Text style={styles.userTypeTextPassagere}>Me connecter</Text>
+                            <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>Me connecter</Text>
                         </TouchableOpacity>
                         <View style={{ alignSelf: 'center', marginVertical: WINDOW_HEIGHT * 0.03 }}>
                             <Text style={styles.logTexts}>ou me connecter avec</Text>

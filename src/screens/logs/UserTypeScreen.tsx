@@ -32,7 +32,7 @@ const UserTypeScreen: React.FC<Props> = ({ navigation, route }) => {
                 <TouchableOpacity
                     onPress={() => navigation.navigate('Signup', { userType: "passenger" })}
                     style={[styles.logButtons, styles.containerMargin]}>
-                    <Text style={styles.userTypeTextPassagere}>Passagère</Text>
+                    <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>Passagère</Text>
                 </TouchableOpacity>
             </View>
         </View>

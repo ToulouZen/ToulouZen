@@ -63,7 +63,7 @@ const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity disabled={disableButton} onPress={() => updateUser()}
                             style={[styles.logButtons, disableButton ? styles.disabled : styles.logButtons, styles.containerMargin]}>
-                            <Text style={styles.userTypeTextPassagere}>{buttonTitle}</Text>
+                            <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>{buttonTitle}</Text>
                         </TouchableOpacity>
                     </View>
 
