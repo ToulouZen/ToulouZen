@@ -6,6 +6,7 @@ import React, { createContext, useContext, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { RootStackParamsList } from '../types/types';
 
+// Variables qui doivent être mises à disposition lors de l'utilisation du contexte
 type AuthContextType = {
     isSignedIn: boolean;
     user?: FirebaseAuthTypes.User | { uid: string | null };
@@ -18,6 +19,7 @@ type AuthContextType = {
     resetPassword: (mail: string, navigation: StackNavigationProp<RootStackParamsList, "PasswordReset">) => void
 }
 
+// Valeurs par défaut des variables à mettre à disposition    
 const defaultAuthState: AuthContextType = {
     isSignedIn: true,
     register: async () => undefined,
@@ -37,6 +39,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     })
     const [userInfo, setUserInfo] = React.useState<{ firstname: string | null, lastname: string | null, mail: string | null, age: number | null, userType: string | null }>({ firstname: '', lastname: '', mail: '', age: 0, userType: '' })
 
+    // Constante qui permet de faire le lien vers la collection "users" de la base de données Firestore (voir Firebase)
     const usersCollection = firestore().collection('users')
 
     useEffect(() => {
@@ -59,7 +62,8 @@ export const AuthContextProvider: React.FC = ({ children }) => {
 
         return unsubscribe
     }, [])
-
+    
+    // Méthode de contexte permettant la création du compte d'une utilisatrice
     const register = async (email: string, password: string, firstname: string, lastname: string, age: number, userType: string) => {
         const register = await firebaseAuth().createUserWithEmailAndPassword(email, password)
         usersCollection.doc(register.user.uid).get()
@@ -95,7 +99,8 @@ export const AuthContextProvider: React.FC = ({ children }) => {
                 console.error(e)
             })
     }
-
+    
+    // Méthode de contexte permettant la connexion d'une utilisatrice
     const signIn = async (email: string, password: string) => {
         const signIn = await firebaseAuth().signInWithEmailAndPassword(email, password)
         usersCollection.doc(signIn.user.uid).get()
@@ -133,6 +138,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
             })
     }
 
+    // Méthode de contexte permettant la mise à jour de l'adresse mail d'une utilisatrice
     const updateUser = async (mail: string, firstname: string, lastname: string, age: number, userType: string) => {
         firebaseAuth().currentUser?.updateEmail(mail)
         usersCollection.doc(auth.user!.uid!).set({ mail, firstname, lastname, age, userType })
@@ -145,11 +151,13 @@ export const AuthContextProvider: React.FC = ({ children }) => {
                 await AsyncStorage.setItem('ToulouzenUserType', userType)
             })
     }
-
+    
+    // Méthode de contexte permettant de capter la déconnexion à Firebase d'une utilisatrice
     const signOut = async () => {
         await firebaseAuth().signOut()
     }
 
+    // Méthode de contexte permettant de récupérer les données d'une utilisatrice lorsque l'option "Rester connecté" a été coché lors de la précédente connexion
     const getUserInfo = async () => {
         const uid = await AsyncStorage.getItem('ToulouzenUserUID')
         const firstname = await AsyncStorage.getItem('ToulouzenFirstname')
@@ -160,7 +168,8 @@ export const AuthContextProvider: React.FC = ({ children }) => {
         setAuth({ user: { uid: uid }, isSignedIn: true })
         setUserInfo({ firstname, lastname, mail, age: Number(age), userType })
     }
-
+    
+    // Méthode de contexte permettant l'envoi d'un e-mail pour effectuer la mise à jour du mot de passe d'une utilisatrice
     const resetPassword = async (mail: string, navigation: StackNavigationProp<RootStackParamsList, "PasswordReset">) => {
         navigation.goBack()
         return firebaseAuth().sendPasswordResetEmail(mail)
