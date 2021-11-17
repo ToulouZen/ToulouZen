@@ -45,23 +45,24 @@ const App = () => {
     return (
       <AppStack.Navigator
         drawerContent={props => <CustomDrawer {...props} />}
-        drawerStyle={styles.drawer}
         initialRouteName="Home">
-        <AppStack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ drawerLabel: 'Accueil' }}
-        />
-        <AppStack.Screen
-          name="Paths"
-          component={PathsScreen}
-          options={{ drawerLabel: 'Mes courses' }}
-        />
-        <AppStack.Screen
-          name="Settings"
-          component={SettingsScreen}
-          options={{ drawerLabel: 'Mes paramètres' }}
-        />
+        <AppStack.Group screenOptions={{ headerShown: false }}>
+          <AppStack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ drawerLabel: 'Accueil' }}
+          />
+          <AppStack.Screen
+            name="Paths"
+            component={PathsScreen}
+            options={{ drawerLabel: 'Mes courses' }}
+          />
+          <AppStack.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{ drawerLabel: 'Mes paramètres' }}
+          />
+        </AppStack.Group>
       </AppStack.Navigator>
     );
   }
@@ -70,21 +71,11 @@ const App = () => {
   function MyLogStack() {
     return (
       <LogStack.Navigator initialRouteName="Login">
-        <LogStack.Screen
-          name="UserType"
-          component={UserTypeScreen}
-          options={{ headerShown: false }}
-        />
-        <LogStack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-        <LogStack.Screen
-          name="Signup"
-          component={SignupScreen}
-          options={{ headerShown: false }}
-        />
+        <LogStack.Group screenOptions={{ headerShown: false }}>
+          <LogStack.Screen name="UserType" component={UserTypeScreen} />
+          <LogStack.Screen name="Login" component={LoginScreen} />
+          <LogStack.Screen name="Signup" component={SignupScreen} />
+        </LogStack.Group>
       </LogStack.Navigator>
     );
   }
@@ -93,26 +84,17 @@ const App = () => {
   function MyFullAppStack() {
     return (
       <FullAppStack.Navigator
-        initialRouteName={token == 'autolog' ? 'App' : 'Login'}>
-        <FullAppStack.Screen
-          name="Log"
-          component={MyLogStack}
-          options={{ headerShown: false }}
-        />
-        <FullAppStack.Screen
-          name="App"
-          component={MyAppStack}
-          options={{ headerShown: false }}
-        />
+        screenOptions={{ headerShown: false }}
+        initialRouteName={token === 'autolog' ? 'App' : 'Login'}>
+        <FullAppStack.Screen name="Log" component={MyLogStack} />
+        <FullAppStack.Screen name="App" component={MyAppStack} />
         <FullAppStack.Screen
           name="DriverConfirm"
           component={DriverConfirmScreen}
-          options={{ headerShown: false }}
         />
         <FullAppStack.Screen
           name="PasswordReset"
           component={PasswordResetScreen}
-          options={{ headerShown: false }}
         />
       </FullAppStack.Navigator>
     );
