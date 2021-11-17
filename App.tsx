@@ -11,77 +11,122 @@ import { NavigationContainer } from '@react-navigation/native';
 // import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'react-native';
-import { styles } from './src/styles/styles';
-import HomeScreen from './src/screens/app/HomeScreen';
-import LoginScreen from './src/screens/logs/LoginScreen';
-import SignupScreen from './src/screens/logs/SignupScreen';
-import { AuthContextProvider, useAuth } from './src/contexts/AuthContext';
+import { styles } from 'common/styles/styles';
+import HomeScreen from 'screens/app/HomeScreen';
+import LoginScreen from 'screens/auth/LoginScreen';
+import SignupScreen from 'screens/auth/SignupScreen';
+import { AuthContextProvider } from './src/contexts/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import UserTypeScreen from './src/screens/logs/UserTypeScreen';
+import UserTypeScreen from 'screens/auth/UserTypeScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SafeAreaView from 'react-native-safe-area-view';
-import CustomDrawer from './src/components/CustomDrawer';
+import CustomDrawer from 'components/CustomDrawer';
 import { FirestoreContextProvider } from './src/contexts/FirestoreContext';
-import PathsScreen from './src/screens/app/PathsScreen';
-import SettingsScreen from './src/screens/app/SettingsScreen';
-import DriverConfirmScreen from './src/screens/app/DriverConfirmScreen';
-import PasswordResetScreen from './src/screens/logs/PasswordResetScreen';
-
-
+import PathsScreen from 'screens/app/PathsScreen';
+import SettingsScreen from 'screens/app/SettingsScreen';
+import DriverConfirmScreen from 'screens/app/DriverConfirmScreen';
+import PasswordResetScreen from 'screens/auth/PasswordResetScreen';
 
 const App = () => {
-
-  const [token, setToken] = React.useState<string | null>(null)
+  const [token, setToken] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    getToken()
-  }, [])
+    getToken();
+  }, []);
 
   const getToken = async () => {
-    const token = await AsyncStorage.getItem('ToulouzenToken')
-    setToken(token)
-  }
+    const token = await AsyncStorage.getItem('ToulouzenToken');
+    setToken(token);
+  };
 
   const AppStack = createDrawerNavigator();
   function MyAppStack() {
     return (
-      <AppStack.Navigator drawerContent={props => <CustomDrawer {...props} />}
-        drawerStyle={styles.drawer} initialRouteName="Home">
-        <AppStack.Screen name="Home" component={HomeScreen} options={{ drawerLabel: "Accueil" }} />
-        <AppStack.Screen name="Paths" component={PathsScreen} options={{ drawerLabel: "Mes courses" }} />
-        <AppStack.Screen name="Settings" component={SettingsScreen} options={{ drawerLabel: "Mes paramètres" }} />
+      <AppStack.Navigator
+        drawerContent={props => <CustomDrawer {...props} />}
+        drawerStyle={styles.drawer}
+        initialRouteName="Home">
+        <AppStack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ drawerLabel: 'Accueil' }}
+        />
+        <AppStack.Screen
+          name="Paths"
+          component={PathsScreen}
+          options={{ drawerLabel: 'Mes courses' }}
+        />
+        <AppStack.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{ drawerLabel: 'Mes paramètres' }}
+        />
       </AppStack.Navigator>
-    )
+    );
   }
 
   const LogStack = createStackNavigator();
   function MyLogStack() {
     return (
       <LogStack.Navigator initialRouteName="Login">
-        <LogStack.Screen name="UserType" component={UserTypeScreen} options={{ headerShown: false }} />
-        <LogStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-        <LogStack.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }} />
+        <LogStack.Screen
+          name="UserType"
+          component={UserTypeScreen}
+          options={{ headerShown: false }}
+        />
+        <LogStack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <LogStack.Screen
+          name="Signup"
+          component={SignupScreen}
+          options={{ headerShown: false }}
+        />
       </LogStack.Navigator>
-    )
+    );
   }
 
   const FullAppStack = createStackNavigator();
   function MyFullAppStack() {
     return (
-      <FullAppStack.Navigator initialRouteName={token == "autolog" ? 'App' : 'Login'}>
-        <FullAppStack.Screen name="Log" component={MyLogStack} options={{ headerShown: false }} />
-        <FullAppStack.Screen name="App" component={MyAppStack} options={{ headerShown: false }} />
-        <FullAppStack.Screen name="DriverConfirm" component={DriverConfirmScreen} options={{ headerShown: false }} />
-        <FullAppStack.Screen name="PasswordReset" component={PasswordResetScreen} options={{ headerShown: false }} />
+      <FullAppStack.Navigator
+        initialRouteName={token == 'autolog' ? 'App' : 'Login'}>
+        <FullAppStack.Screen
+          name="Log"
+          component={MyLogStack}
+          options={{ headerShown: false }}
+        />
+        <FullAppStack.Screen
+          name="App"
+          component={MyAppStack}
+          options={{ headerShown: false }}
+        />
+        <FullAppStack.Screen
+          name="DriverConfirm"
+          component={DriverConfirmScreen}
+          options={{ headerShown: false }}
+        />
+        <FullAppStack.Screen
+          name="PasswordReset"
+          component={PasswordResetScreen}
+          options={{ headerShown: false }}
+        />
       </FullAppStack.Navigator>
-    )
+    );
   }
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView forceInset={{ bottom: 'never' }} style={{ backgroundColor: '#000' }} />
-      <SafeAreaView forceInset={{ top: 'never', bottom: 'never' }} style={styles.container}>
+      <SafeAreaView
+        forceInset={{ bottom: 'never' }}
+        style={{ backgroundColor: '#000' }}
+      />
+      <SafeAreaView
+        forceInset={{ top: 'never', bottom: 'never' }}
+        style={styles.container}>
         <AuthContextProvider>
           <FirestoreContextProvider>
             <NavigationContainer>
@@ -91,9 +136,12 @@ const App = () => {
           </FirestoreContextProvider>
         </AuthContextProvider>
       </SafeAreaView>
-      <SafeAreaView forceInset={{ top: 'never' }} style={{ backgroundColor: '#000' }} />
+      <SafeAreaView
+        forceInset={{ top: 'never' }}
+        style={{ backgroundColor: '#000' }}
+      />
     </SafeAreaProvider>
-  )
-}
+  );
+};
 
 export default App;
