@@ -2,8 +2,9 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { styles } from 'common/styles/styles';
 import { RootStackParamsList } from 'common/types/types';
 import Map from 'components/Map';
-import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
+import { COLORS, STARTED, WINDOW_WIDTH } from 'constants/Constants';
 import { useFirestore } from 'contexts/FirestoreContext';
+import I18n from 'internationalization';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -29,7 +30,7 @@ const DriverConfirmScreen: React.FC<Props> = ({ navigation }) => {
   });
 
   React.useEffect(() => {
-    if (firestore.actualPath != undefined) {
+    if (firestore.actualPath !== undefined) {
       setRegion({
         latitude: firestore.actualPath.arrivalDestination.latitude,
         longitude: firestore.actualPath.arrivalDestination.longitude,
@@ -100,7 +101,7 @@ const DriverConfirmScreen: React.FC<Props> = ({ navigation }) => {
               flexDirection: 'row',
             }}>
             <Text style={[styles.logTexts, { color: COLORS.peach }]}>
-              Trajet en cours... {'\n'}
+              {I18n.t('ride.ride_in_progress') + '\n'}
             </Text>
           </View>
           <View
@@ -121,7 +122,7 @@ const DriverConfirmScreen: React.FC<Props> = ({ navigation }) => {
                   paddingLeft: 20,
                 },
               ]}>
-              Départ :
+              {I18n.t('ride.departure', { departure: '' })}
             </Text>
             <Text
               style={[
@@ -153,7 +154,7 @@ const DriverConfirmScreen: React.FC<Props> = ({ navigation }) => {
                   paddingLeft: 20,
                 },
               ]}>
-              Arrivée :
+              {I18n.t('ride.arrival', { arrival: '' })}
             </Text>
             <Text
               style={[
@@ -168,7 +169,7 @@ const DriverConfirmScreen: React.FC<Props> = ({ navigation }) => {
             </Text>
           </View>
 
-          {firestore.actualPath?.state == 'STARTED' && (
+          {firestore.actualPath?.state === STARTED && (
             <>
               <View
                 style={{
@@ -183,9 +184,10 @@ const DriverConfirmScreen: React.FC<Props> = ({ navigation }) => {
                     styles.logTexts,
                     { color: COLORS.peach, textAlign: 'center' },
                   ]}>
-                  En attente de la validation de{' '}
-                  {firestore.actualPath?.userFirstname}{' '}
-                  {firestore.actualPath?.userLastname}
+                  {I18n.t('driver_ride.wait_for_confirmation', {
+                    firstName: firestore.actualPath?.userFirstname,
+                    lastName: firestore.actualPath?.userLastname,
+                  })}
                 </Text>
               </View>
               <ActivityIndicator
@@ -195,7 +197,7 @@ const DriverConfirmScreen: React.FC<Props> = ({ navigation }) => {
               />
             </>
           )}
-          {firestore.actualPath?.state == 'DONE' && (
+          {firestore.actualPath?.state === 'DONE' && (
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('Home');
@@ -203,7 +205,7 @@ const DriverConfirmScreen: React.FC<Props> = ({ navigation }) => {
               }}
               style={[styles.logButtons, styles.containerMargin]}>
               <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>
-                Trouver un passager
+                {I18n.t('driver_ride.find_passenger')}
               </Text>
             </TouchableOpacity>
           )}

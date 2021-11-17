@@ -13,6 +13,8 @@ import { styles } from 'common/styles/styles';
 import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
 import { useAuth } from 'contexts/AuthContext';
 import { RootStackParamsList } from 'common/types/types';
+import { handleAuthErrors } from 'utils/utils';
+import I18n from 'internationalization';
 
 type Props = StackScreenProps<RootStackParamsList, 'Signup'>;
 
@@ -43,11 +45,13 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
       })
       .then(() => {
         Alert.alert(
-          'Votre espace personnalisé a été créée',
-          "Nous vous souhaitons la bienvenue dans la famille Toulou'Zen !",
+          I18n.t('auth.register.created_account_dialog.title'),
+          I18n.t('auth.register.created_account_dialog.description'),
           [
             {
-              text: 'Super !',
+              text: I18n.t(
+                'auth.register.created_account_dialog.positive_button',
+              ),
               onPress: () => {
                 navigation.navigate('App');
               },
@@ -56,27 +60,7 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
         );
       })
       .catch(e => {
-        if (e.code == 'auth/user-not-found') {
-          Alert.alert('Utilisateur', "Ce compte n'existe pas !");
-        }
-        if (e.code == 'auth/wrong-password') {
-          Alert.alert('Mot de passe', 'Le mot de passe est incorrecte !');
-        }
-        if (e.code == 'auth/email-already-in-use') {
-          Alert.alert(
-            'Adresse e-mail',
-            'Cette adresse e-mail est déjà utilisée !',
-          );
-        }
-        if (e.code == 'auth/invalid-email') {
-          Alert.alert('Adresse e-mail', 'Cette adresse e-mail est invalide !');
-        }
-        if (e.code == 'auth/weak-password') {
-          Alert.alert(
-            'Mot de passe',
-            'Le mot de passe utilisé est trop faible, privilégiez 8 caractères au minimum, en ajoutant des chiffres, majuscules et caractères spéciaux',
-          );
-        }
+        handleAuthErrors(e);
       });
   };
 
@@ -90,13 +74,13 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
         />
         <View style={{ width: WINDOW_WIDTH * 0.85, alignSelf: 'center' }}>
           <Text style={[styles.logTitle, styles.containerMargin]}>
-            INSCRIPTION
+            {I18n.t('auth.register.title')}
           </Text>
         </View>
         <TextInput
           value={lastname}
-          onChangeText={lastname => setLastname(lastname)}
-          placeholder="Nom"
+          onChangeText={value => setLastname(value)}
+          placeholder={I18n.t('auth.lastName')}
           style={[
             styles.logInputs,
             styles.containerMargin,
@@ -105,8 +89,8 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
         />
         <TextInput
           value={firstname}
-          onChangeText={firstname => setFirstname(firstname)}
-          placeholder="Prénom"
+          onChangeText={value => setFirstname(value)}
+          placeholder={I18n.t('auth.firstName')}
           style={[
             styles.logInputs,
             styles.containerMargin,
@@ -115,8 +99,8 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
         />
         <TextInput
           value={age}
-          onChangeText={age => setAge(age)}
-          placeholder="Age"
+          onChangeText={value => setAge(value)}
+          placeholder={I18n.t('auth.age')}
           style={[
             styles.logInputs,
             styles.containerMargin,
@@ -126,8 +110,8 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
         />
         <TextInput
           value={mail}
-          onChangeText={mail => setMail(mail)}
-          placeholder="E-mail"
+          onChangeText={value => setMail(value)}
+          placeholder={I18n.t('auth.email')}
           style={[
             styles.logInputs,
             styles.containerMargin,
@@ -143,8 +127,8 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
           <TextInput
             value={password}
             secureTextEntry={!showPassword}
-            onChangeText={password => setPassword(password)}
-            placeholder="Mot de passe"
+            onChangeText={value => setPassword(value)}
+            placeholder={I18n.t('auth.password')}
             style={styles.logPasswordInput}
           />
           <TouchableOpacity
@@ -174,10 +158,8 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
           <TextInput
             value={passwordConfirmation}
             secureTextEntry={!showPassword}
-            onChangeText={passwordConfirmation =>
-              setPasswordConfirmation(passwordConfirmation)
-            }
-            placeholder="Confirmation du mot de passe"
+            onChangeText={value => setPasswordConfirmation(value)}
+            placeholder={I18n.t('auth.confirm_password')}
             style={styles.logPasswordInput}
           />
           <TouchableOpacity
@@ -203,7 +185,7 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
             onPress={() => signup()}
             style={[styles.logButtons, styles.containerMargin]}>
             <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>
-              Validation
+              {I18n.t('auth.register.action')}
             </Text>
           </TouchableOpacity>
         </View>

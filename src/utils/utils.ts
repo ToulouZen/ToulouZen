@@ -1,4 +1,6 @@
 import { Checkpoint, Path } from 'common/types/types';
+import I18n from 'internationalization';
+import { Alert } from 'react-native';
 
 export const toCheckpoint = (data: any) => {
   const checkpoint: Checkpoint = {
@@ -31,4 +33,37 @@ export const toPath = (data: any, id: any) => {
     endAt: data.endAt,
   };
   return path;
+};
+
+export const handleAuthErrors = (e: any) => {
+  if (e.code === 'auth/user-not-found') {
+    Alert.alert(
+      I18n.t('auth.user_not_found.title'),
+      I18n.t('auth.user_not_found.description'),
+    );
+  }
+  if (e.code === 'auth/wrong-password') {
+    Alert.alert(
+      I18n.t('auth.wrong_password.title'),
+      I18n.t('auth.wrong_password.description'),
+    );
+  }
+  if (e.code === 'auth/email-already-in-use') {
+    Alert.alert(
+      I18n.t('auth.email_already_in_use.title'),
+      I18n.t('auth.email_already_in_use.description'),
+    );
+  }
+  if (e.code === 'auth/invalid-email') {
+    Alert.alert(
+      I18n.t('auth.invalid_email.title'),
+      I18n.t('auth.invalid_email.description'),
+    );
+  }
+  if (e.code === 'auth/weak-password') {
+    Alert.alert(
+      I18n.t('auth.weak_password.title'),
+      I18n.t('auth.weak_password.description'),
+    );
+  }
 };

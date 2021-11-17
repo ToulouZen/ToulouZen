@@ -1,5 +1,120 @@
 {
   "general": {
     "app_name": "ToulouZen"
+  },
+  "common": {
+    "ok": "OK",
+    "yes": "Oui",
+    "yes_cancel": "'Oui, annuler'",
+    "no": "Non",
+    "later": "Plus tard",
+    "now": "Maintenant",
+    "going_there": "Y aller",
+    "logout": "Déconnexion",
+    "none": "Aucune",
+    "cancel": "Annuler",
+    "me": "Moi",
+    "save": "Sauvegarder"
+  },
+  "security_call_dialog": {
+    "title": "Appel d'urgence",
+    "description": "Vous vous sentez en danger ?"
+  },
+  "permissions": {
+    "phone": {
+      "title": "ToulouZen souhaite accéder à votre téléphone",
+      "description": "ToulouZen a besoin de la permission des appels pour que nous puissions vous rediriger vers le téléphone en cas de danger"
+    }
+  },
+  "ride": {
+    "cancel_ride_dialog": {
+      "title": "Suppression du trajet",
+      "description": "Êtes-vous certaine de vouloir annuler ce trajet ?"
+    },
+    "end_ride_dialog": {
+      "title": "Fin du trajet",
+      "description": "Êtes-vous arrivé au bon endroit et avez-vous terminé votre trajet ?",
+      "positive_button": "Oui, c'est parfait",
+      "negative_button": "Non, pas encore"
+    },
+    "my_current_location": "Ma position",
+    "current_location": "Votre position",
+    "end_ride_location": "Où souhaitez-vous aller",
+    "find_my_driver": "Trouver ma conductrice",
+    "wait_to_be_taken": "En attente de prise en charge",
+    "is_on_the_way": "{{driver}} est en route ...",
+    "end_ride": "Terminer la course",
+    "saved_destinations": "Destinations enregistrées",
+    "ride_datetime": "Le {{date}} à {{time}}",
+    "ride_time": "Départ à {{time}}",
+    "departure": "Départ : {{departure}}",
+    "arrival": "Arrivée : {{arrival}}",
+    "no_ride": "Aucun trajet disponible",
+    "confirm_ride": "Valider la course",
+    "ride_in_progress": "Trajet en cours..."
+  },
+  "driver_ride": {
+    "find_passenger": "Trouver un passager",
+    "wait_for_confirmation": "En attente de la validation de {{firstName}} {{lastName}}"
+  },
+  "auth": {
+    "user_not_found": {
+      "title": "Utilisateur",
+      "description": "Ce compte n'existe pas !"
+    },
+    "wrong_password": {
+      "title": "Mot de passe",
+      "description": "Le mot de passe est incorrecte !"
+    },
+    "email_already_in_use": {
+      "title": "Adresse e-mail",
+      "description": "Cette adresse e-mail est déjà utilisée !"
+    },
+    "invalid_email": {
+      "title": "Adresse e-mail",
+      "description": "Cette adresse e-mail est invalide !"
+    },
+    "weak_password": {
+      "title": "Mot de passe",
+      "description": "Le mot de passe utilisé est trop faible, privilégiez 8 caractères au minimum, en ajoutant des chiffres, majuscules et caractères spéciaux"
+    },
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "age": "Age",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "confirm_password": "Confirmation du mot de passe",
+    "login": {
+      "title": "Connexion",
+      "password": "Mot de passe",
+      "forgot_password": "Mot de passe oublié",
+      "login": "Me connecter",
+      "login_with": "ou me connecter avec",
+      "no_account": "Je n'ai pas de compte",
+      "create_an_account": "Je souhaite m'inscrire"
+    },
+    "register": {
+      "title": "INSCRIPTION",
+      "created_account_dialog": {
+        "title": "Votre espace personnalisé a été créée",
+        "description": "Nous vous souhaitons la bienvenue dans la famille Toulou'Zen !",
+        "positive_button": "Super !"
+      },
+      
+      "action": "Validation"
+    },
+    "reset_password": {
+      "title": "Réinitialisation",
+      "reset_password_dialog": {
+        "title": "Réinitialisation",
+        "description": "En appuyant sur \"Oui\", vous allez recevoir un courrier électronique sur l'adresse e-mail que vous avez renseigné. Si vous ne recevez rien, réessayez en vérifiant que l'adresse e-mail renseignée est correcte."
+      },
+      "action": "Envoyer l'email"
+    },
+    "user_type": {
+      "i_am": "JE SUIS ...",
+      "driver": "Conductrice",
+      "passenger": "Passagère"
+    }
   }
 }

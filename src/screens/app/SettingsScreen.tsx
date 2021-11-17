@@ -12,10 +12,11 @@ import { WINDOW_WIDTH } from 'constants/Constants';
 import { useAuth } from 'contexts/AuthContext';
 import { styles } from 'common/styles/styles';
 import { RootStackParamsList } from 'common/types/types';
+import I18n from 'internationalization';
 
 type Props = DrawerScreenProps<RootStackParamsList, 'Settings'>;
 
-const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
+const SettingsScreen: React.FC<Props> = ({ navigation }) => {
   const auth = useAuth();
 
   const [firstnameText, setFirstnameText] = React.useState<string>(
@@ -31,7 +32,9 @@ const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
   const [userTypeText, setUserTypeText] = React.useState<string>(
     auth.userInfo!.userType!,
   );
-  const [buttonTitle, setButtonTitle] = React.useState<string>('Sauvegarder');
+  const [buttonTitle, setButtonTitle] = React.useState<string>(
+    I18n.t('common.save'),
+  );
   const [disableButton, setDisableButton] = React.useState<boolean>(true);
 
   React.useEffect(() => {
@@ -39,7 +42,7 @@ const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
   }, [firstnameText, lastnameText, ageText, mailText, auth.userInfo]);
 
   const getButtonTitle = () => {
-    const { firstname, lastname, age, mail, userType } = auth.userInfo!;
+    const { firstname, lastname, age, mail } = auth.userInfo!;
     setDisableButton(true);
     if (
       firstname != firstnameText ||
@@ -47,10 +50,8 @@ const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
       age!.toString() != ageText ||
       mail != mailText
     ) {
-      setButtonTitle('Sauvegarder');
+      setButtonTitle(I18n.t('common.save'));
       setDisableButton(false);
-    } else {
-      // setButtonTitle('Sauvegardé')
     }
   };
 
@@ -72,7 +73,7 @@ const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
           <TextInput
             value={lastnameText}
             onChangeText={lastname => setLastnameText(lastname)}
-            placeholder="Nom"
+            placeholder={I18n.t('auth.lastName')}
             style={[
               styles.logInputs,
               {
@@ -84,7 +85,7 @@ const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
           <TextInput
             value={firstnameText}
             onChangeText={firstname => setFirstnameText(firstname)}
-            placeholder="Prénom"
+            placeholder={I18n.t('auth.firstName')}
             style={[
               styles.logInputs,
               {
@@ -96,7 +97,7 @@ const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
           <TextInput
             value={ageText}
             onChangeText={age => setAgeText(age)}
-            placeholder="Age"
+            placeholder={I18n.t('auth.age')}
             style={[
               styles.logInputs,
               {
@@ -110,7 +111,7 @@ const SettingsScreen: React.FC<Props> = ({ navigation, route }) => {
             value={mailText}
             keyboardType="email-address"
             onChangeText={mail => setMailText(mail)}
-            placeholder="E-mail"
+            placeholder={I18n.t('auth.email')}
             style={[
               styles.logInputs,
               {

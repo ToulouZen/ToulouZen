@@ -3,6 +3,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
 import { styles } from 'common/styles/styles';
 import { Checkpoint } from 'common/types/types';
+import I18n from 'internationalization';
 
 type Props = {
   checkpoint: Checkpoint;
@@ -38,7 +39,7 @@ const CheckpointCard: React.FC<Props> = ({ checkpoint, goTo }) => {
           },
         ]}>
         <Text style={{ color: COLORS.peach, fontSize: WINDOW_WIDTH * 0.04 }}>
-          Y aller
+          {I18n.t('common.going_there')}
         </Text>
         <Image
           resizeMode="contain"

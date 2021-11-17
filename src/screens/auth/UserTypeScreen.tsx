@@ -2,8 +2,9 @@ import { StackScreenProps } from '@react-navigation/stack';
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from 'common/styles/styles';
-import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
+import { COLORS, PASSENGER, WINDOW_WIDTH } from 'constants/Constants';
 import { RootStackParamsList } from 'common/types/types';
+import I18n from 'internationalization';
 
 type Props = StackScreenProps<RootStackParamsList, 'UserType'>;
 
@@ -23,7 +24,7 @@ const UserTypeScreen: React.FC<Props> = ({ navigation }) => {
       <View style={[styles.container, { marginTop: WINDOW_WIDTH * 0.12 }]}>
         <View style={{ width: WINDOW_WIDTH * 0.85, alignSelf: 'center' }}>
           <Text style={[styles.logTitle, styles.containerMargin]}>
-            JE SUIS ...
+            {I18n.t('auth.user_type.i_am')}
           </Text>
         </View>
         <TouchableOpacity
@@ -33,15 +34,15 @@ const UserTypeScreen: React.FC<Props> = ({ navigation }) => {
             styles.containerMargin,
             { backgroundColor: COLORS.lightGrey },
           ]}>
-          <Text style={styles.userTypeTextConductrice}>Conductrice</Text>
+          <Text style={styles.userTypeTextConductrice}>
+            {I18n.t('auth.user_type.driver')}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('Signup', { userType: 'passenger' })
-          }
+          onPress={() => navigation.navigate('Signup', { userType: PASSENGER })}
           style={[styles.logButtons, styles.containerMargin]}>
           <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>
-            Passagère
+            {I18n.t('auth.user_type.passenger')}
           </Text>
         </TouchableOpacity>
       </View>

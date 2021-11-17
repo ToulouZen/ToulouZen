@@ -13,6 +13,7 @@ import { useAuth } from 'contexts/AuthContext';
 import { useFirestore } from 'contexts/FirestoreContext';
 import { styles } from 'common/styles/styles';
 import { Checkpoint, Path, RootStackParamsList } from 'common/types/types';
+import { DONE, DRIVER, PASSENGER } from 'constants/Constants';
 
 type PropsView = {
   nav: DrawerScreenProps<RootStackParamsList, 'Home'>;
@@ -20,7 +21,7 @@ type PropsView = {
 };
 
 const HomeScreenView: React.FC<PropsView> = ({
-  nav: { navigation, route },
+  nav: { navigation },
   focused,
 }) => {
   const [checkpointSelected, setCheckpointSelected] =
@@ -47,14 +48,14 @@ const HomeScreenView: React.FC<PropsView> = ({
     if (
       auth.userInfo != undefined &&
       auth.userInfo.userType != undefined &&
-      auth.userInfo.userType == 'passenger'
+      auth.userInfo.userType == PASSENGER
     ) {
       firestore.getPassengerPaths();
     }
     if (
       auth.userInfo != undefined &&
       auth.userInfo.userType != undefined &&
-      auth.userInfo?.userType == 'driver'
+      auth.userInfo?.userType == DRIVER
     ) {
       firestore.getDriverPaths();
       firestore.getPaths();
@@ -63,9 +64,9 @@ const HomeScreenView: React.FC<PropsView> = ({
 
   React.useEffect(() => {
     if (
-      auth.userInfo?.userType == 'driver' &&
+      auth.userInfo?.userType == DRIVER &&
       firestore.actualPath != undefined &&
-      firestore.actualPath.state != 'DONE'
+      firestore.actualPath.state != DONE
     ) {
       navigation.navigate('DriverConfirm');
     }
@@ -120,7 +121,7 @@ const HomeScreenView: React.FC<PropsView> = ({
             <CheckpointCard checkpoint={checkpointSelected!} goTo={goTo} />
           )}
         </View>
-        {auth.userInfo?.userType == 'passenger' && (
+        {auth.userInfo?.userType == PASSENGER && (
           <NavigationComponent
             handleRegion={handleRegion}
             goTo={goTo}
@@ -128,7 +129,7 @@ const HomeScreenView: React.FC<PropsView> = ({
             duration={durationPath}
           />
         )}
-        {auth.userInfo?.userType == 'driver' && (
+        {auth.userInfo?.userType == DRIVER && (
           <PathsComponent handlePath={handlePath} navigation={navigation} />
         )}
       </View>
