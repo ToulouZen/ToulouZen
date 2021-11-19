@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -37,8 +29,8 @@ const App = () => {
   }, []);
 
   const getToken = async () => {
-    const token = await AsyncStorage.getItem('ToulouzenToken');
-    setToken(token);
+    const toulouzenToken = await AsyncStorage.getItem('ToulouzenToken');
+    setToken(toulouzenToken);
   };
 
   const AppStack = createDrawerNavigator();
@@ -105,7 +97,7 @@ const App = () => {
     <SafeAreaProvider>
       <SafeAreaView
         forceInset={{ bottom: 'never' }}
-        style={{ backgroundColor: '#000' }}
+        style={styles.blackBackgroundColor}
       />
       <SafeAreaView
         forceInset={{ top: 'never', bottom: 'never' }}
@@ -121,7 +113,7 @@ const App = () => {
       </SafeAreaView>
       <SafeAreaView
         forceInset={{ top: 'never' }}
-        style={{ backgroundColor: '#000' }}
+        style={styles.blackBackgroundColor}
       />
     </SafeAreaProvider>
   );

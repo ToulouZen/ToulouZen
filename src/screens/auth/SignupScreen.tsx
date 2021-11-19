@@ -72,7 +72,7 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
           source={require('../../assets/img/Courbe.png')}
           resizeMode="contain"
         />
-        <View style={{ width: WINDOW_WIDTH * 0.85, alignSelf: 'center' }}>
+        <View style={styles.authViewContainer}>
           <Text style={[styles.logTitle, styles.containerMargin]}>
             {I18n.t('auth.register.title')}
           </Text>
@@ -122,7 +122,7 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
           style={[
             styles.logInputs,
             styles.containerMargin,
-            { flexDirection: 'row' },
+            styles.horizontalContent,
           ]}>
           <TextInput
             value={password}
@@ -153,7 +153,7 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
           style={[
             styles.logInputs,
             styles.containerMargin,
-            { flexDirection: 'row' },
+            styles.horizontalContent,
           ]}>
           <TextInput
             value={passwordConfirmation}
@@ -184,7 +184,7 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
           <TouchableOpacity
             onPress={() => signup()}
             style={[styles.logButtons, styles.containerMargin]}>
-            <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>
+            <Text style={styles.userTypeTextConductrice}>
               {I18n.t('auth.register.action')}
             </Text>
           </TouchableOpacity>

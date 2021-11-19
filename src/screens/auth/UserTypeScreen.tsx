@@ -22,7 +22,7 @@ const UserTypeScreen: React.FC<Props> = ({ navigation }) => {
         resizeMode="contain"
       />
       <View style={[styles.container, { marginTop: WINDOW_WIDTH * 0.12 }]}>
-        <View style={{ width: WINDOW_WIDTH * 0.85, alignSelf: 'center' }}>
+        <View style={styles.authViewContainer}>
           <Text style={[styles.logTitle, styles.containerMargin]}>
             {I18n.t('auth.user_type.i_am')}
           </Text>
@@ -41,7 +41,7 @@ const UserTypeScreen: React.FC<Props> = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Signup', { userType: PASSENGER })}
           style={[styles.logButtons, styles.containerMargin]}>
-          <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>
+          <Text style={styles.userTypeTextConductrice}>
             {I18n.t('auth.user_type.passenger')}
           </Text>
         </TouchableOpacity>

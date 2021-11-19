@@ -52,7 +52,7 @@ const PathComponent: React.FC<Props> = ({ path, isPassenger, pathPicked }) => {
           borderWidth: path === pathPicked ? 2 : undefined,
         },
       ]}>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={styles.horizontalContent}>
         <View style={[styles.container, styles.containerPadding]}>
           <Text style={{ fontSize: WINDOW_WIDTH * 0.06, fontWeight: 'bold' }}>
             {isPassenger ? I18n.t('common.me') : path.userFirstname}

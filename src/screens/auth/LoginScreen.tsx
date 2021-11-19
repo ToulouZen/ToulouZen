@@ -79,7 +79,7 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
           resizeMode="contain"
         />
         <View style={styles.container}>
-          <View style={{ width: WINDOW_WIDTH * 0.85, alignSelf: 'center' }}>
+          <View style={styles.authViewContainer}>
             <Text style={[styles.logTitle, styles.containerMargin]}>
               {I18n.t('auth.login.title')}
             </Text>
@@ -100,12 +100,12 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
               style={[
                 styles.logInputs,
                 styles.containerMargin,
-                { flexDirection: 'row' },
+                styles.horizontalContent,
               ]}>
               <TextInput
                 value={password}
                 secureTextEntry={!showPassword}
-                onChangeText={password => setPassword(password)}
+                onChangeText={value => setPassword(value)}
                 placeholder={I18n.t('auth.login.password')}
                 style={styles.logPasswordInput}
               />
@@ -152,7 +152,7 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
                 styles.containerMargin,
               ]}
               disabled={mail.length === 0 || password.length === 0}>
-              <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>
+              <Text style={styles.userTypeTextConductrice}>
                 {I18n.t('auth.login.login')}
               </Text>
             </TouchableOpacity>

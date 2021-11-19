@@ -52,7 +52,7 @@ const PasswordResetScreen: React.FC<Props> = ({ navigation }) => {
           resizeMode="contain"
         />
         <View style={styles.container}>
-          <View style={{ width: WINDOW_WIDTH * 0.85, alignSelf: 'center' }}>
+          <View style={styles.authViewContainer}>
             <Text style={[styles.logTitle, styles.containerMargin]}>
               {I18n.t('auth.forgot_password.title')}
             </Text>
@@ -78,7 +78,7 @@ const PasswordResetScreen: React.FC<Props> = ({ navigation }) => {
                 styles.containerMargin,
               ]}
               disabled={mail.length === 0}>
-              <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>
+              <Text style={styles.userTypeTextConductrice}>
                 {I18n.t('auth.forgot_password.action')}
               </Text>
             </TouchableOpacity>

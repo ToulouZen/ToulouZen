@@ -82,7 +82,7 @@ const PathsComponent: React.FC<Props> = ({ handlePath, navigation }) => {
           ]}
           onPress={() => pathChoosed(pathPicked!)}
           disabled={firestore.paths.length === 0}>
-          <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>
+          <Text style={styles.userTypeTextConductrice}>
             {I18n.t('ride.confirm_ride')}
           </Text>
         </TouchableOpacity>

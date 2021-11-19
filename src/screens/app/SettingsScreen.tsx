@@ -129,7 +129,7 @@ const SettingsScreen: React.FC<Props> = ({ navigation }) => {
                 disableButton ? styles.disabled : styles.logButtons,
                 styles.containerMargin,
               ]}>
-              <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>
+              <Text style={styles.userTypeTextConductrice}>
                 {buttonTitle}
               </Text>
             </TouchableOpacity>

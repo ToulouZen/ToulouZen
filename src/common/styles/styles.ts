@@ -2,6 +2,16 @@ import { StyleSheet, Platform } from 'react-native';
 import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../constants/Constants';
 
 export const styles = StyleSheet.create({
+  blackBackgroundColor: {
+    backgroundColor: '#000',
+  },
+  authViewContainer: {
+    width: WINDOW_WIDTH * 0.85,
+    alignSelf: 'center',
+  },
+  horizontalContent: {
+    flexDirection: 'row',
+  },
   containerMargin: {
     margin: WINDOW_WIDTH * 0.02,
   },
@@ -133,7 +143,7 @@ export const styles = StyleSheet.create({
     color: '#000',
   },
   userTypeTextConductrice: {
-    color: COLORS.peach,
+    color: '#FFFFFF',
     fontSize: WINDOW_WIDTH * 0.06,
     fontWeight: 'bold',
   },

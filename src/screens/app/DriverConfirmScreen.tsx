@@ -204,7 +204,7 @@ const DriverConfirmScreen: React.FC<Props> = ({ navigation }) => {
                 firestore.resetActualPathId();
               }}
               style={[styles.logButtons, styles.containerMargin]}>
-              <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>
+              <Text style={styles.userTypeTextConductrice}>
                 {I18n.t('driver_ride.find_passenger')}
               </Text>
             </TouchableOpacity>
