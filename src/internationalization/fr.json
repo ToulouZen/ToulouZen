@@ -1,6 +1,11 @@
 {
   "general": {
-    "app_name": "ToulouZen"
+    "app_name": "ToulouZen",
+    "drawer_menu": {
+      "home": "Accueil",
+      "rides": "Mes courses",
+      "settings": "Mes paramètres"
+    }
   },
   "common": {
     "ok": "OK",
@@ -16,7 +21,7 @@
     "me": "Moi",
     "save": "Sauvegarder"
   },
-  "security_call_dialog": {
+  "emergency_call_dialog": {
     "title": "Appel d'urgence",
     "description": "Vous vous sentez en danger ?"
   },
@@ -100,7 +105,7 @@
         "description": "Nous vous souhaitons la bienvenue dans la famille Toulou'Zen !",
         "positive_button": "Super !"
       },
-      
+
       "action": "Validation"
     },
     "reset_password": {

@@ -1,5 +1,125 @@
 {
   "general": {
-    "app_name": "ToulouZen"
+    "app_name": "ToulouZen",
+    "drawer_menu": {
+      "home": "Home",
+      "rides": "My rides",
+      "settings": "My Settings"
+    }
+  },
+  "common": {
+    "ok": "OK",
+    "yes": "Yes",
+    "yes_cancel": "Yes, cancel",
+    "no": "No",
+    "later": "Later",
+    "now": "Now",
+    "going_there": "Going there",
+    "logout": "Logout",
+    "none": "None",
+    "cancel": "Cancel",
+    "me": "Me",
+    "save": "Save"
+  },
+  "emergency_call_dialog": {
+    "title": "Emergency Call",
+    "description": "Do you feel in danger?"
+  },
+  "permissions": {
+    "phone": {
+      "title": "ToulouZen wishes to access your phone",
+      "description": "ToulouZen needs permission for calls so that we can redirect you to the phone in case of danger"
+    }
+  },
+  "ride": {
+    "cancel_ride_dialog": {
+      "title": "Deleting the ride",
+      "description": "Are you sure you want to cancel this ride ?"
+    },
+    "end_ride_dialog": {
+      "title": "End of the ride",
+      "description": "Have you arrived at the right place and completed your ride ?",
+      "positive_button": "Yes, it's perfect",
+      "negative_button": "No, not yet"
+    },
+    "my_current_location": "My position",
+    "current_location": "Your position",
+    "end_ride_location": "Where do you want to go",
+    "find_my_driver": "Find my driver",
+    "wait_to_be_taken": "Waiting to be taken over",
+    "is_on_the_way": "{{driver}} is on its way...",
+    "end_ride": "End the ride",
+    "saved_destinations": "Saved destinations",
+    "ride_datetime": "The {{date}} at {{time}}",
+    "ride_time": "Departure at {{time}}",
+    "departure": "Departure : {{departure}}",
+    "arrival": "Arrival : {{arrival}}",
+    "no_ride": "No rides available",
+    "confirm_ride": "Confirm the ride",
+    "ride_in_progress": "Ride in progress..."
+  },
+  "driver_ride": {
+    "find_passenger": "Find a passenger",
+    "wait_for_confirmation": "Awaiting validation from {{firstName}} {{lastName}}"
+  },
+  "auth": {
+    "user_not_found": {
+      "title": "User",
+      "description": "This account does not exist !"
+    },
+    "wrong_password": {
+      "title": "Password",
+      "description": "The password is incorrect!"
+    },
+    "email_already_in_use": {
+      "title": "Adresse e-mail",
+      "description": "This e-mail address is already in use!"
+    },
+    "invalid_email": {
+      "title": "Adresse e-mail",
+      "description": "This e-mail address is invalid!"
+    },
+    "weak_password": {
+      "title": "Password",
+      "description": "The password used is too weak, use at least 8 characters, adding numbers, capital letters and special characters"
+    },
+    "firstName": "First name",
+    "lastName": "Last name",
+    "age": "Age",
+    "email": "E-mail",
+    "password": "Password",
+    "confirm_password": "Confirmation of the password",
+    "login": {
+      "title": "Connection",
+      "password": "Password",
+      "forgot_password": "Forgot your password?",
+      "login": "Log in",
+      "login_with": "or connect with",
+      "no_account": "I don't have an account",
+      "create_an_account": "I would like to register"
+    },
+    "register": {
+      "title": "Registration",
+      "created_account_dialog": {
+        "title": "Your personal space has been created",
+        "description": "We welcome you to the ToulouZen family!",
+        "positive_button": "Great !"
+      },
+
+      "action": "Confirm"
+    },
+    "reset_password": {
+      "title": "Reset your password",
+      "reset_password_dialog": {
+        "title": "Reset yout password",
+        "description": "If you press \"Yes\", you will receive an e-mail to the e-mail address you entered. If you do not receive anything, try again by checking that the e-mail address you entered is correct."
+      },
+      "action": "Send e-mail"
+    },
+    "user_type": {
+      "i_am": "I AM ...",
+      "driver": "a driver",
+      "passenger": "a passenger"
+    }
   }
 }

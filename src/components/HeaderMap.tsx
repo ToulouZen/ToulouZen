@@ -59,8 +59,8 @@ const HeaderMap: React.FC<Props> = ({ navigation }) => {
   };
   const call = () => {
     Alert.alert(
-      I18n.t('security_call_dialog.title'),
-      I18n.t('security_call_dialog.description'),
+      I18n.t('emergency_call_dialog.title'),
+      I18n.t('emergency_call_dialog.description'),
       [
         {
           text: I18n.t('common.yes'),
