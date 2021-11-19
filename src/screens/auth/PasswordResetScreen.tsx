@@ -13,6 +13,7 @@ import { styles } from 'common/styles/styles';
 import { WINDOW_WIDTH } from 'constants/Constants';
 import { useAuth } from 'contexts/AuthContext';
 import { RootStackParamsList } from 'common/types/types';
+import I18n from 'internationalization';
 
 type Props = StackScreenProps<RootStackParamsList, 'PasswordReset'>;
 
@@ -22,15 +23,15 @@ const PasswordResetScreen: React.FC<Props> = ({ navigation }) => {
 
   const reset = () => {
     Alert.alert(
-      'Réinitialisation',
-      'En appuyant sur "Oui", vous allez recevoir un courrier électronique sur l\'adresse e-mail que vous avez renseigné. Si vous ne recevez rien, réessayez en vérifiant que l\'adresse e-mail renseignée est correcte.',
+      I18n.t('auth.forgot_password.reset_password_dialog.title'),
+      I18n.t('auth.forgot_password.reset_password_dialog.description'),
       [
         {
-          text: 'Oui',
+          text: I18n.t('common.yes'),
           onPress: () => auth.resetPassword(mail, navigation),
         },
         {
-          text: 'Annuler',
+          text: I18n.t('common.cancel'),
           onPress: () => navigation.goBack(),
         },
       ],
@@ -53,15 +54,15 @@ const PasswordResetScreen: React.FC<Props> = ({ navigation }) => {
         <View style={styles.container}>
           <View style={{ width: WINDOW_WIDTH * 0.85, alignSelf: 'center' }}>
             <Text style={[styles.logTitle, styles.containerMargin]}>
-              Réinitialisation
+              {I18n.t('auth.forgot_password.title')}
             </Text>
           </View>
           <View style={styles.container}>
             <TextInput
               value={mail}
               keyboardType="email-address"
-              onChangeText={mail => setMail(mail)}
-              placeholder="E-mail"
+              onChangeText={value => setMail(value)}
+              placeholder={I18n.t('auth.email')}
               style={[
                 styles.logInputs,
                 styles.containerMargin,
@@ -73,12 +74,12 @@ const PasswordResetScreen: React.FC<Props> = ({ navigation }) => {
               onPress={() => reset()}
               style={[
                 styles.logButtons,
-                mail.length == 0 ? styles.disabled : styles.logButtons,
+                mail.length === 0 ? styles.disabled : styles.logButtons,
                 styles.containerMargin,
               ]}
-              disabled={mail.length == 0}>
+              disabled={mail.length === 0}>
               <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>
-                Envoyer l'email
+                {I18n.t('auth.forgot_password.action')}
               </Text>
             </TouchableOpacity>
           </View>

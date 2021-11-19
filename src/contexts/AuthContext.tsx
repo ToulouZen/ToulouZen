@@ -3,8 +3,18 @@ import firebaseAuth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamsList } from 'common/types/types';
+import {
+  TOULOUZEN_AGE,
+  TOULOUZEN_EMAIL,
+  TOULOUZEN_FIRST_NAME,
+  TOULOUZEN_LAST_NAME,
+  TOULOUZEN_USER_ID,
+  TOULOUZEN_USER_TYPE,
+} from 'constants/Constants';
+import I18n from 'internationalization';
 import React, { createContext, useContext, useEffect } from 'react';
 import { Alert } from 'react-native';
+import { handleAuthErrors } from 'utils/utils';
 
 // Variables qui doivent être mises à disposition lors de l'utilisation du contexte
 type AuthContextType = {
@@ -102,66 +112,45 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     age: number,
     userType: string,
   ) => {
-    const register = await firebaseAuth().createUserWithEmailAndPassword(
-      email,
-      password,
-    );
+    const registerWithEmailAndPassword =
+      await firebaseAuth().createUserWithEmailAndPassword(email, password);
     usersCollection
-      .doc(register.user.uid)
+      .doc(registerWithEmailAndPassword.user.uid)
       .get()
       .then(async documentSnapshot => {
         if (!documentSnapshot.exists) {
-          usersCollection.doc(register.user.uid).set({
-            uid: register.user.uid,
-            mail: register.user.email,
+          usersCollection.doc(registerWithEmailAndPassword.user.uid).set({
+            uid: registerWithEmailAndPassword.user.uid,
+            mail: registerWithEmailAndPassword.user.email,
             firstname,
             lastname,
             age,
             userType,
           });
           setUserInfo({ firstname, lastname, mail: email, age, userType });
-          await AsyncStorage.setItem('ToulouzenUserUID', register.user.uid);
-          await AsyncStorage.setItem('ToulouzenFirstname', firstname);
-          await AsyncStorage.setItem('ToulouzenLastname', lastname);
-          await AsyncStorage.setItem('ToulouzenEmail', email);
-          await AsyncStorage.setItem('ToulouzenAge', age.toString());
-          await AsyncStorage.setItem('ToulouzenUserType', userType);
+          await AsyncStorage.setItem(
+            TOULOUZEN_USER_ID,
+            registerWithEmailAndPassword.user.uid,
+          );
+          await AsyncStorage.setItem(TOULOUZEN_FIRST_NAME, firstname);
+          await AsyncStorage.setItem(TOULOUZEN_LAST_NAME, lastname);
+          await AsyncStorage.setItem(TOULOUZEN_EMAIL, email);
+          await AsyncStorage.setItem(TOULOUZEN_AGE, age.toString());
+          await AsyncStorage.setItem(TOULOUZEN_USER_TYPE, userType);
         }
       })
       .catch(e => {
-        if (e.code == 'auth/user-not-found') {
-          Alert.alert('Utilisateur', "Ce compte n'existe pas !");
-        }
-        if (e.code == 'auth/wrong-password') {
-          Alert.alert('Mot de passe', 'Le mot de passe est incorrecte !');
-        }
-        if (e.code == 'auth/email-already-in-use') {
-          Alert.alert(
-            'Adresse e-mail',
-            'Cette adresse e-mail est déjà utilisée !',
-          );
-        }
-        if (e.code == 'auth/invalid-email') {
-          Alert.alert('Adresse e-mail', 'Cette adresse e-mail est invalide !');
-        }
-        if (e.code == 'auth/weak-password') {
-          Alert.alert(
-            'Mot de passe',
-            'Le mot de passe utilisé est trop faible, privilégiez 8 caractères au minimum, en ajoutant des chiffres, majuscules et caractères spéciaux',
-          );
-        }
+        handleAuthErrors(e);
         console.error(e);
       });
   };
 
   // Méthode de contexte permettant la connexion d'une utilisatrice
   const signIn = async (email: string, password: string) => {
-    const signIn = await firebaseAuth().signInWithEmailAndPassword(
-      email,
-      password,
-    );
+    const signInWithEmailAndPassword =
+      await firebaseAuth().signInWithEmailAndPassword(email, password);
     usersCollection
-      .doc(signIn.user.uid)
+      .doc(signInWithEmailAndPassword.user.uid)
       .get()
       .then(async documentSnapshot => {
         const data = documentSnapshot.data();
@@ -173,38 +162,21 @@ export const AuthContextProvider: React.FC = ({ children }) => {
           userType: data?.userType,
         });
 
-        await AsyncStorage.setItem('ToulouzenUserUID', signIn.user.uid);
-        await AsyncStorage.setItem('ToulouzenFirstname', data?.firstname);
-        await AsyncStorage.setItem('ToulouzenLastname', data?.lastname);
-        await AsyncStorage.setItem('ToulouzenEmail', email);
-        await AsyncStorage.setItem('ToulouzenAge', data?.age.toString());
-        await AsyncStorage.setItem('ToulouzenUserType', data?.userType);
+        await AsyncStorage.setItem(
+          TOULOUZEN_USER_ID,
+          signInWithEmailAndPassword.user.uid,
+        );
+        await AsyncStorage.setItem(TOULOUZEN_FIRST_NAME, data?.firstname);
+        await AsyncStorage.setItem(TOULOUZEN_LAST_NAME, data?.lastname);
+        await AsyncStorage.setItem(TOULOUZEN_EMAIL, email);
+        await AsyncStorage.setItem(TOULOUZEN_AGE, data?.age.toString());
+        await AsyncStorage.setItem(TOULOUZEN_USER_TYPE, data?.userType);
       })
       .then(() => {
         getUserInfo();
       })
       .catch(e => {
-        if (e.code == 'auth/user-not-found') {
-          Alert.alert('Utilisateur', "Ce compte n'existe pas !");
-        }
-        if (e.code == 'auth/wrong-password') {
-          Alert.alert('Mot de passe', 'Le mot de passe est incorrecte !');
-        }
-        if (e.code == 'auth/email-already-in-use') {
-          Alert.alert(
-            'Adresse e-mail',
-            'Cette adresse e-mail est déjà utilisée !',
-          );
-        }
-        if (e.code == 'auth/invalid-email') {
-          Alert.alert('Adresse e-mail', 'Cette adresse e-mail est invalide !');
-        }
-        if (e.code == 'auth/weak-password') {
-          Alert.alert(
-            'Mot de passe',
-            'Le mot de passe utilisé est trop faible, privilégiez 8 caractères au minimum, en ajoutant des chiffres, majuscules et caractères spéciaux',
-          );
-        }
+        handleAuthErrors(e);
         console.error(e);
       });
   };
@@ -229,11 +201,11 @@ export const AuthContextProvider: React.FC = ({ children }) => {
           age: age,
           userType: userType,
         });
-        await AsyncStorage.setItem('ToulouzenFirstname', firstname);
-        await AsyncStorage.setItem('ToulouzenLastname', lastname);
-        await AsyncStorage.setItem('ToulouzenEmail', mail);
-        await AsyncStorage.setItem('ToulouzenAge', age.toString());
-        await AsyncStorage.setItem('ToulouzenUserType', userType);
+        await AsyncStorage.setItem(TOULOUZEN_FIRST_NAME, firstname);
+        await AsyncStorage.setItem(TOULOUZEN_LAST_NAME, lastname);
+        await AsyncStorage.setItem(TOULOUZEN_EMAIL, mail);
+        await AsyncStorage.setItem(TOULOUZEN_AGE, age.toString());
+        await AsyncStorage.setItem(TOULOUZEN_USER_TYPE, userType);
       });
   };
 
@@ -244,12 +216,12 @@ export const AuthContextProvider: React.FC = ({ children }) => {
 
   // Méthode de contexte permettant de récupérer les données d'une utilisatrice lorsque l'option "Rester connecté" a été coché lors de la précédente connexion
   const getUserInfo = async () => {
-    const uid = await AsyncStorage.getItem('ToulouzenUserUID');
-    const firstname = await AsyncStorage.getItem('ToulouzenFirstname');
-    const lastname = await AsyncStorage.getItem('ToulouzenLastname');
-    const mail = await AsyncStorage.getItem('ToulouzenEmail');
-    const age = await AsyncStorage.getItem('ToulouzenAge');
-    const userType = await AsyncStorage.getItem('ToulouzenUserType');
+    const uid = await AsyncStorage.getItem(TOULOUZEN_USER_ID);
+    const firstname = await AsyncStorage.getItem(TOULOUZEN_FIRST_NAME);
+    const lastname = await AsyncStorage.getItem(TOULOUZEN_LAST_NAME);
+    const mail = await AsyncStorage.getItem(TOULOUZEN_EMAIL);
+    const age = await AsyncStorage.getItem(TOULOUZEN_AGE);
+    const userType = await AsyncStorage.getItem(TOULOUZEN_USER_TYPE);
     setAuth({ user: { uid: uid }, isSignedIn: true });
     setUserInfo({ firstname, lastname, mail, age: Number(age), userType });
   };

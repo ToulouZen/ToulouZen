@@ -7,6 +7,7 @@ import { useAuth } from 'contexts/AuthContext';
 import { useFirestore } from 'contexts/FirestoreContext';
 import { styles } from 'common/styles/styles';
 import { RootStackParamsList } from 'common/types/types';
+import { PASSENGER } from 'constants/Constants';
 
 type Props = DrawerScreenProps<RootStackParamsList, 'Paths'>;
 
@@ -19,7 +20,7 @@ const PathsScreen: React.FC<Props> = ({ navigation }) => {
       <HeaderMap navigation={navigation} />
       <FlatList
         data={
-          auth.userInfo?.userType == 'passenger'
+          auth.userInfo?.userType === PASSENGER
             ? firestore.passengerPaths
             : firestore.driverPaths
         }
@@ -28,7 +29,7 @@ const PathsScreen: React.FC<Props> = ({ navigation }) => {
           <PathComponent
             path={item}
             index={index}
-            isPassenger={auth.userInfo?.userType == 'passenger'}
+            isPassenger={auth.userInfo?.userType === PASSENGER}
           />
         )}
       />

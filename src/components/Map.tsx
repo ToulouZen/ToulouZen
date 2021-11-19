@@ -2,7 +2,15 @@ import React from 'react';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { Image, Platform, StyleSheet, View } from 'react-native';
 import MapViewDirections from 'react-native-maps-directions';
-import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from 'constants/Constants';
+import {
+  COLORS,
+  DRIVER,
+  GOOGLE_MAPS_API_KEY_ANDROID,
+  GOOGLE_MAPS_API_KEY_IOS,
+  PASSENGER,
+  WINDOW_HEIGHT,
+  WINDOW_WIDTH,
+} from 'constants/Constants';
 import GetLocation from 'react-native-get-location';
 import { useFirestore } from 'contexts/FirestoreContext';
 import { Checkpoint } from 'common/types/types';
@@ -18,9 +26,6 @@ const stylesCustom = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
 });
-
-const GOOGLE_MAPS_API_KEY_IOS = 'AIzaSyCE-KihYba5ky6xGMyIidiT9p_jvDDEVV0';
-const GOOGLE_MAPS_API_KEY_ANDROID = 'AIzaSyDQtHXsHSB3bclc637t5T6i3hTTZo44jAc';
 
 type Props = {
   handleCard?: (checkpoint: Checkpoint) => void;
@@ -73,7 +78,7 @@ const Map: React.FC<Props> = ({
   return (
     <View style={stylesCustom.container}>
       <MapView
-        onPanDrag={() => (closeCard != undefined ? closeCard() : undefined)}
+        onPanDrag={() => (closeCard !== undefined ? closeCard() : undefined)}
         showsPointsOfInterest={false}
         provider={PROVIDER_GOOGLE}
         style={stylesCustom.map}
@@ -95,7 +100,7 @@ const Map: React.FC<Props> = ({
             />
           </Marker>
         )}
-        {passengerPosition != undefined && (
+        {passengerPosition !== undefined && (
           <Marker
             coordinate={{
               latitude: passengerPosition.latitude,
@@ -117,8 +122,8 @@ const Map: React.FC<Props> = ({
             <Marker
               key={checkpoint.name}
               onPress={() =>
-                handleCard != undefined &&
-                auth.userInfo?.userType == 'passenger'
+                handleCard !== undefined &&
+                auth.userInfo?.userType === PASSENGER
                   ? handleCard(checkpoint)
                   : undefined
               }
@@ -128,9 +133,9 @@ const Map: React.FC<Props> = ({
               }}>
               <Image
                 source={
-                  checkpoint.latitude == destination?.latitude &&
-                  checkpoint.longitude == destination?.longitude &&
-                  checkpoint.name == destination?.name
+                  checkpoint.latitude === destination?.latitude &&
+                  checkpoint.longitude === destination?.longitude &&
+                  checkpoint.name === destination?.name
                     ? require('../assets/img/Flag.png')
                     : require('../assets/img/checkpointMarker.png')
                 }
@@ -139,9 +144,9 @@ const Map: React.FC<Props> = ({
                   width: WINDOW_WIDTH * 0.1,
                   height: WINDOW_WIDTH * 0.1,
                   tintColor:
-                    checkpoint.latitude == destination?.latitude &&
-                    checkpoint.longitude == destination.longitude &&
-                    checkpoint.name == destination.name
+                    checkpoint.latitude === destination?.latitude &&
+                    checkpoint.longitude === destination.longitude &&
+                    checkpoint.name === destination.name
                       ? COLORS.blue
                       : undefined,
                 }}
@@ -149,41 +154,41 @@ const Map: React.FC<Props> = ({
             </Marker>
           );
         })}
-        {auth.userInfo?.userType == 'passenger' &&
-          destination != undefined &&
-          userLocation != undefined && (
+        {auth.userInfo?.userType === PASSENGER &&
+          destination !== undefined &&
+          userLocation !== undefined && (
             <MapViewDirections
               origin={userLocation}
               destination={destination}
               strokeColor="red"
               strokeWidth={3}
               apikey={
-                Platform.OS == 'android'
+                Platform.OS === 'android'
                   ? GOOGLE_MAPS_API_KEY_ANDROID
                   : GOOGLE_MAPS_API_KEY_IOS
               }
               onReady={({ distance, duration }) =>
-                getInfoPath != undefined
+                getInfoPath !== undefined
                   ? getInfoPath(distance, duration)
                   : undefined
               }
             />
           )}
-        {auth.userInfo?.userType == 'driver' &&
-          destination != undefined &&
-          passengerPosition != undefined && (
+        {auth.userInfo?.userType === DRIVER &&
+          destination !== undefined &&
+          passengerPosition !== undefined && (
             <MapViewDirections
               origin={passengerPosition}
               destination={destination}
               strokeColor="red"
               strokeWidth={3}
               apikey={
-                Platform.OS == 'android'
+                Platform.OS === 'android'
                   ? GOOGLE_MAPS_API_KEY_ANDROID
                   : GOOGLE_MAPS_API_KEY_IOS
               }
               onReady={({ distance, duration }) =>
-                getInfoPath != undefined
+                getInfoPath !== undefined
                   ? getInfoPath(distance, duration)
                   : undefined
               }

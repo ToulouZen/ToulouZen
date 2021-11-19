@@ -6,6 +6,7 @@ import { WINDOW_HEIGHT, WINDOW_WIDTH } from 'constants/Constants';
 import { useFirestore } from 'contexts/FirestoreContext';
 import { Path, RootStackParamsList } from 'common/types/types';
 import PathComponent from './PathComponent';
+import I18n from 'internationalization';
 
 type Props = {
   handlePath: (path: Path) => void;
@@ -65,7 +66,7 @@ const PathsComponent: React.FC<Props> = ({ handlePath, navigation }) => {
               alignItems: 'center',
               flexDirection: 'column',
             }}>
-            <Text style={styles.logTexts}>Aucun trajet disponible</Text>
+            <Text style={styles.logTexts}>{I18n.t('ride.no_ride')}</Text>
           </View>
         )}
       </View>
@@ -77,12 +78,12 @@ const PathsComponent: React.FC<Props> = ({ handlePath, navigation }) => {
         <TouchableOpacity
           style={[
             styles.logButtons,
-            firestore.paths.length == 0 ? styles.disabled : styles.logButtons,
+            firestore.paths.length === 0 ? styles.disabled : styles.logButtons,
           ]}
           onPress={() => pathChoosed(pathPicked!)}
-          disabled={firestore.paths.length == 0}>
+          disabled={firestore.paths.length === 0}>
           <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>
-            Valider la course
+            {I18n.t('ride.confirm_ride')}
           </Text>
         </TouchableOpacity>
       </View>

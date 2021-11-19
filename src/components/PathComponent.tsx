@@ -1,12 +1,13 @@
+import { styles } from 'common/styles/styles';
+import { Path } from 'common/types/types';
+import { COLORS, DONE, WINDOW_WIDTH } from 'constants/Constants';
+import { useFirestore } from 'contexts/FirestoreContext';
+import I18n from 'internationalization';
 import moment from 'moment';
 import React from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import { Icon } from 'react-native-elements';
-import { styles } from 'common/styles/styles';
-import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
-import { useFirestore } from 'contexts/FirestoreContext';
-import { Path } from 'common/types/types';
 
 type Props = {
   path: Path;
@@ -24,15 +25,15 @@ const PathComponent: React.FC<Props> = ({ path, isPassenger, pathPicked }) => {
 
   const deletePath = () => {
     Alert.alert(
-      'Suppression du trajet',
-      'Êtes-vous certaine de vouloir annuler ce trajet ?',
+      I18n.t('ride.cancel_ride_dialog.title'),
+      I18n.t('ride.cancel_ride_dialog.description'),
       [
         {
-          text: 'Oui, annuler',
+          text: I18n.t('common.yes_cancel'),
           onPress: () => firestore.deletePath(path.id),
         },
         {
-          text: 'Non',
+          text: I18n.t('common.no'),
         },
       ],
     );
@@ -47,14 +48,14 @@ const PathComponent: React.FC<Props> = ({ path, isPassenger, pathPicked }) => {
         {
           backgroundColor: '#fff',
           borderRadius: 15,
-          borderColor: path == pathPicked ? COLORS.peach : undefined,
-          borderWidth: path == pathPicked ? 2 : undefined,
+          borderColor: path === pathPicked ? COLORS.peach : undefined,
+          borderWidth: path === pathPicked ? 2 : undefined,
         },
       ]}>
       <View style={{ flexDirection: 'row' }}>
         <View style={[styles.container, styles.containerPadding]}>
           <Text style={{ fontSize: WINDOW_WIDTH * 0.06, fontWeight: 'bold' }}>
-            {isPassenger ? 'Moi' : path.userFirstname}
+            {isPassenger ? I18n.t('common.me') : path.userFirstname}
           </Text>
           <Text
             style={{
@@ -62,12 +63,14 @@ const PathComponent: React.FC<Props> = ({ path, isPassenger, pathPicked }) => {
               fontWeight: '500',
               color: COLORS.bluePrimary,
             }}>
-            {path.dateDeparture != date
-              ? 'Le ' +
-                moment(path.dateDeparture).format('DD/MM/YYYY') +
-                ' à ' +
-                moment(path.timeDeparture).format('HH:mm')
-              : 'Départ à ' + moment(path.timeDeparture).format('HH:mm')}
+            {path.dateDeparture !== date
+              ? I18n.t('ride.ride_datetime', {
+                  date: moment(path.dateDeparture).format('DD/MM/YYYY'),
+                  time: moment(path.timeDeparture).format('HH:mm'),
+                })
+              : I18n.t('ride.ride_time', {
+                  time: moment(path.timeDeparture).format('HH:mm'),
+                })}
           </Text>
         </View>
         <View
@@ -76,8 +79,8 @@ const PathComponent: React.FC<Props> = ({ path, isPassenger, pathPicked }) => {
             { justifyContent: 'center', alignItems: 'center' },
           ]}>
           {isPassenger &&
-            path.state != 'DONE' &&
-            path.dateDeparture == moment().format('YYYY-MM-DD') && (
+            path.state !== DONE &&
+            path.dateDeparture === moment().format('YYYY-MM-DD') && (
               <TouchableOpacity
                 onPress={() => deletePath()}
                 style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -93,7 +96,7 @@ const PathComponent: React.FC<Props> = ({ path, isPassenger, pathPicked }) => {
                     fontWeight: '400',
                     color: COLORS.peach,
                   }}>
-                  Annuler
+                  {I18n.t('common.cancel')}
                 </Text>
               </TouchableOpacity>
             )}
@@ -108,15 +111,20 @@ const PathComponent: React.FC<Props> = ({ path, isPassenger, pathPicked }) => {
             <View style={styles.containerPadding}>
               <Text
                 style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500' }}>
-                Départ :{' '}
-                {isPassenger ? 'Ma position' : path.departureDestination.name}
+                {I18n.t('ride.departure', {
+                  departure: isPassenger
+                    ? I18n.t('ride.my_current_location')
+                    : path.departureDestination.name,
+                })}
               </Text>
               <Text
                 style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500' }}>
-                Arrivée :{' '}
-                {path.arrivalDestination != null
-                  ? path.arrivalDestination.name
-                  : 'Narnia'}
+                {I18n.t('ride.arrival', {
+                  arrival:
+                    path.arrivalDestination != null
+                      ? path.arrivalDestination.name
+                      : 'Narnia',
+                })}
               </Text>
             </View>
           </Collapsible>

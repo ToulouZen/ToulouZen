@@ -1,4 +1,8 @@
 import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { styles } from 'common/styles/styles';
+import { RootStackParamsList } from 'common/types/types';
+import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
+import I18n from 'internationalization';
 import React from 'react';
 import {
   Alert,
@@ -10,9 +14,6 @@ import {
   View,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { styles } from 'common/styles/styles';
-import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
-import { RootStackParamsList } from 'common/types/types';
 
 type Props = {
   navigation: DrawerNavigationProp<
@@ -24,18 +25,17 @@ type Props = {
 const HeaderMap: React.FC<Props> = ({ navigation }) => {
   const _emergencyCall = async () => {
     let url = '';
-    if (Platform.OS == 'android') {
+    if (Platform.OS === 'android') {
       url = 'tel:17';
       try {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.CALL_PHONE,
           {
-            title: 'Application Tarn Habitat',
-            message:
-              "Autorisez l'application Tarn Habitat à accéder au téléphone de l'appareil pour vous mettre en lien avec vos interlocteurs ?",
-            buttonPositive: 'Ok',
-            buttonNegative: 'Non',
-            buttonNeutral: 'Plus tard',
+            title: I18n.t('permissions.phone.title'),
+            message: I18n.t('permissions.phone.description'),
+            buttonPositive: I18n.t('common.ok'),
+            buttonNegative: I18n.t('common.no'),
+            buttonNeutral: I18n.t('common.later'),
           },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
@@ -58,15 +58,19 @@ const HeaderMap: React.FC<Props> = ({ navigation }) => {
     }
   };
   const call = () => {
-    Alert.alert("Appel d'urgence", 'Vous vous sentez en danger ?', [
-      {
-        text: 'Oui',
-        onPress: () => _emergencyCall(),
-      },
-      {
-        text: 'Non',
-      },
-    ]);
+    Alert.alert(
+      I18n.t('emergency_call_dialog.title'),
+      I18n.t('emergency_call_dialog.description'),
+      [
+        {
+          text: I18n.t('common.yes'),
+          onPress: () => _emergencyCall(),
+        },
+        {
+          text: I18n.t('common.no'),
+        },
+      ],
+    );
   };
 
   return (

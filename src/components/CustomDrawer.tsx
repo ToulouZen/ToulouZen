@@ -20,6 +20,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from 'common/styles/styles';
 import { useAuth } from 'contexts/AuthContext';
 import { useFirestore } from 'contexts/FirestoreContext';
+import I18n from 'internationalization';
 
 type PropsDrawer = Omit<
   DrawerContentOptions,
@@ -127,16 +128,11 @@ const CustomDrawer: React.FC<PropsDrawer> = ({
           );
         })}
       </View>
-      {/* <View style={{ flexDirection: 'row', backgroundColor: COLORS.peach, alignItems: 'center', justifyContent: 'space-between', paddingVertical: WINDOW_WIDTH * 0.07, paddingHorizontal: WINDOW_WIDTH * 0.02 }}>
-                <Text style={{ color: "#fff", fontSize: WINDOW_WIDTH * 0.04, fontWeight: '700' }}>Conductrice</Text>
-                <Switch value={isSwitched} onValueChange={(isSwitched) => setIsSwitched(isSwitched)} thumbColor="#000" ios_backgroundColor="#fff" trackColor={{ false: "#fff", true: "#fff" }} />
-                <Text style={{ color: "#fff", fontSize: WINDOW_WIDTH * 0.04, fontWeight: '700' }}>Passagère</Text>
-            </View> */}
       <TouchableOpacity
         onPress={() => disconnect()}
         style={styles.deconnectionView}>
         <Text style={[styles.drawerCustomItemText, { color: '#fff' }]}>
-          Déconnexion
+          {I18n.t('common.logout')}
         </Text>
       </TouchableOpacity>
     </DrawerContentScrollView>

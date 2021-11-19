@@ -27,6 +27,7 @@ import PathsScreen from 'screens/app/PathsScreen';
 import SettingsScreen from 'screens/app/SettingsScreen';
 import DriverConfirmScreen from 'screens/app/DriverConfirmScreen';
 import PasswordResetScreen from 'screens/auth/PasswordResetScreen';
+import I18n from 'internationalization';
 
 const App = () => {
   const [token, setToken] = React.useState<string | null>(null);
@@ -50,17 +51,17 @@ const App = () => {
           <AppStack.Screen
             name="Home"
             component={HomeScreen}
-            options={{ drawerLabel: 'Accueil' }}
+            options={{ drawerLabel: I18n.t('general.drawer_menu.home') }}
           />
           <AppStack.Screen
             name="Paths"
             component={PathsScreen}
-            options={{ drawerLabel: 'Mes courses' }}
+            options={{ drawerLabel: I18n.t('general.drawer_menu.rides') }}
           />
           <AppStack.Screen
             name="Settings"
             component={SettingsScreen}
-            options={{ drawerLabel: 'Mes paramètres' }}
+            options={{ drawerLabel: I18n.t('general.drawer_menu.settings') }}
           />
         </AppStack.Group>
       </AppStack.Navigator>

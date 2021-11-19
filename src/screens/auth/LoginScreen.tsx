@@ -1,9 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/core';
 import { StackScreenProps } from '@react-navigation/stack';
+import { styles } from 'common/styles/styles';
+import { RootStackParamsList } from 'common/types/types';
+import {
+  COLORS,
+  TOULOUZEN_TOKEN,
+  WINDOW_HEIGHT,
+  WINDOW_WIDTH,
+} from 'constants/Constants';
+import { useAuth } from 'contexts/AuthContext';
+import I18n from 'internationalization';
 import React from 'react';
 import {
-  Alert,
   Image,
   ScrollView,
   Text,
@@ -11,10 +20,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { styles } from 'common/styles/styles';
-import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from 'constants/Constants';
-import { useAuth } from 'contexts/AuthContext';
-import { RootStackParamsList } from 'common/types/types';
+import { handleAuthErrors } from 'utils/utils';
 
 type PropsView = {
   nav: StackScreenProps<RootStackParamsList, 'Login'>;
@@ -36,7 +42,7 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
   }, [switched]);
 
   const setToken = async () => {
-    await AsyncStorage.setItem('ToulouzenToken', 'autolog');
+    await AsyncStorage.setItem(TOULOUZEN_TOKEN, 'autolog');
   };
 
   const reset = () => {
@@ -55,27 +61,7 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
         reset();
       })
       .catch(e => {
-        if (e.code == 'auth/user-not-found') {
-          Alert.alert('Utilisateur', "Ce compte n'existe pas !");
-        }
-        if (e.code == 'auth/wrong-password') {
-          Alert.alert('Mot de passe', 'Le mot de passe est incorrecte !');
-        }
-        if (e.code == 'auth/email-already-in-use') {
-          Alert.alert(
-            'Adresse e-mail',
-            'Cette adresse e-mail est déjà utilisée !',
-          );
-        }
-        if (e.code == 'auth/invalid-email') {
-          Alert.alert('Adresse e-mail', 'Cette adresse e-mail est invalide !');
-        }
-        if (e.code == 'auth/weak-password') {
-          Alert.alert(
-            'Mot de passe',
-            'Le mot de passe utilisé est trop faible, privilégiez 8 caractères au minimum, en ajoutant des chiffres, majuscules et caractères spéciaux',
-          );
-        }
+        handleAuthErrors(e);
       });
   };
 
@@ -95,15 +81,15 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
         <View style={styles.container}>
           <View style={{ width: WINDOW_WIDTH * 0.85, alignSelf: 'center' }}>
             <Text style={[styles.logTitle, styles.containerMargin]}>
-              Connexion
+              {I18n.t('auth.login.title')}
             </Text>
           </View>
           <View style={styles.container}>
             <TextInput
               value={mail}
               keyboardType="email-address"
-              onChangeText={mail => setMail(mail)}
-              placeholder="E-mail"
+              onChangeText={value => setMail(value)}
+              placeholder={I18n.t('auth.email')}
               style={[
                 styles.logInputs,
                 styles.containerMargin,
@@ -120,7 +106,7 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
                 value={password}
                 secureTextEntry={!showPassword}
                 onChangeText={password => setPassword(password)}
-                placeholder="Mot de passe"
+                placeholder={I18n.t('auth.login.password')}
                 style={styles.logPasswordInput}
               />
               <TouchableOpacity
@@ -153,21 +139,21 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
               ]}>
               <Text
                 style={[styles.logTexts, { textDecorationLine: 'underline' }]}>
-                Mot de passe oublié
+                {I18n.t('auth.login.forgot_password')}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => login()}
               style={[
                 styles.logButtons,
-                mail.length == 0 || password.length == 0
+                mail.length === 0 || password.length === 0
                   ? styles.disabled
                   : styles.logButtons,
                 styles.containerMargin,
               ]}
-              disabled={mail.length == 0 || password.length == 0}>
+              disabled={mail.length === 0 || password.length === 0}>
               <Text style={[styles.userTypeTextConductrice, { color: '#fff' }]}>
-                Me connecter
+                {I18n.t('auth.login.login')}
               </Text>
             </TouchableOpacity>
             <View
@@ -175,7 +161,9 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
                 alignSelf: 'center',
                 marginVertical: WINDOW_HEIGHT * 0.03,
               }}>
-              <Text style={styles.logTexts}>ou me connecter avec</Text>
+              <Text style={styles.logTexts}>
+                {I18n.t('auth.login.login_with')}
+              </Text>
               <View
                 style={{
                   flexDirection: 'row',
@@ -222,7 +210,9 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
                 styles.container,
                 { alignItems: 'center', justifyContent: 'center' },
               ]}>
-              <Text style={styles.logTexts}>Je n'ai pas de compte</Text>
+              <Text style={styles.logTexts}>
+                {I18n.t('auth.login.no_account')}
+              </Text>
               <TouchableOpacity onPress={() => navigation.navigate('UserType')}>
                 <Text
                   style={[
@@ -233,8 +223,7 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
                       fontSize: WINDOW_WIDTH * 0.055,
                     },
                   ]}>
-                  {' '}
-                  Je souhaite m'inscrire
+                  {I18n.t('auth.login.create_an_account')}
                 </Text>
               </TouchableOpacity>
             </View>

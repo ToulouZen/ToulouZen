@@ -1,8 +1,15 @@
 import { Picker } from '@react-native-picker/picker';
 import { styles } from 'common/styles/styles';
 import { Checkpoint } from 'common/types/types';
-import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from 'constants/Constants';
+import {
+  COLORS,
+  DONE,
+  PASSENGER_POSITION,
+  WINDOW_HEIGHT,
+  WINDOW_WIDTH,
+} from 'constants/Constants';
 import { useFirestore } from 'contexts/FirestoreContext';
+import I18n from 'internationalization';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -51,8 +58,9 @@ const NavigationComponent: React.FC<Props> = ({
   const [isVisible, setIsVisible] = React.useState<boolean>(false);
   const [isPosition, setIsPosition] = React.useState<boolean>(false);
   const [isTime, setIsTime] = React.useState<boolean>(false);
-  const [timeDeparture, setTimeDeparture] =
-    React.useState<string>('Maintenant');
+  const [timeDeparture, setTimeDeparture] = React.useState<string>(
+    I18n.t('common.now'),
+  );
   const refDepartureDestination = React.createRef<TextInput>();
   const refArrivalDestination = React.createRef<TextInput>();
 
@@ -74,20 +82,20 @@ const NavigationComponent: React.FC<Props> = ({
 
   const reset = () => {
     setArrivalDestination(undefined);
-    setTimeDeparture('Maintenant');
+    setTimeDeparture(I18n.t('common.now'));
   };
 
   const finishPath = () => {
     Alert.alert(
-      'Fin du trajet',
-      'Êtes-vous arrivé au bon endroit et avez-vous terminé votre trajet ?',
+      I18n.t('ride.end_ride_dialog.title'),
+      I18n.t('ride.end_ride_dialog.title'),
       [
         {
-          text: "Oui, c'est parfait",
+          text: I18n.t('ride.end_ride_dialog.positive_button'),
           onPress: () => firestore.endPath(),
         },
         {
-          text: 'Non, pas encore',
+          text: I18n.t('ride.end_ride_dialog.negative_button'),
         },
       ],
     );
@@ -102,7 +110,7 @@ const NavigationComponent: React.FC<Props> = ({
         height:
           firestore.actualPath == undefined ||
           (firestore.actualPath != undefined &&
-            firestore.actualPath.state == 'DONE')
+            firestore.actualPath.state == DONE)
             ? WINDOW_HEIGHT * 0.4
             : WINDOW_HEIGHT * 0.2,
         backgroundColor: '#fff',
@@ -122,7 +130,11 @@ const NavigationComponent: React.FC<Props> = ({
                 goTo(firestore.checkPoints[index]);
                 setArrivalDestination(firestore.checkPoints[index]);
               }}>
-              <Picker.Item key="Aucune" label="Aucune" value="Aucune" />
+              <Picker.Item
+                key={I18n.t('common.none')}
+                label={I18n.t('common.none')}
+                value={I18n.t('common.none')}
+              />
               {firestore.checkPoints.map((checkpoint: Checkpoint) => (
                 <Picker.Item
                   key={checkpoint.name}
@@ -140,9 +152,9 @@ const NavigationComponent: React.FC<Props> = ({
                 setTimeDeparture(itemValue);
               }}>
               <Picker.Item
-                key="Maintenant"
-                label="Maintenant"
-                value="Maintenant"
+                key={I18n.t('common.now')}
+                label={I18n.t('common.now')}
+                value={I18n.t('common.now')}
               />
               {TIMES.map((value: string) => (
                 <Picker.Item key={value} label={value} value={value} />
@@ -179,7 +191,7 @@ const NavigationComponent: React.FC<Props> = ({
         ]}>
         {firestore.actualPath == undefined ||
         (firestore.actualPath != undefined &&
-          firestore.actualPath.state == 'DONE') ? (
+          firestore.actualPath.state == DONE) ? (
           <>
             <View
               style={{
@@ -218,7 +230,7 @@ const NavigationComponent: React.FC<Props> = ({
                   styles.containerPadding,
                   styles.inputAddress,
                 ]}
-                placeholder="Votre position"
+                placeholder={I18n.t('ride.current_location')}
                 value={departureDestination}
                 onChangeText={value => setDepartureDestination(value)}
               />
@@ -233,7 +245,7 @@ const NavigationComponent: React.FC<Props> = ({
                   styles.containerPadding,
                   styles.inputAddress,
                 ]}
-                placeholder="Où souhaitez-vous aller"
+                placeholder={I18n.t('ride.end_ride_location')}
                 value={arrivalDestination?.name}
               />
               <View style={{ width: WINDOW_WIDTH * 0.7, alignSelf: 'center' }}>
@@ -278,7 +290,7 @@ const NavigationComponent: React.FC<Props> = ({
                     {
                       latitude: 43.604652,
                       longitude: 1.444209,
-                      name: 'Position du passager',
+                      name: PASSENGER_POSITION,
                     },
                     arrivalDestination!,
                     timeDeparture,
@@ -301,7 +313,7 @@ const NavigationComponent: React.FC<Props> = ({
                     : false
                 }>
                 <Text style={styles.userTypeTextPassagere}>
-                  Trouver ma conductrice
+                  {I18n.t('ride.find_my_driver')}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -317,7 +329,7 @@ const NavigationComponent: React.FC<Props> = ({
                   fontWeight: 'bold',
                 },
               ]}>
-              En attente de prise en charge
+              {I18n.t('ride.wait_to_be_taken')}
             </Text>
             <ActivityIndicator size="large" style={styles.containerMargin} />
           </View>
@@ -330,7 +342,9 @@ const NavigationComponent: React.FC<Props> = ({
                 fontWeight: 'bold',
                 textAlign: 'center',
               }}>
-              {firestore.actualPath.pickedBy.userFirstname} est en route ...
+              {I18n.t('ride.is_on_the_way', {
+                driver: firestore.actualPath.pickedBy.userFirstname,
+              })}
             </Text>
             <TouchableOpacity
               onPress={() => finishPath()}
@@ -349,7 +363,7 @@ const NavigationComponent: React.FC<Props> = ({
                   fontSize: WINDOW_WIDTH * 0.06,
                   fontWeight: 'bold',
                 }}>
-                Terminer la course
+                {I18n.t('ride.end_ride')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -357,7 +371,7 @@ const NavigationComponent: React.FC<Props> = ({
       </View>
       {firestore.actualPath == undefined ||
         (firestore.actualPath != undefined &&
-          firestore.actualPath.state == 'DONE' && (
+          firestore.actualPath.state == DONE && (
             <View
               style={[
                 styles.containerPadding,
@@ -383,7 +397,7 @@ const NavigationComponent: React.FC<Props> = ({
                     marginLeft: WINDOW_WIDTH * 0.05,
                     color: COLORS.bluePrimary,
                   }}>
-                  Destinations enregistrées
+                  {I18n.t('ride.saved_destinations')}
                 </Text>
               </TouchableOpacity>
             </View>

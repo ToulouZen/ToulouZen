@@ -4,6 +4,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Checkpoint, Path } from 'common/types/types';
 import { toCheckpoint, toPath } from 'utils/utils';
 import { useAuth } from './AuthContext';
+import I18n from 'internationalization';
+import { CREATED, DONE, STARTED } from 'constants/Constants';
 
 type FirestoreContextType = {
   checkPoints: Checkpoint[];
@@ -121,7 +123,7 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
       dateDeparture = moment().add(1, 'day').format('YYYY-MM-DD');
     }
     let timeDeparture = '';
-    if (time == 'Maintenant') {
+    if (time == I18n.t('common.now')) {
       timeDeparture = moment().format('YYYY-MM-DD HH:mm:ss');
     } else {
       timeDeparture = moment(
@@ -140,7 +142,7 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
       pickedBy: { userId: null, userLastname: null, userFirstname: null },
       distance,
       duration,
-      state: 'CREATED',
+      state: CREATED,
       startAt: null,
       endAt: null,
     });
@@ -268,7 +270,7 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
           userLastname: auth.userInfo?.lastname,
           userFirstname: auth.userInfo?.firstname,
         },
-        state: 'STARTED',
+        state: STARTED,
         startAt: moment().format('YYYY-MM-DD HH:mm:ss'),
       })
       .then(async () => {
@@ -282,7 +284,7 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
     pathsCollection
       .doc(actualPath!.id)
       .update({
-        state: 'DONE',
+        state: DONE,
         endAt: moment().format('YYYY-MM-DD HH:mm:ss'),
       })
       .then(() => {
