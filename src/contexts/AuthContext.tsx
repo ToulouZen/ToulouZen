@@ -11,9 +11,7 @@ import {
   TOULOUZEN_USER_ID,
   TOULOUZEN_USER_TYPE,
 } from 'constants/Constants';
-import I18n from 'internationalization';
 import React, { createContext, useContext, useEffect } from 'react';
-import { Alert } from 'react-native';
 import { handleAuthErrors } from 'utils/utils';
 
 // Variables qui doivent être mises à disposition lors de l'utilisation du contexte
@@ -37,7 +35,7 @@ type AuthContextType = {
   ) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
-  getUserInfo: () => void;
+  getUserInfo: () => Promise<void>;
   updateUser: (
     mail: string,
     firstname: string,
@@ -53,7 +51,7 @@ type AuthContextType = {
 
 // Valeurs par défaut des variables à mettre à disposition
 const defaultAuthState: AuthContextType = {
-  isSignedIn: true,
+  isSignedIn: false,
   register: async () => undefined,
   signIn: async () => undefined,
   signOut: async () => undefined,
@@ -86,11 +84,11 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     const unsubscribe = firebaseAuth().onAuthStateChanged(_user => {
       if (_user) {
         // user is logged in
-
         setAuth({
           user: _user,
           isSignedIn: true,
         });
+        getUserInfo();
       } else {
         // user is logged out
         setAuth({
@@ -214,7 +212,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     await firebaseAuth().signOut();
   };
 
-  // Méthode de contexte permettant de récupérer les données d'une utilisatrice lorsque l'option "Rester connecté" a été coché lors de la précédente connexion
+  // Méthode de contexte permettant de récupérer les données d'une utilisatrice
   const getUserInfo = async () => {
     const uid = await AsyncStorage.getItem(TOULOUZEN_USER_ID);
     const firstname = await AsyncStorage.getItem(TOULOUZEN_FIRST_NAME);

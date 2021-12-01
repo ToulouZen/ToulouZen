@@ -1,14 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/core';
 import { StackScreenProps } from '@react-navigation/stack';
 import { styles } from 'common/styles/styles';
 import { RootStackParamsList } from 'common/types/types';
-import {
-  COLORS,
-  TOULOUZEN_TOKEN,
-  WINDOW_HEIGHT,
-  WINDOW_WIDTH,
-} from 'constants/Constants';
+import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from 'constants/Constants';
 import { useAuth } from 'contexts/AuthContext';
 import I18n from 'internationalization';
 import React from 'react';
@@ -22,31 +15,15 @@ import {
 } from 'react-native';
 import { handleAuthErrors } from 'utils/utils';
 
-type PropsView = {
-  nav: StackScreenProps<RootStackParamsList, 'Login'>;
-  focused: boolean;
-};
-
-const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
+type Props = StackScreenProps<RootStackParamsList, 'Login'>;
+const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [mail, setMail] = React.useState<string>('jeanne.dupont@gmail.com');
   const [password, setPassword] = React.useState<string>('password');
-  const [switched, setSwitched] = React.useState<boolean>(false);
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
   const auth = useAuth();
 
-  React.useEffect(() => {
-    if (switched) {
-      setToken();
-    }
-  }, [switched]);
-
-  const setToken = async () => {
-    await AsyncStorage.setItem(TOULOUZEN_TOKEN, 'autolog');
-  };
-
   const reset = () => {
-    setMail('');
     setPassword('');
   };
 
@@ -57,7 +34,10 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
         auth.getUserInfo();
       })
       .then(() => {
-        navigation.navigate('App');
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'LoggedApp' }],
+        });
         reset();
       })
       .catch(e => {
@@ -232,12 +212,6 @@ const LoginScreenView: React.FC<PropsView> = ({ nav: { navigation } }) => {
       </View>
     </ScrollView>
   );
-};
-
-type Props = StackScreenProps<RootStackParamsList, 'Login'>;
-const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
-  const isFocused = useIsFocused();
-  return <LoginScreenView nav={{ navigation, route }} focused={isFocused} />;
 };
 
 export default LoginScreen;

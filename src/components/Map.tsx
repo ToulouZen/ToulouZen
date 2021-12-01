@@ -11,7 +11,7 @@ import {
   WINDOW_HEIGHT,
   WINDOW_WIDTH,
 } from 'constants/Constants';
-import GetLocation from 'react-native-get-location';
+import GetLocation, { Location } from 'react-native-get-location';
 import { useFirestore } from 'contexts/FirestoreContext';
 import { Checkpoint } from 'common/types/types';
 import { useAuth } from 'contexts/AuthContext';
@@ -44,10 +44,7 @@ const Map: React.FC<Props> = ({
   getInfoPath,
   passengerPosition,
 }) => {
-  const [userLocation, setUserLocation] =
-    React.useState<{ latitude: number; longitude: number }>();
-  const [userLocationFound, setUserLocationFound] =
-    React.useState<boolean>(false);
+  const [userLocation, setUserLocation] = React.useState<Location>();
 
   const firestore = useFirestore();
   const auth = useAuth();
@@ -61,13 +58,8 @@ const Map: React.FC<Props> = ({
       enableHighAccuracy: true,
       timeout: 15000,
     })
-      .then(location => {
-        console.log(location);
-        setUserLocation({
-          latitude: location.latitude,
-          longitude: location.longitude,
-        });
-        setUserLocationFound(true);
+      .then((location: Location) => {
+        setUserLocation(location);
       })
       .catch(error => {
         const { code, message } = error;
@@ -78,45 +70,13 @@ const Map: React.FC<Props> = ({
   return (
     <View style={stylesCustom.container}>
       <MapView
+        showsUserLocation={true}
+        showsMyLocationButton={false}
         onPanDrag={() => (closeCard !== undefined ? closeCard() : undefined)}
         showsPointsOfInterest={false}
         provider={PROVIDER_GOOGLE}
         style={stylesCustom.map}
         region={region}>
-        {userLocationFound && (
-          <Marker
-            coordinate={{
-              latitude: userLocation!.latitude,
-              longitude: userLocation!.longitude,
-            }}>
-            <Image
-              source={require('../assets/img/Localisation.png')}
-              resizeMode="contain"
-              style={{
-                width: WINDOW_WIDTH * 0.1,
-                height: WINDOW_WIDTH * 0.1,
-                tintColor: COLORS.peach,
-              }}
-            />
-          </Marker>
-        )}
-        {passengerPosition !== undefined && (
-          <Marker
-            coordinate={{
-              latitude: passengerPosition.latitude,
-              longitude: passengerPosition.longitude,
-            }}>
-            <Image
-              source={require('../assets/img/Localisation.png')}
-              resizeMode="contain"
-              style={{
-                width: WINDOW_WIDTH * 0.1,
-                height: WINDOW_WIDTH * 0.1,
-                tintColor: COLORS.bluePrimary,
-              }}
-            />
-          </Marker>
-        )}
         {firestore.checkPoints.map(checkpoint => {
           return (
             <Marker

@@ -23,8 +23,8 @@ const PasswordResetScreen: React.FC<Props> = ({ navigation }) => {
 
   const reset = () => {
     Alert.alert(
-      I18n.t('auth.forgot_password.reset_password_dialog.title'),
-      I18n.t('auth.forgot_password.reset_password_dialog.description'),
+      I18n.t('auth.reset_password.reset_password_dialog.title'),
+      I18n.t('auth.reset_password.reset_password_dialog.description'),
       [
         {
           text: I18n.t('common.yes'),
@@ -54,7 +54,7 @@ const PasswordResetScreen: React.FC<Props> = ({ navigation }) => {
         <View style={styles.container}>
           <View style={styles.authViewContainer}>
             <Text style={[styles.logTitle, styles.containerMargin]}>
-              {I18n.t('auth.forgot_password.title')}
+              {I18n.t('auth.reset_password.title')}
             </Text>
           </View>
           <View style={styles.container}>
@@ -79,7 +79,7 @@ const PasswordResetScreen: React.FC<Props> = ({ navigation }) => {
               ]}
               disabled={mail.length === 0}>
               <Text style={styles.userTypeTextConductrice}>
-                {I18n.t('auth.forgot_password.action')}
+                {I18n.t('auth.reset_password.action')}
               </Text>
             </TouchableOpacity>
           </View>

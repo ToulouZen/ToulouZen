@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/core';
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Region } from 'react-native-maps';
 import CheckpointCard from 'components/CheckpointCard';
@@ -15,62 +15,45 @@ import { styles } from 'common/styles/styles';
 import { Checkpoint, Path, RootStackParamsList } from 'common/types/types';
 import { DONE, DRIVER, PASSENGER } from 'constants/Constants';
 
-type PropsView = {
-  nav: DrawerScreenProps<RootStackParamsList, 'Home'>;
-  focused: boolean;
-};
+type Props = DrawerScreenProps<RootStackParamsList, 'Home'>;
 
-const HomeScreenView: React.FC<PropsView> = ({
-  nav: { navigation },
-  focused,
-}) => {
-  const [checkpointSelected, setCheckpointSelected] =
-    React.useState<Checkpoint>();
-  const [showCheckpointCard, setShowCheckpointCard] =
-    React.useState<boolean>(false);
-  const [checkpointToGo, setCheckpointToGo] = React.useState<Checkpoint>();
-  const [region, setRegion] = React.useState<Region>({
+const HomeScreen: FC<Props> = ({ navigation }) => {
+  const isFocused = useIsFocused();
+  const [checkpointSelected, setCheckpointSelected] = useState<Checkpoint>();
+  const [showCheckpointCard, setShowCheckpointCard] = useState<boolean>(false);
+  const [checkpointToGo, setCheckpointToGo] = useState<Checkpoint>();
+  const [region, setRegion] = useState<Region>({
     latitude: 43.604652,
     longitude: 1.444209,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-  const [durationPath, setDurationPath] = React.useState<number>(0);
-  const [distancePath, setDistancePath] = React.useState<number>(0);
-  const [passengerPosition, setPassengerPosition] =
-    React.useState<Checkpoint>();
+  const [durationPath, setDurationPath] = useState<number>(0);
+  const [distancePath, setDistancePath] = useState<number>(0);
+  const [passengerPosition, setPassengerPosition] = useState<Checkpoint>();
 
   const auth = useAuth();
   const firestore = useFirestore();
 
-  React.useEffect(() => {
+  useEffect(() => {
     firestore.getAllCheckpoints();
-    if (
-      auth.userInfo != undefined &&
-      auth.userInfo.userType != undefined &&
-      auth.userInfo.userType == PASSENGER
-    ) {
+    if (auth?.userInfo?.userType == PASSENGER) {
       firestore.getPassengerPaths();
     }
-    if (
-      auth.userInfo != undefined &&
-      auth.userInfo.userType != undefined &&
-      auth.userInfo?.userType == DRIVER
-    ) {
+    if (auth?.userInfo?.userType == DRIVER) {
       firestore.getDriverPaths();
       firestore.getPaths();
     }
-  }, [focused]);
+  }, [isFocused, auth?.userInfo?.userType]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
-      auth.userInfo?.userType == DRIVER &&
-      firestore.actualPath != undefined &&
-      firestore.actualPath.state != DONE
+      auth?.userInfo?.userType == DRIVER &&
+      firestore?.actualPath?.state != DONE
     ) {
       navigation.navigate('DriverConfirm');
     }
-  }, [firestore.actualPath]);
+  }, [firestore.actualPath, auth?.userInfo?.userType]);
 
   const handleCard = (checkpoint: Checkpoint) => {
     setCheckpointSelected(checkpoint);
@@ -105,43 +88,34 @@ const HomeScreenView: React.FC<PropsView> = ({
   };
 
   return (
-    <>
-      <View style={styles.container}>
-        <Map
-          handleCard={handleCard}
-          closeCard={closeCard}
-          destination={checkpointToGo}
-          region={region}
-          getInfoPath={getInfoPath}
-          passengerPosition={passengerPosition}
-        />
-        <View style={{ position: 'absolute', top: 0 }}>
-          <HeaderMap navigation={navigation} />
-          {showCheckpointCard && (
-            <CheckpointCard checkpoint={checkpointSelected!} goTo={goTo} />
-          )}
-        </View>
-        {auth.userInfo?.userType == PASSENGER && (
-          <NavigationComponent
-            handleRegion={handleRegion}
-            goTo={goTo}
-            distance={distancePath}
-            duration={durationPath}
-          />
-        )}
-        {auth.userInfo?.userType == DRIVER && (
-          <PathsComponent handlePath={handlePath} navigation={navigation} />
+    <View style={styles.container}>
+      <Map
+        handleCard={handleCard}
+        closeCard={closeCard}
+        destination={checkpointToGo}
+        region={region}
+        getInfoPath={getInfoPath}
+        passengerPosition={passengerPosition}
+      />
+      <View style={{ position: 'absolute', top: 0 }}>
+        <HeaderMap navigation={navigation} />
+        {showCheckpointCard && (
+          <CheckpointCard checkpoint={checkpointSelected!} goTo={goTo} />
         )}
       </View>
-    </>
+      {auth?.userInfo?.userType === PASSENGER && (
+        <NavigationComponent
+          handleRegion={handleRegion}
+          goTo={goTo}
+          distance={distancePath}
+          duration={durationPath}
+        />
+      )}
+      {auth?.userInfo?.userType === DRIVER && (
+        <PathsComponent handlePath={handlePath} navigation={navigation} />
+      )}
+    </View>
   );
-};
-
-type Props = DrawerScreenProps<RootStackParamsList, 'Home'>;
-
-const HomeScreen: React.FC<Props> = ({ navigation, route }) => {
-  const isFocused = useIsFocused();
-  return <HomeScreenView nav={{ navigation, route }} focused={isFocused} />;
 };
 
 export default HomeScreen;

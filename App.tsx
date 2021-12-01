@@ -1,97 +1,90 @@
-import React from 'react';
+import firebaseAuth from '@react-native-firebase/auth';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StatusBar } from 'react-native';
 import { styles } from 'common/styles/styles';
-import HomeScreen from 'screens/app/HomeScreen';
-import LoginScreen from 'screens/auth/LoginScreen';
-import SignupScreen from 'screens/auth/SignupScreen';
-import { AuthContextProvider } from './src/contexts/AuthContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import UserTypeScreen from 'screens/auth/UserTypeScreen';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import CustomDrawer from 'components/CustomDrawer';
+import I18n from 'internationalization';
+import React, { useEffect } from 'react';
+import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SafeAreaView from 'react-native-safe-area-view';
-import CustomDrawer from 'components/CustomDrawer';
-import { FirestoreContextProvider } from './src/contexts/FirestoreContext';
+import DriverConfirmScreen from 'screens/app/DriverConfirmScreen';
+import HomeScreen from 'screens/app/HomeScreen';
 import PathsScreen from 'screens/app/PathsScreen';
 import SettingsScreen from 'screens/app/SettingsScreen';
-import DriverConfirmScreen from 'screens/app/DriverConfirmScreen';
+import LoginScreen from 'screens/auth/LoginScreen';
 import PasswordResetScreen from 'screens/auth/PasswordResetScreen';
-import I18n from 'internationalization';
+import SignupScreen from 'screens/auth/SignupScreen';
+import UserTypeScreen from 'screens/auth/UserTypeScreen';
+import { logCurrentStorage } from 'utils/utils';
+import { AuthContextProvider } from './src/contexts/AuthContext';
+import { FirestoreContextProvider } from './src/contexts/FirestoreContext';
 
 const App = () => {
-  const [token, setToken] = React.useState<string | null>(null);
+  const AppStack = createStackNavigator();
+  const AppDrawerStack = createDrawerNavigator();
 
-  React.useEffect(() => {
-    getToken();
-  }, []);
-
-  const getToken = async () => {
-    const toulouzenToken = await AsyncStorage.getItem('ToulouzenToken');
-    setToken(toulouzenToken);
-  };
-
-  const AppStack = createDrawerNavigator();
-  function MyAppStack() {
+  const LoggedStack = () => {
     return (
-      <AppStack.Navigator
+      <AppDrawerStack.Navigator
         drawerContent={props => <CustomDrawer {...props} />}
         initialRouteName="Home">
-        <AppStack.Group screenOptions={{ headerShown: false }}>
-          <AppStack.Screen
+        <AppDrawerStack.Group screenOptions={{ headerShown: false }}>
+          <AppDrawerStack.Screen
             name="Home"
             component={HomeScreen}
             options={{ drawerLabel: I18n.t('general.drawer_menu.home') }}
           />
-          <AppStack.Screen
+          <AppDrawerStack.Screen
             name="Paths"
             component={PathsScreen}
             options={{ drawerLabel: I18n.t('general.drawer_menu.rides') }}
           />
-          <AppStack.Screen
+          <AppDrawerStack.Screen
             name="Settings"
             component={SettingsScreen}
             options={{ drawerLabel: I18n.t('general.drawer_menu.settings') }}
           />
+        </AppDrawerStack.Group>
+      </AppDrawerStack.Navigator>
+    );
+  };
+
+  const AuthStack = () => {
+    return (
+      <AppStack.Navigator initialRouteName="Login">
+        <AppStack.Group screenOptions={{ headerShown: false }}>
+          <AppStack.Screen name="Login" component={LoginScreen} />
+          <AppStack.Screen name="UserType" component={UserTypeScreen} />
+          <AppStack.Screen name="Signup" component={SignupScreen} />
+          <AppStack.Screen
+            name="PasswordReset"
+            component={PasswordResetScreen}
+          />
         </AppStack.Group>
       </AppStack.Navigator>
     );
-  }
+  };
 
-  const LogStack = createStackNavigator();
-  function MyLogStack() {
+  const FullAppStack = () => {
     return (
-      <LogStack.Navigator initialRouteName="Login">
-        <LogStack.Group screenOptions={{ headerShown: false }}>
-          <LogStack.Screen name="UserType" component={UserTypeScreen} />
-          <LogStack.Screen name="Login" component={LoginScreen} />
-          <LogStack.Screen name="Signup" component={SignupScreen} />
-        </LogStack.Group>
-      </LogStack.Navigator>
-    );
-  }
-
-  const FullAppStack = createStackNavigator();
-  function MyFullAppStack() {
-    return (
-      <FullAppStack.Navigator
+      <AppStack.Navigator
         screenOptions={{ headerShown: false }}
-        initialRouteName={token === 'autolog' ? 'App' : 'Login'}>
-        <FullAppStack.Screen name="Log" component={MyLogStack} />
-        <FullAppStack.Screen name="App" component={MyAppStack} />
-        <FullAppStack.Screen
-          name="DriverConfirm"
-          component={DriverConfirmScreen}
-        />
-        <FullAppStack.Screen
-          name="PasswordReset"
-          component={PasswordResetScreen}
-        />
-      </FullAppStack.Navigator>
+        initialRouteName={
+          firebaseAuth().currentUser !== null ? 'LoggedApp' : 'AuthApp'
+        }>
+        <AppStack.Screen name="AuthApp" component={AuthStack} />
+        <AppStack.Screen name="LoggedApp" component={LoggedStack} />
+        <AppStack.Screen name="DriverConfirm" component={DriverConfirmScreen} />
+      </AppStack.Navigator>
     );
-  }
+  };
+
+  useEffect(() => {
+    logCurrentStorage();
+  }, []);
 
   return (
     <SafeAreaProvider>
@@ -106,7 +99,7 @@ const App = () => {
           <FirestoreContextProvider>
             <NavigationContainer>
               <StatusBar barStyle="light-content" />
-              <MyFullAppStack />
+              <FullAppStack />
             </NavigationContainer>
           </FirestoreContextProvider>
         </AuthContextProvider>

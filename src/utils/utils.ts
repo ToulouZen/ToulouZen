@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Checkpoint, Path } from 'common/types/types';
 import I18n from 'internationalization';
 import { Alert } from 'react-native';
@@ -67,3 +68,16 @@ export const handleAuthErrors = (e: any) => {
     );
   }
 };
+
+export function logCurrentStorage() {
+  AsyncStorage.getAllKeys().then(keyArray => {
+    AsyncStorage.multiGet(keyArray).then(keyValArray => {
+      let myStorage: any = {};
+      for (let keyVal of keyValArray) {
+        myStorage[keyVal[0]] = keyVal[1];
+      }
+
+      console.log('CURRENT STORAGE: ', myStorage);
+    });
+  });
+}

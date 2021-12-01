@@ -13,14 +13,23 @@ import {
   DrawerNavigationState,
   ParamListBase,
 } from '@react-navigation/native';
-import DrawerItemCustom from 'components/DrawerItemCustom';
-import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
-import React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from 'common/styles/styles';
+import DrawerItemCustom from 'components/DrawerItemCustom';
+import {
+  COLORS,
+  TOULOUZEN_AGE,
+  TOULOUZEN_EMAIL,
+  TOULOUZEN_FIRST_NAME,
+  TOULOUZEN_LAST_NAME,
+  TOULOUZEN_USER_ID,
+  TOULOUZEN_USER_TYPE,
+  WINDOW_WIDTH,
+} from 'constants/Constants';
 import { useAuth } from 'contexts/AuthContext';
 import { useFirestore } from 'contexts/FirestoreContext';
 import I18n from 'internationalization';
+import React from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 type PropsDrawer = Omit<
   DrawerContentOptions,
@@ -35,40 +44,21 @@ const CustomDrawer: React.FC<PropsDrawer> = ({
   descriptors,
   navigation,
 }) => {
-  const [isSwitched, setIsSwitched] = React.useState<boolean>(false);
   const auth = useAuth();
   const firestore = useFirestore();
-
-  React.useEffect(() => {
-    if (auth.userInfo?.userType == 'driver') {
-      setIsSwitched(false);
-    } else {
-      setIsSwitched(true);
-    }
-    _setUserType(auth.userInfo?.userType);
-  }, [auth.userInfo?.userType]);
-
-  const _setUserType = async (userType: string | null | undefined) => {
-    if (typeof userType == 'string') {
-      AsyncStorage.setItem('ToulouzenUserType', userType).then(() =>
-        auth.getUserInfo(),
-      );
-    }
-  };
 
   const disconnect = async () => {
     firestore.resetAll();
     await AsyncStorage.multiRemove([
-      'ToulouzenUserUID',
-      'ToulouzenFirstname',
-      'ToulouzenLastname',
-      'ToulouzenEmail',
-      'ToulouzenAge',
-      'ToulouzenUserType',
-      'ToulouzenToken',
+      TOULOUZEN_USER_ID,
+      TOULOUZEN_FIRST_NAME,
+      TOULOUZEN_LAST_NAME,
+      TOULOUZEN_EMAIL,
+      TOULOUZEN_AGE,
+      TOULOUZEN_USER_TYPE,
     ]);
     auth.signOut();
-    navigation.navigate('Log', { screen: 'Login' });
+    navigation.navigate('AuthApp');
   };
 
   return (

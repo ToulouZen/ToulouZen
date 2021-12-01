@@ -53,7 +53,7 @@ const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
                 'auth.register.created_account_dialog.positive_button',
               ),
               onPress: () => {
-                navigation.navigate('App');
+                navigation.navigate('LoggedApp');
               },
             },
           ],

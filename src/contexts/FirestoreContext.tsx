@@ -63,15 +63,6 @@ export const FirestoreContextProvider: React.FC = ({ children }) => {
   const auth = useAuth();
 
   useEffect(() => {
-    console.log('checkpoints => ', checkPoints);
-    console.log('paths =>', paths);
-    console.log('driverPaths => ', driverPaths);
-    console.log('passengerPaths => ', passengerPaths);
-    console.log('actualPathId =>', actualPathId);
-    console.log('actualPath =>', actualPath);
-  });
-
-  useEffect(() => {
     if (
       auth.userInfo != undefined &&
       auth.userInfo.userType != undefined &&

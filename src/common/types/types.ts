@@ -4,12 +4,13 @@ export type RootStackParamsList = {
   Signup: {
     userType: string;
   };
-  App: undefined;
+  PasswordReset: undefined;
+  AuthApp: undefined;
+  LoggedApp: undefined;
   Home: undefined;
   Paths: undefined;
-  DriverConfirm: undefined;
   Settings: undefined;
-  PasswordReset: undefined;
+  DriverConfirm: undefined;
 };
 
 export type User = {
@@ -19,10 +20,13 @@ export type User = {
   mail: string;
 };
 
-export type Checkpoint = {
-  name: string;
+export type Location = {
   latitude: number;
   longitude: number;
+};
+
+export type Checkpoint = Location & {
+  name: string;
 };
 
 export type Path = {
