@@ -25,7 +25,6 @@ import { FirestoreContextProvider } from './src/contexts/FirestoreContext';
 import { LogBox } from 'react-native';
 
 const App = () => {
-  LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
   LogBox.ignoreAllLogs(); //Ignore all log notifications
 
   const AppStack = createStackNavigator();

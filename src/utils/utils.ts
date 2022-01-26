@@ -1,5 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MMKVStorage } from 'common/storage';
 import { Checkpoint, Path } from 'common/types/types';
+import { TOULOUZEN_AGE } from 'constants/Constants';
 import I18n from 'internationalization';
 import { Alert } from 'react-native';
 
@@ -71,14 +72,15 @@ export const handleAuthErrors = (e: any) => {
 };
 
 export function logCurrentStorage() {
-  AsyncStorage.getAllKeys().then(keyArray => {
-    AsyncStorage.multiGet(keyArray).then(keyValArray => {
-      let myStorage: any = {};
-      for (let keyVal of keyValArray) {
-        myStorage[keyVal[0]] = keyVal[1];
-      }
-
-      console.log('CURRENT STORAGE: ', myStorage);
-    });
+  let storage: any = {};
+  const keys = MMKVStorage.getAllKeys();
+  keys.forEach(key => {
+    if (key === TOULOUZEN_AGE) {
+      storage[key] = MMKVStorage.getNumber(key);
+      return;
+    }
+    storage[key] = MMKVStorage.getString(key);
   });
+
+  console.log('CURRENT STORAGE: ', storage);
 }

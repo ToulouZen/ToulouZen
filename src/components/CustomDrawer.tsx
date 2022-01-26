@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   DrawerContentOptions,
   DrawerContentScrollView,
@@ -13,6 +12,7 @@ import {
   DrawerNavigationState,
   ParamListBase,
 } from '@react-navigation/native';
+import { MMKVStorage } from 'common/storage';
 import { styles } from 'common/styles/styles';
 import DrawerItemCustom from 'components/DrawerItemCustom';
 import {
@@ -45,14 +45,12 @@ const CustomDrawer: FC<PropsDrawer> = ({ state, descriptors, navigation }) => {
 
   const disconnect = async () => {
     firestore.resetAll();
-    await AsyncStorage.multiRemove([
-      TOULOUZEN_USER_ID,
-      TOULOUZEN_FIRST_NAME,
-      TOULOUZEN_LAST_NAME,
-      TOULOUZEN_EMAIL,
-      TOULOUZEN_AGE,
-      TOULOUZEN_USER_TYPE,
-    ]);
+    MMKVStorage.delete(TOULOUZEN_USER_ID);
+    MMKVStorage.delete(TOULOUZEN_FIRST_NAME);
+    MMKVStorage.delete(TOULOUZEN_LAST_NAME);
+    MMKVStorage.delete(TOULOUZEN_EMAIL);
+    MMKVStorage.delete(TOULOUZEN_AGE);
+    MMKVStorage.delete(TOULOUZEN_USER_TYPE);
     auth.signOut();
     navigation.navigate('AuthApp');
   };

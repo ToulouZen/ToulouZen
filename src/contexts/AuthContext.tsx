@@ -1,7 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebaseAuth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { MMKVStorage } from 'common/storage';
 import { RootStackParamsList } from 'common/types/types';
 import {
   TOULOUZEN_AGE,
@@ -20,17 +20,18 @@ import React, {
 } from 'react';
 import { handleAuthErrors } from 'utils/utils';
 
+type UserInfo = {
+  firstname: string | undefined;
+  lastname: string | undefined;
+  mail: string | undefined;
+  age: number | undefined;
+  userType: string | undefined;
+};
 // Variables qui doivent être mises à disposition lors de l'utilisation du contexte
 type AuthContextType = {
   isSignedIn: boolean;
-  user?: FirebaseAuthTypes.User | { uid: string | null };
-  userInfo?: {
-    firstname: string | null;
-    lastname: string | null;
-    mail: string | null;
-    age: number | null;
-    userType: string | null;
-  };
+  user?: FirebaseAuthTypes.User | { uid: string | undefined };
+  userInfo?: UserInfo;
   register: (
     email: string,
     password: string,
@@ -41,7 +42,7 @@ type AuthContextType = {
   ) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
-  getUserInfo: () => Promise<void>;
+  getUserInfo: () => void;
   updateUser: (
     mail: string,
     firstname: string,
@@ -70,18 +71,18 @@ const AuthContext = createContext<AuthContextType>(defaultAuthState);
 
 export const AuthContextProvider: FC = ({ children }) => {
   const [auth, setAuth] = useState<{
-    user?: FirebaseAuthTypes.User | { uid: string | null };
+    user?: FirebaseAuthTypes.User | { uid: string | undefined };
     isSignedIn: boolean;
   }>({
     isSignedIn: false,
   });
-  const [userInfo, setUserInfo] = useState<{
-    firstname: string | null;
-    lastname: string | null;
-    mail: string | null;
-    age: number | null;
-    userType: string | null;
-  }>({ firstname: '', lastname: '', mail: '', age: 0, userType: '' });
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    firstname: '',
+    lastname: '',
+    mail: '',
+    age: 0,
+    userType: '',
+  });
 
   // Constante qui permet de faire le lien vers la collection "users" de la base de données Firestore (voir Firebase)
   const usersCollection = firestore().collection('users');
@@ -121,7 +122,7 @@ export const AuthContextProvider: FC = ({ children }) => {
     usersCollection
       .doc(registerWithEmailAndPassword.user.uid)
       .get()
-      .then(async documentSnapshot => {
+      .then(documentSnapshot => {
         if (!documentSnapshot.exists) {
           usersCollection.doc(registerWithEmailAndPassword.user.uid).set({
             uid: registerWithEmailAndPassword.user.uid,
@@ -132,15 +133,15 @@ export const AuthContextProvider: FC = ({ children }) => {
             userType,
           });
           setUserInfo({ firstname, lastname, mail: email, age, userType });
-          await AsyncStorage.setItem(
+          MMKVStorage.set(
             TOULOUZEN_USER_ID,
             registerWithEmailAndPassword.user.uid,
           );
-          await AsyncStorage.setItem(TOULOUZEN_FIRST_NAME, firstname);
-          await AsyncStorage.setItem(TOULOUZEN_LAST_NAME, lastname);
-          await AsyncStorage.setItem(TOULOUZEN_EMAIL, email);
-          await AsyncStorage.setItem(TOULOUZEN_AGE, age.toString());
-          await AsyncStorage.setItem(TOULOUZEN_USER_TYPE, userType);
+          MMKVStorage.set(TOULOUZEN_FIRST_NAME, firstname);
+          MMKVStorage.set(TOULOUZEN_LAST_NAME, lastname);
+          MMKVStorage.set(TOULOUZEN_EMAIL, email);
+          MMKVStorage.set(TOULOUZEN_AGE, age);
+          MMKVStorage.set(TOULOUZEN_USER_TYPE, userType);
         }
       })
       .catch(e => {
@@ -156,7 +157,7 @@ export const AuthContextProvider: FC = ({ children }) => {
     usersCollection
       .doc(signInWithEmailAndPassword.user.uid)
       .get()
-      .then(async documentSnapshot => {
+      .then(documentSnapshot => {
         const data = documentSnapshot.data();
         setUserInfo({
           firstname: data?.firstname,
@@ -166,15 +167,12 @@ export const AuthContextProvider: FC = ({ children }) => {
           userType: data?.userType,
         });
 
-        await AsyncStorage.setItem(
-          TOULOUZEN_USER_ID,
-          signInWithEmailAndPassword.user.uid,
-        );
-        await AsyncStorage.setItem(TOULOUZEN_FIRST_NAME, data?.firstname);
-        await AsyncStorage.setItem(TOULOUZEN_LAST_NAME, data?.lastname);
-        await AsyncStorage.setItem(TOULOUZEN_EMAIL, email);
-        await AsyncStorage.setItem(TOULOUZEN_AGE, data?.age.toString());
-        await AsyncStorage.setItem(TOULOUZEN_USER_TYPE, data?.userType);
+        MMKVStorage.set(TOULOUZEN_USER_ID, signInWithEmailAndPassword.user.uid);
+        MMKVStorage.set(TOULOUZEN_FIRST_NAME, data?.firstname);
+        MMKVStorage.set(TOULOUZEN_LAST_NAME, data?.lastname);
+        MMKVStorage.set(TOULOUZEN_EMAIL, email);
+        MMKVStorage.set(TOULOUZEN_AGE, data?.age);
+        MMKVStorage.set(TOULOUZEN_USER_TYPE, data?.userType);
       })
       .then(() => {
         getUserInfo();
@@ -197,7 +195,7 @@ export const AuthContextProvider: FC = ({ children }) => {
     usersCollection
       .doc(auth.user!.uid!)
       .set({ mail, firstname, lastname, age, userType })
-      .then(async () => {
+      .then(() => {
         setUserInfo({
           firstname: firstname,
           lastname: lastname,
@@ -205,11 +203,11 @@ export const AuthContextProvider: FC = ({ children }) => {
           age: age,
           userType: userType,
         });
-        await AsyncStorage.setItem(TOULOUZEN_FIRST_NAME, firstname);
-        await AsyncStorage.setItem(TOULOUZEN_LAST_NAME, lastname);
-        await AsyncStorage.setItem(TOULOUZEN_EMAIL, mail);
-        await AsyncStorage.setItem(TOULOUZEN_AGE, age.toString());
-        await AsyncStorage.setItem(TOULOUZEN_USER_TYPE, userType);
+        MMKVStorage.set(TOULOUZEN_FIRST_NAME, firstname);
+        MMKVStorage.set(TOULOUZEN_LAST_NAME, lastname);
+        MMKVStorage.set(TOULOUZEN_EMAIL, mail);
+        MMKVStorage.set(TOULOUZEN_AGE, age);
+        MMKVStorage.set(TOULOUZEN_USER_TYPE, userType);
       });
   };
 
@@ -219,15 +217,15 @@ export const AuthContextProvider: FC = ({ children }) => {
   };
 
   // Méthode de contexte permettant de récupérer les données d'une utilisatrice
-  const getUserInfo = async () => {
-    const uid = await AsyncStorage.getItem(TOULOUZEN_USER_ID);
-    const firstname = await AsyncStorage.getItem(TOULOUZEN_FIRST_NAME);
-    const lastname = await AsyncStorage.getItem(TOULOUZEN_LAST_NAME);
-    const mail = await AsyncStorage.getItem(TOULOUZEN_EMAIL);
-    const age = await AsyncStorage.getItem(TOULOUZEN_AGE);
-    const userType = await AsyncStorage.getItem(TOULOUZEN_USER_TYPE);
+  const getUserInfo = () => {
+    const uid = MMKVStorage.getString(TOULOUZEN_USER_ID);
+    const firstname = MMKVStorage.getString(TOULOUZEN_FIRST_NAME);
+    const lastname = MMKVStorage.getString(TOULOUZEN_LAST_NAME);
+    const mail = MMKVStorage.getString(TOULOUZEN_EMAIL);
+    const age = MMKVStorage.getNumber(TOULOUZEN_AGE);
+    const userType = MMKVStorage.getString(TOULOUZEN_USER_TYPE);
     setAuth({ user: { uid: uid }, isSignedIn: true });
-    setUserInfo({ firstname, lastname, mail, age: Number(age), userType });
+    setUserInfo({ firstname, lastname, mail, age, userType });
   };
 
   // Méthode de contexte permettant l'envoi d'un e-mail pour effectuer la mise à jour du mot de passe d'une utilisatrice
