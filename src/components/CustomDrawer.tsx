@@ -1,7 +1,4 @@
-import {
-  DrawerContentOptions,
-  DrawerContentScrollView,
-} from '@react-navigation/drawer';
+import { DrawerContentScrollView } from '@react-navigation/drawer';
 import {
   DrawerDescriptorMap,
   DrawerNavigationHelpers,
@@ -31,10 +28,7 @@ import I18n from 'internationalization';
 import React, { FC } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
-type PropsDrawer = Omit<
-  DrawerContentOptions,
-  'contentContainerStyle' | 'style'
-> & {
+type PropsDrawer = {
   state: DrawerNavigationState<ParamListBase>;
   navigation: DrawerNavigationHelpers;
   descriptors: DrawerDescriptorMap;
