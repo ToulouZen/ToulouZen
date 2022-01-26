@@ -26,7 +26,8 @@ import { useAuth } from 'contexts/AuthContext';
 import { useFirestore } from 'contexts/FirestoreContext';
 import I18n from 'internationalization';
 import React, { FC } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import ToulouZenLogo from 'assets/img/logo.svg';
 
 type PropsDrawer = {
   state: DrawerNavigationState<ParamListBase>;
@@ -67,13 +68,11 @@ const CustomDrawer: FC<PropsDrawer> = ({ state, descriptors, navigation }) => {
             backgroundColor: COLORS.peach,
             alignItems: 'center',
           }}>
-          <Image
-            source={require('../assets/img/logo.png')}
-            resizeMode="contain"
+          <ToulouZenLogo
+            fill={COLORS.white}
+            height={WINDOW_WIDTH * 0.3}
+            width={WINDOW_WIDTH * 0.3}
             style={{
-              width: WINDOW_WIDTH * 0.15,
-              height: WINDOW_WIDTH * 0.15,
-              tintColor: '#fff',
               margin: WINDOW_WIDTH * 0.07,
             }}
           />

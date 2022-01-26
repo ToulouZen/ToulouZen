@@ -1,4 +1,10 @@
 import { StackScreenProps } from '@react-navigation/stack';
+import FacebookIcon from 'assets/img/facebook.svg';
+import GoogleIcon from 'assets/img/google.svg';
+import ToulouZenLogo from 'assets/img/logo-toulouzen.svg';
+import PasswordHide from 'assets/img/password-hide.svg';
+import ToulouZenCurve from 'assets/img/toulouzen-curve.svg';
+import TwitterIcon from 'assets/img/twitter.svg';
 import { styles } from 'common/styles/styles';
 import { RootStackParamsList } from 'common/types/types';
 import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from 'constants/Constants';
@@ -6,7 +12,6 @@ import { useAuth } from 'contexts/AuthContext';
 import I18n from 'internationalization';
 import React, { FC, useState } from 'react';
 import {
-  Image,
   ScrollView,
   Text,
   TextInput,
@@ -48,15 +53,15 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.container}>
-        <Image
-          style={styles.logoHeader}
-          source={require('../../assets/img/logo_toulouzen.png')}
-          resizeMode="contain"
+        <ToulouZenLogo
+          width={WINDOW_WIDTH * 0.7}
+          height={50}
+          style={[styles.logoHeader, { marginTop: 40 }]}
         />
-        <Image
-          style={{ width: WINDOW_WIDTH }}
-          source={require('../../assets/img/Courbe.png')}
-          resizeMode="contain"
+        <ToulouZenCurve
+          style={{ marginTop: -70 }}
+          width={WINDOW_WIDTH}
+          height={175}
         />
         <View style={styles.container}>
           <View style={styles.authViewContainer}>
@@ -92,19 +97,17 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
               <TouchableOpacity
                 onPress={() => setShowPassword(!showPassword)}
                 style={{ marginHorizontal: WINDOW_WIDTH * 0.02 }}>
-                <Image
-                  source={
-                    showPassword
-                      ? require('../../assets/img/Password_show.png')
-                      : require('../../assets/img/Password_hide.png')
-                  }
-                  resizeMode="contain"
-                  style={{
-                    width: WINDOW_WIDTH * 0.08,
-                    height: WINDOW_WIDTH * 0.08,
-                    tintColor: COLORS.black,
-                  }}
-                />
+                {showPassword ? (
+                  <PasswordHide
+                    width={WINDOW_WIDTH * 0.08}
+                    height={WINDOW_WIDTH * 0.08}
+                  />
+                ) : (
+                  <PasswordHide
+                    width={WINDOW_WIDTH * 0.08}
+                    height={WINDOW_WIDTH * 0.08}
+                  />
+                )}
               </TouchableOpacity>
             </View>
             <TouchableOpacity
@@ -151,36 +154,21 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
                   marginTop: 5,
                 }}>
                 <TouchableOpacity>
-                  <Image
-                    source={require('../../assets/img/google.png')}
-                    resizeMode="contain"
-                    style={{
-                      width: WINDOW_WIDTH * 0.07,
-                      height: WINDOW_WIDTH * 0.07,
-                      tintColor: COLORS.bluePrimary,
-                    }}
+                  <GoogleIcon
+                    width={WINDOW_WIDTH * 0.07}
+                    height={WINDOW_WIDTH * 0.07}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                  <Image
-                    source={require('../../assets/img/facebook.png')}
-                    resizeMode="contain"
-                    style={{
-                      width: WINDOW_WIDTH * 0.07,
-                      height: WINDOW_WIDTH * 0.07,
-                      tintColor: COLORS.bluePrimary,
-                    }}
+                  <FacebookIcon
+                    width={WINDOW_WIDTH * 0.07}
+                    height={WINDOW_WIDTH * 0.07}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                  <Image
-                    source={require('../../assets/img/twitter.png')}
-                    resizeMode="contain"
-                    style={{
-                      width: WINDOW_WIDTH * 0.07,
-                      height: WINDOW_WIDTH * 0.07,
-                      tintColor: COLORS.bluePrimary,
-                    }}
+                  <TwitterIcon
+                    width={WINDOW_WIDTH * 0.07}
+                    height={WINDOW_WIDTH * 0.07}
                   />
                 </TouchableOpacity>
               </View>

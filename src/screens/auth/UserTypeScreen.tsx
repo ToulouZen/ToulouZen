@@ -1,25 +1,27 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React, { FC } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import ToulouZenLogo from 'assets/img/logo-toulouzen.svg';
+import ToulouZenCurve from 'assets/img/toulouzen-curve.svg';
 import { styles } from 'common/styles/styles';
-import { COLORS, PASSENGER, WINDOW_WIDTH } from 'constants/Constants';
 import { RootStackParamsList } from 'common/types/types';
+import { COLORS, PASSENGER, WINDOW_WIDTH } from 'constants/Constants';
 import I18n from 'internationalization';
+import React, { FC } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 type Props = StackScreenProps<RootStackParamsList, 'UserType'>;
 
 const UserTypeScreen: FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Image
+      <ToulouZenLogo
+        width={WINDOW_WIDTH * 0.7}
+        height={100}
         style={styles.logoHeader}
-        source={require('../../assets/img/logo_toulouzen.png')}
-        resizeMode="contain"
       />
-      <Image
-        style={{ width: WINDOW_WIDTH }}
-        source={require('../../assets/img/Courbe.png')}
-        resizeMode="contain"
+      <ToulouZenCurve
+        style={{ marginTop: -50 }}
+        width={WINDOW_WIDTH}
+        height={175}
       />
       <View style={[styles.container, { marginTop: WINDOW_WIDTH * 0.12 }]}>
         <View style={styles.authViewContainer}>

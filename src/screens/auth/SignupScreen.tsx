@@ -10,11 +10,13 @@ import {
   View,
 } from 'react-native';
 import { styles } from 'common/styles/styles';
-import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
+import { WINDOW_WIDTH } from 'constants/Constants';
 import { useAuth } from 'contexts/AuthContext';
 import { RootStackParamsList } from 'common/types/types';
 import { handleAuthErrors } from 'utils/utils';
 import I18n from 'internationalization';
+import PasswordHide from 'assets/img/password-hide.svg';
+import ToulouZenCurve from 'assets/img/toulouzen-curve.svg';
 
 type Props = StackScreenProps<RootStackParamsList, 'Signup'>;
 
@@ -67,11 +69,7 @@ const SignupScreen: FC<Props> = ({ navigation, route }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.container}>
-        <Image
-          style={{ width: WINDOW_WIDTH }}
-          source={require('../../assets/img/Courbe.png')}
-          resizeMode="contain"
-        />
+        <ToulouZenCurve width={WINDOW_WIDTH} height={175} />
         <View style={styles.authViewContainer}>
           <Text style={[styles.logTitle, styles.containerMargin]}>
             {I18n.t('auth.register.title')}
@@ -134,19 +132,17 @@ const SignupScreen: FC<Props> = ({ navigation, route }) => {
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
             style={{ marginHorizontal: WINDOW_WIDTH * 0.02 }}>
-            <Image
-              source={
-                showPassword
-                  ? require('../../assets/img/Password_show.png')
-                  : require('../../assets/img/Password_hide.png')
-              }
-              resizeMode="contain"
-              style={{
-                width: WINDOW_WIDTH * 0.08,
-                height: WINDOW_WIDTH * 0.08,
-                tintColor: COLORS.black,
-              }}
-            />
+            {showPassword ? (
+              <PasswordHide
+                width={WINDOW_WIDTH * 0.08}
+                height={WINDOW_WIDTH * 0.08}
+              />
+            ) : (
+              <PasswordHide
+                width={WINDOW_WIDTH * 0.08}
+                height={WINDOW_WIDTH * 0.08}
+              />
+            )}
           </TouchableOpacity>
         </View>
         <View
@@ -165,19 +161,17 @@ const SignupScreen: FC<Props> = ({ navigation, route }) => {
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
             style={{ marginHorizontal: WINDOW_WIDTH * 0.02 }}>
-            <Image
-              source={
-                showPassword
-                  ? require('../../assets/img/Password_show.png')
-                  : require('../../assets/img/Password_hide.png')
-              }
-              resizeMode="contain"
-              style={{
-                width: WINDOW_WIDTH * 0.08,
-                height: WINDOW_WIDTH * 0.08,
-                tintColor: COLORS.black,
-              }}
-            />
+            {showPassword ? (
+              <PasswordHide
+                width={WINDOW_WIDTH * 0.08}
+                height={WINDOW_WIDTH * 0.08}
+              />
+            ) : (
+              <PasswordHide
+                width={WINDOW_WIDTH * 0.08}
+                height={WINDOW_WIDTH * 0.08}
+              />
+            )}
           </TouchableOpacity>
         </View>
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
