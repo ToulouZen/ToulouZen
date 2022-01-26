@@ -1,19 +1,22 @@
 import { useIsFocused } from '@react-navigation/core';
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import React, { FC, useEffect, useState } from 'react';
-import { View } from 'react-native';
-import { Region } from 'react-native-maps';
+import { styles } from 'common/styles/styles';
+import {
+  Checkpoint,
+  Path,
+  Region,
+  RootStackParamsList,
+} from 'common/types/types';
 import CheckpointCard from 'components/CheckpointCard';
 import HeaderMap from 'components/HeaderMap';
-// Map
 import Map from 'components/Map';
 import NavigationComponent from 'components/NavigationComponent';
 import PathsComponent from 'components/PathsComponent';
+import { DONE, DRIVER, PASSENGER } from 'constants/Constants';
 import { useAuth } from 'contexts/AuthContext';
 import { useFirestore } from 'contexts/FirestoreContext';
-import { styles } from 'common/styles/styles';
-import { Checkpoint, Path, RootStackParamsList } from 'common/types/types';
-import { DONE, DRIVER, PASSENGER } from 'constants/Constants';
+import React, { FC, useEffect, useState } from 'react';
+import { View } from 'react-native';
 
 type Props = DrawerScreenProps<RootStackParamsList, 'Home'>;
 
@@ -74,6 +77,7 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
   };
 
   const goTo = (checkpoint: Checkpoint) => {
+    console.log('Go to :', checkpoint)
     setCheckpointToGo(checkpoint);
   };
 

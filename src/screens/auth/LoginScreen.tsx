@@ -4,7 +4,7 @@ import { RootStackParamsList } from 'common/types/types';
 import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from 'constants/Constants';
 import { useAuth } from 'contexts/AuthContext';
 import I18n from 'internationalization';
-import React from 'react';
+import React, { FC, useState } from 'react';
 import {
   Image,
   ScrollView,
@@ -16,10 +16,10 @@ import {
 import { handleAuthErrors } from 'utils/utils';
 
 type Props = StackScreenProps<RootStackParamsList, 'Login'>;
-const LoginScreen: React.FC<Props> = ({ navigation }) => {
-  const [mail, setMail] = React.useState<string>('jeanne.dupont@gmail.com');
-  const [password, setPassword] = React.useState<string>('password');
-  const [showPassword, setShowPassword] = React.useState<boolean>(false);
+const LoginScreen: FC<Props> = ({ navigation }) => {
+  const [mail, setMail] = useState<string>('jeanne.dupont@gmail.com');
+  const [password, setPassword] = useState<string>('password');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const auth = useAuth();
 

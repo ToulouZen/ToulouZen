@@ -28,7 +28,7 @@ import {
 import { useAuth } from 'contexts/AuthContext';
 import { useFirestore } from 'contexts/FirestoreContext';
 import I18n from 'internationalization';
-import React from 'react';
+import React, { FC } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 type PropsDrawer = Omit<
@@ -39,11 +39,7 @@ type PropsDrawer = Omit<
   navigation: DrawerNavigationHelpers;
   descriptors: DrawerDescriptorMap;
 };
-const CustomDrawer: React.FC<PropsDrawer> = ({
-  state,
-  descriptors,
-  navigation,
-}) => {
+const CustomDrawer: FC<PropsDrawer> = ({ state, descriptors, navigation }) => {
   const auth = useAuth();
   const firestore = useFirestore();
 

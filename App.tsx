@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { styles } from 'common/styles/styles';
 import CustomDrawer from 'components/CustomDrawer';
+import { LocationContextProvider } from 'contexts/LocationContext';
 import I18n from 'internationalization';
 import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
@@ -21,8 +22,12 @@ import UserTypeScreen from 'screens/auth/UserTypeScreen';
 import { logCurrentStorage } from 'utils/utils';
 import { AuthContextProvider } from './src/contexts/AuthContext';
 import { FirestoreContextProvider } from './src/contexts/FirestoreContext';
+import { LogBox } from 'react-native';
 
 const App = () => {
+  LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+  LogBox.ignoreAllLogs(); //Ignore all log notifications
+
   const AppStack = createStackNavigator();
   const AppDrawerStack = createDrawerNavigator();
 
@@ -95,14 +100,16 @@ const App = () => {
       <SafeAreaView
         forceInset={{ top: 'never', bottom: 'never' }}
         style={styles.container}>
-        <AuthContextProvider>
-          <FirestoreContextProvider>
-            <NavigationContainer>
-              <StatusBar barStyle="light-content" />
-              <FullAppStack />
-            </NavigationContainer>
-          </FirestoreContextProvider>
-        </AuthContextProvider>
+        <LocationContextProvider>
+          <AuthContextProvider>
+            <FirestoreContextProvider>
+              <NavigationContainer>
+                <StatusBar barStyle="light-content" />
+                <FullAppStack />
+              </NavigationContainer>
+            </FirestoreContextProvider>
+          </AuthContextProvider>
+        </LocationContextProvider>
       </SafeAreaView>
       <SafeAreaView
         forceInset={{ top: 'never' }}
@@ -110,6 +117,6 @@ const App = () => {
       />
     </SafeAreaProvider>
   );
-};
+};;
 
 export default App;

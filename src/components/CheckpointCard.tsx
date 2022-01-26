@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
 import { styles } from 'common/styles/styles';
@@ -10,7 +10,7 @@ type Props = {
   goTo: (checkpoint: Checkpoint) => void;
 };
 
-const CheckpointCard: React.FC<Props> = ({ checkpoint, goTo }) => {
+const CheckpointCard: FC<Props> = ({ checkpoint, goTo }) => {
   return (
     <View
       style={[

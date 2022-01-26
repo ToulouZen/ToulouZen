@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React from 'react';
+import React, { FC } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from 'common/styles/styles';
 import { COLORS, PASSENGER, WINDOW_WIDTH } from 'constants/Constants';
@@ -8,7 +8,7 @@ import I18n from 'internationalization';
 
 type Props = StackScreenProps<RootStackParamsList, 'UserType'>;
 
-const UserTypeScreen: React.FC<Props> = ({ navigation }) => {
+const UserTypeScreen: FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image

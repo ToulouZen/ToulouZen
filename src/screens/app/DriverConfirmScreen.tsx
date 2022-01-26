@@ -1,11 +1,11 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { styles } from 'common/styles/styles';
-import { RootStackParamsList } from 'common/types/types';
+import { Region, RootStackParamsList } from 'common/types/types';
 import Map from 'components/Map';
 import { COLORS, STARTED, WINDOW_WIDTH } from 'constants/Constants';
 import { useFirestore } from 'contexts/FirestoreContext';
 import I18n from 'internationalization';
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -14,22 +14,21 @@ import {
   View,
 } from 'react-native';
 import { Icon, Overlay } from 'react-native-elements';
-import { Region } from 'react-native-maps';
 
 type Props = StackScreenProps<RootStackParamsList, 'DriverConfirm'>;
 
-const DriverConfirmScreen: React.FC<Props> = ({ navigation }) => {
+const DriverConfirmScreen: FC<Props> = ({ navigation }) => {
   const firestore = useFirestore();
 
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [region, setRegion] = React.useState<Region>({
+  const [modalVisible, setModalVisible] = useState(false);
+  const [region, setRegion] = useState<Region>({
     latitude: 43.604652,
     longitude: 1.444209,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (firestore.actualPath !== undefined) {
       setRegion({
         latitude: firestore.actualPath.arrivalDestination.latitude,

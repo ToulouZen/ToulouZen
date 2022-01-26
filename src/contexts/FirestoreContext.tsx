@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, FC, useContext, useEffect, useState } from 'react';
 import { Checkpoint, Path } from 'common/types/types';
 import { toCheckpoint, toPath } from 'utils/utils';
 import { useAuth } from './AuthContext';
@@ -53,7 +53,7 @@ const FirestoreContext = createContext<FirestoreContextType>(
   defaultFirestoreState,
 );
 
-export const FirestoreContextProvider: React.FC = ({ children }) => {
+export const FirestoreContextProvider: FC = ({ children }) => {
   const [checkPoints, setCheckPoints] = useState<Checkpoint[]>([]);
   const [paths, setPaths] = useState<Path[]>([]);
   const [passengerPaths, setPassengerPaths] = useState<Path[]>([]);

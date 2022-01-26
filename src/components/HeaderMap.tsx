@@ -3,7 +3,7 @@ import { styles } from 'common/styles/styles';
 import { RootStackParamsList } from 'common/types/types';
 import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
 import I18n from 'internationalization';
-import React from 'react';
+import React, { FC } from 'react';
 import {
   Alert,
   Image,
@@ -22,7 +22,7 @@ type Props = {
   >;
 };
 
-const HeaderMap: React.FC<Props> = ({ navigation }) => {
+const HeaderMap: FC<Props> = ({ navigation }) => {
   const _emergencyCall = async () => {
     let url = '';
     if (Platform.OS === 'android') {

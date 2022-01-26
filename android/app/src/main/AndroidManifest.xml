@@ -13,11 +13,6 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
-
-      <!-- You will only need to add this meta-data tag, but make sure it's a child of application -->
-      <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyDQtHXsHSB3bclc637t5T6i3hTTZo44jAc"/>
       
       <activity
         android:name=".MainActivity"

@@ -1,5 +1,5 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   ScrollView,
   Text,
@@ -16,28 +16,28 @@ import I18n from 'internationalization';
 
 type Props = DrawerScreenProps<RootStackParamsList, 'Settings'>;
 
-const SettingsScreen: React.FC<Props> = ({ navigation }) => {
+const SettingsScreen: FC<Props> = ({ navigation }) => {
   const auth = useAuth();
 
-  const [firstnameText, setFirstnameText] = React.useState<string>(
+  const [firstnameText, setFirstnameText] = useState<string>(
     auth.userInfo!.firstname!,
   );
-  const [lastnameText, setLastnameText] = React.useState<string>(
+  const [lastnameText, setLastnameText] = useState<string>(
     auth.userInfo!.lastname!,
   );
-  const [ageText, setAgeText] = React.useState<string>(
+  const [ageText, setAgeText] = useState<string>(
     auth.userInfo!.age!.toString(),
   );
-  const [mailText, setMailText] = React.useState<string>(auth.userInfo!.mail!);
-  const [userTypeText, setUserTypeText] = React.useState<string>(
+  const [mailText, setMailText] = useState<string>(auth.userInfo!.mail!);
+  const [userTypeText, setUserTypeText] = useState<string>(
     auth.userInfo!.userType!,
   );
-  const [buttonTitle, setButtonTitle] = React.useState<string>(
+  const [buttonTitle, setButtonTitle] = useState<string>(
     I18n.t('common.save'),
   );
-  const [disableButton, setDisableButton] = React.useState<boolean>(true);
+  const [disableButton, setDisableButton] = useState<boolean>(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     getButtonTitle();
   }, [firstnameText, lastnameText, ageText, mailText, auth.userInfo]);
 

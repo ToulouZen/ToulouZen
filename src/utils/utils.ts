@@ -67,6 +67,7 @@ export const handleAuthErrors = (e: any) => {
       I18n.t('auth.weak_password.description'),
     );
   }
+  console.error('An error has occured during authentication : ', e);
 };
 
 export function logCurrentStorage() {

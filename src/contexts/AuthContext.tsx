@@ -11,7 +11,13 @@ import {
   TOULOUZEN_USER_ID,
   TOULOUZEN_USER_TYPE,
 } from 'constants/Constants';
-import React, { createContext, useContext, useEffect } from 'react';
+import React, {
+  createContext,
+  FC,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { handleAuthErrors } from 'utils/utils';
 
 // Variables qui doivent être mises à disposition lors de l'utilisation du contexte
@@ -62,14 +68,14 @@ const defaultAuthState: AuthContextType = {
 
 const AuthContext = createContext<AuthContextType>(defaultAuthState);
 
-export const AuthContextProvider: React.FC = ({ children }) => {
-  const [auth, setAuth] = React.useState<{
+export const AuthContextProvider: FC = ({ children }) => {
+  const [auth, setAuth] = useState<{
     user?: FirebaseAuthTypes.User | { uid: string | null };
     isSignedIn: boolean;
   }>({
     isSignedIn: false,
   });
-  const [userInfo, setUserInfo] = React.useState<{
+  const [userInfo, setUserInfo] = useState<{
     firstname: string | null;
     lastname: string | null;
     mail: string | null;

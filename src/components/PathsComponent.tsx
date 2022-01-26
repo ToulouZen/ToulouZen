@@ -1,5 +1,5 @@
 import { DrawerNavigationProp } from '@react-navigation/drawer';
-import React from 'react';
+import React, { FC, useState } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from 'common/styles/styles';
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from 'constants/Constants';
@@ -13,8 +13,8 @@ type Props = {
   navigation: DrawerNavigationProp<RootStackParamsList, 'Home'>;
 };
 
-const PathsComponent: React.FC<Props> = ({ handlePath, navigation }) => {
-  const [pathPicked, setPathPicked] = React.useState<Path>();
+const PathsComponent: FC<Props> = ({ handlePath, navigation }) => {
+  const [pathPicked, setPathPicked] = useState<Path>();
   const firestore = useFirestore();
 
   const pathChoosed = (pathPicked: Path) => {

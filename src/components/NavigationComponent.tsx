@@ -1,16 +1,13 @@
+/* eslint-disable react-native/no-inline-styles */
 import { Picker } from '@react-native-picker/picker';
 import { styles } from 'common/styles/styles';
 import { Checkpoint } from 'common/types/types';
-import {
-  COLORS,
-  DONE,
-  PASSENGER_POSITION,
-  WINDOW_HEIGHT,
-  WINDOW_WIDTH,
-} from 'constants/Constants';
+import { COLORS, DONE, WINDOW_HEIGHT, WINDOW_WIDTH } from 'constants/Constants';
 import { useFirestore } from 'contexts/FirestoreContext';
+import { useLocationContext } from 'contexts/LocationContext';
 import I18n from 'internationalization';
-import React from 'react';
+import { getCheckPointFromAddress } from 'networking/adressToLocation';
+import React, { FC, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -21,6 +18,8 @@ import {
   View,
 } from 'react-native';
 import { Icon, Overlay } from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
+import AutoCompletePlace from './autoCompletePlace/AutoCompletePlace';
 
 type Props = {
   handleRegion: (checkpoint: Checkpoint) => void;
@@ -45,43 +44,43 @@ const TIMES = [
   '02:00',
 ];
 
-const NavigationComponent: React.FC<Props> = ({
+const NavigationComponent: FC<Props> = ({
   handleRegion,
   goTo,
   distance,
   duration,
 }) => {
-  const [departureDestination, setDepartureDestination] =
-    React.useState<string>('Votre position');
-  const [arrivalDestination, setArrivalDestination] =
-    React.useState<Checkpoint>();
-  const [isVisible, setIsVisible] = React.useState<boolean>(false);
-  const [isPosition, setIsPosition] = React.useState<boolean>(false);
-  const [isTime, setIsTime] = React.useState<boolean>(false);
-  const [timeDeparture, setTimeDeparture] = React.useState<string>(
+  const firestore = useFirestore();
+  const { userLocation } = useLocationContext();
+
+  const [departureDestination, setDepartureDestination] = useState<Checkpoint>({
+    name: I18n.t('ride.current_location'),
+    ...userLocation,
+  });
+  const [arrivalDestination, setArrivalDestination] = useState<Checkpoint>({
+    name: '',
+    latitude: 43.635087,
+    longitude: 1.39703,
+  });
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [isPosition, setIsPosition] = useState<boolean>(false);
+  const [isTime, setIsTime] = useState<boolean>(false);
+  const [timeDeparture, setTimeDeparture] = useState<string>(
     I18n.t('common.now'),
   );
-  const refDepartureDestination = React.createRef<TextInput>();
-  const refArrivalDestination = React.createRef<TextInput>();
 
-  const firestore = useFirestore();
+  // useEffect(() => {
+  //   if (arrivalDestination != undefined) {
+  //     handleRegion(arrivalDestination);
+  //   }
+  // }, [arrivalDestination]);
 
-  React.useEffect(() => {
-    if (arrivalDestination != undefined) {
-      handleRegion(arrivalDestination);
-    }
-  }, [arrivalDestination]);
-
-  React.useEffect(() => {
-    refArrivalDestination.current?.blur();
-  }, [isVisible]);
-
-  React.useEffect(() => {
-    reset();
-  }, [firestore.actualPath]);
+  // useEffect(() => {
+  //   reset();
+  // }, [firestore.actualPath]);
 
   const reset = () => {
-    setArrivalDestination(undefined);
+    setArrivalDestination({ name: '', latitude: 0, longitude: 0 });
     setTimeDeparture(I18n.t('common.now'));
   };
 
@@ -102,15 +101,14 @@ const NavigationComponent: React.FC<Props> = ({
   };
 
   return (
-    <View
+    <ScrollView
       style={{
         position: 'absolute',
         bottom: 0,
         width: WINDOW_WIDTH,
         height:
-          firestore.actualPath == undefined ||
-          (firestore.actualPath != undefined &&
-            firestore.actualPath.state == DONE)
+          firestore.actualPath === undefined ||
+          firestore?.actualPath?.state === DONE
             ? WINDOW_HEIGHT * 0.4
             : WINDOW_HEIGHT * 0.2,
         backgroundColor: '#fff',
@@ -123,9 +121,9 @@ const NavigationComponent: React.FC<Props> = ({
             <Picker
               style={{ width: WINDOW_WIDTH * 0.9 }}
               selectedValue={arrivalDestination?.name}
-              onValueChange={itemValue => {
+              onValueChange={(itemValue: string) => {
                 const index = firestore.checkPoints.findIndex(
-                  checkpoint => checkpoint.name == itemValue,
+                  checkpoint => checkpoint.name === itemValue,
                 );
                 goTo(firestore.checkPoints[index]);
                 setArrivalDestination(firestore.checkPoints[index]);
@@ -148,7 +146,7 @@ const NavigationComponent: React.FC<Props> = ({
             <Picker
               style={{ width: WINDOW_WIDTH * 0.9 }}
               selectedValue={timeDeparture}
-              onValueChange={itemValue => {
+              onValueChange={(itemValue: string) => {
                 setTimeDeparture(itemValue);
               }}>
               <Picker.Item
@@ -164,7 +162,6 @@ const NavigationComponent: React.FC<Props> = ({
           <Icon
             onPress={() => {
               if (isPosition) {
-                refArrivalDestination.current?.blur();
                 setIsPosition(false);
               }
               if (isTime) {
@@ -189,9 +186,8 @@ const NavigationComponent: React.FC<Props> = ({
             borderTopLeftRadius: 15,
           },
         ]}>
-        {firestore.actualPath == undefined ||
-        (firestore.actualPath != undefined &&
-          firestore.actualPath.state == DONE) ? (
+        {firestore.actualPath === undefined ||
+        firestore?.actualPath?.state === DONE ? (
           <>
             <View
               style={{
@@ -224,22 +220,22 @@ const NavigationComponent: React.FC<Props> = ({
             </View>
             <View>
               <TextInput
-                ref={refDepartureDestination}
+                editable={false}
                 style={[
                   styles.containerMargin,
                   styles.containerPadding,
                   styles.inputAddress,
                 ]}
                 placeholder={I18n.t('ride.current_location')}
-                value={departureDestination}
-                onChangeText={value => setDepartureDestination(value)}
+                value={departureDestination.name}
+                onChangeText={value =>
+                  setDepartureDestination({
+                    ...departureDestination,
+                    name: value,
+                  })
+                }
               />
-              <TextInput
-                ref={refArrivalDestination}
-                onFocus={() => {
-                  setIsPosition(true);
-                  setIsVisible(true);
-                }}
+              <AutoCompletePlace
                 style={[
                   styles.containerMargin,
                   styles.containerPadding,
@@ -247,6 +243,12 @@ const NavigationComponent: React.FC<Props> = ({
                 ]}
                 placeholder={I18n.t('ride.end_ride_location')}
                 value={arrivalDestination?.name}
+                onChangeText={value =>
+                  setArrivalDestination({
+                    ...arrivalDestination,
+                    name: value,
+                  })
+                }
               />
               <View style={{ width: WINDOW_WIDTH * 0.7, alignSelf: 'center' }}>
                 <TouchableOpacity
@@ -285,30 +287,26 @@ const NavigationComponent: React.FC<Props> = ({
                 </TouchableOpacity>
               </View>
               <TouchableOpacity
-                onPress={() =>
-                  firestore.createPath(
-                    {
-                      latitude: 43.604652,
-                      longitude: 1.444209,
-                      name: PASSENGER_POSITION,
-                    },
-                    arrivalDestination!,
-                    timeDeparture,
-                    distance!,
-                    duration!,
-                  )
-                }
+                onPress={async () => {
+                  const newArrivalDestination = await getCheckPointFromAddress({
+                    address: arrivalDestination.name,
+                  });
+                  if (newArrivalDestination) {
+                    setArrivalDestination(newArrivalDestination);
+                    goTo(newArrivalDestination);
+                  }
+                }}
                 style={[
                   styles.logButtons,
-                  arrivalDestination == undefined ||
-                  departureDestination == undefined
+                  arrivalDestination === undefined ||
+                  departureDestination === undefined
                     ? styles.disabled
                     : styles.logButtons,
                   styles.containerMargin,
                 ]}
                 disabled={
-                  arrivalDestination == undefined ||
-                  departureDestination == undefined
+                  arrivalDestination === undefined ||
+                  departureDestination === undefined
                     ? true
                     : false
                 }>
@@ -369,40 +367,39 @@ const NavigationComponent: React.FC<Props> = ({
           </View>
         )}
       </View>
-      {firestore.actualPath == undefined ||
-        (firestore.actualPath != undefined &&
-          firestore.actualPath.state == DONE && (
-            <View
+      {firestore.actualPath === undefined ||
+        (firestore?.actualPath?.state === DONE && (
+          <View
+            style={[
+              styles.containerPadding,
+              { backgroundColor: 'rgba(230,230,230,0.5)', flex: 1 },
+            ]}>
+            <TouchableOpacity
               style={[
                 styles.containerPadding,
-                { backgroundColor: 'rgba(230,230,230,0.5)', flex: 1 },
+                { flexDirection: 'row', alignItems: 'center' },
               ]}>
-              <TouchableOpacity
-                style={[
-                  styles.containerPadding,
-                  { flexDirection: 'row', alignItems: 'center' },
-                ]}>
-                <Image
-                  source={require('../assets/img/Favori.png')}
-                  resizeMode="contain"
-                  style={{
-                    width: WINDOW_WIDTH * 0.08,
-                    height: WINDOW_WIDTH * 0.08,
-                    tintColor: COLORS.bluePrimary,
-                  }}
-                />
-                <Text
-                  style={{
-                    fontSize: WINDOW_WIDTH * 0.05,
-                    marginLeft: WINDOW_WIDTH * 0.05,
-                    color: COLORS.bluePrimary,
-                  }}>
-                  {I18n.t('ride.saved_destinations')}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-    </View>
+              <Image
+                source={require('../assets/img/Favori.png')}
+                resizeMode="contain"
+                style={{
+                  width: WINDOW_WIDTH * 0.08,
+                  height: WINDOW_WIDTH * 0.08,
+                  tintColor: COLORS.bluePrimary,
+                }}
+              />
+              <Text
+                style={{
+                  fontSize: WINDOW_WIDTH * 0.05,
+                  marginLeft: WINDOW_WIDTH * 0.05,
+                  color: COLORS.bluePrimary,
+                }}>
+                {I18n.t('ride.saved_destinations')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+    </ScrollView>
   );
 };
 

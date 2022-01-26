@@ -1,9 +1,10 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 
-export const GOOGLE_MAPS_API_KEY_IOS =
-  'AIzaSyCE-KihYba5ky6xGMyIidiT9p_jvDDEVV0';
-export const GOOGLE_MAPS_API_KEY_ANDROID =
-  'AIzaSyDQtHXsHSB3bclc637t5T6i3hTTZo44jAc';
+export const MAPBOX_PUBLIC_API_KEY =
+  'pk.eyJ1IjoidG91bG91emVuIiwiYSI6ImNreDdiMm9oeTJubnEycXB6amp2MjQ3NTkifQ.9rhOsN9V4Xx_F2OWBGil3Q';
+
+export const IS_ANDROID = Platform.OS === 'android';
+export const IS_IOS = Platform.OS === 'ios';
 
 export const WINDOW_WIDTH = Dimensions.get('window').width;
 export const WINDOW_HEIGHT = Dimensions.get('window').height;

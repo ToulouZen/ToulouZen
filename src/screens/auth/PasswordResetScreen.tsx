@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React from 'react';
+import React, { FC, useState } from 'react';
 import {
   Alert,
   Image,
@@ -17,8 +17,8 @@ import I18n from 'internationalization';
 
 type Props = StackScreenProps<RootStackParamsList, 'PasswordReset'>;
 
-const PasswordResetScreen: React.FC<Props> = ({ navigation }) => {
-  const [mail, setMail] = React.useState<string>('');
+const PasswordResetScreen: FC<Props> = ({ navigation }) => {
+  const [mail, setMail] = useState<string>('');
   const auth = useAuth();
 
   const reset = () => {

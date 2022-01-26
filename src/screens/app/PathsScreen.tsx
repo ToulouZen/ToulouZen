@@ -1,5 +1,5 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import React from 'react';
+import React, { FC } from 'react';
 import { FlatList, View } from 'react-native';
 import HeaderMap from 'components/HeaderMap';
 import PathComponent from 'components/PathComponent';
@@ -11,7 +11,7 @@ import { PASSENGER } from 'constants/Constants';
 
 type Props = DrawerScreenProps<RootStackParamsList, 'Paths'>;
 
-const PathsScreen: React.FC<Props> = ({ navigation }) => {
+const PathsScreen: FC<Props> = ({ navigation }) => {
   const firestore = useFirestore();
   const auth = useAuth();
 

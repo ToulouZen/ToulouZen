@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React from 'react';
+import React, { FC, useState } from 'react';
 import {
   Alert,
   Image,
@@ -18,15 +18,15 @@ import I18n from 'internationalization';
 
 type Props = StackScreenProps<RootStackParamsList, 'Signup'>;
 
-const SignupScreen: React.FC<Props> = ({ navigation, route }) => {
-  const [firstname, setFirstname] = React.useState<string>('Angèle');
-  const [lastname, setLastname] = React.useState<string>('Mazio');
-  const [age, setAge] = React.useState<string>('27');
-  const [mail, setMail] = React.useState<string>('angele.mazio@gmail.com');
-  const [password, setPassword] = React.useState<string>('passwordSpe');
+const SignupScreen: FC<Props> = ({ navigation, route }) => {
+  const [firstname, setFirstname] = useState<string>('Angèle');
+  const [lastname, setLastname] = useState<string>('Mazio');
+  const [age, setAge] = useState<string>('27');
+  const [mail, setMail] = useState<string>('angele.mazio@gmail.com');
+  const [password, setPassword] = useState<string>('passwordSpe');
   const [passwordConfirmation, setPasswordConfirmation] =
-    React.useState<string>('passwordSpe');
-  const [showPassword, setShowPassword] = React.useState<boolean>(false);
+    useState<string>('passwordSpe');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const auth = useAuth();
 

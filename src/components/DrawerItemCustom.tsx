@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import { styles } from 'common/styles/styles';
 import { COLORS } from 'constants/Constants';
@@ -6,13 +6,13 @@ import { COLORS } from 'constants/Constants';
 type Props = {
   title:
     | string
-    | ((props: { color: string; focused: boolean }) => React.ReactNode)
+    | ((props: { color: string; focused: boolean }) => ReactNode)
     | undefined;
   focused?: boolean;
   onPress: () => void;
 };
 
-const DrawerItemCustom: React.FC<Props> = ({ title, onPress, focused }) => {
+const DrawerItemCustom: FC<Props> = ({ title, onPress, focused }) => {
   return (
     <TouchableOpacity
       style={[

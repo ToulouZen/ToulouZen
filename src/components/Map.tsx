@@ -1,20 +1,18 @@
-import React from 'react';
-import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
-import { Image, Platform, StyleSheet, View } from 'react-native';
-import MapViewDirections from 'react-native-maps-directions';
+import MapboxGL from '@react-native-mapbox-gl/maps';
+import { Checkpoint, Region } from 'common/types/types';
 import {
-  COLORS,
-  DRIVER,
-  GOOGLE_MAPS_API_KEY_ANDROID,
-  GOOGLE_MAPS_API_KEY_IOS,
-  PASSENGER,
+  IS_ANDROID,
+  MAPBOX_PUBLIC_API_KEY,
   WINDOW_HEIGHT,
   WINDOW_WIDTH,
 } from 'constants/Constants';
-import GetLocation, { Location } from 'react-native-get-location';
-import { useFirestore } from 'contexts/FirestoreContext';
-import { Checkpoint } from 'common/types/types';
 import { useAuth } from 'contexts/AuthContext';
+import { useFirestore } from 'contexts/FirestoreContext';
+import { defaultAppLocation, useLocationContext } from 'contexts/LocationContext';
+import { getRoutesFromTwoCoordinates } from 'networking/routes';
+import React, { FC, useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { GEOJSON_FAKER } from '../faker/geojson';
 
 const stylesCustom = StyleSheet.create({
   container: {
@@ -36,7 +34,7 @@ type Props = {
   getInfoPath?: (distance: number, duration: number) => void;
 };
 
-const Map: React.FC<Props> = ({
+const Map: FC<Props> = ({
   handleCard,
   closeCard,
   destination,
@@ -44,40 +42,80 @@ const Map: React.FC<Props> = ({
   getInfoPath,
   passengerPosition,
 }) => {
-  const [userLocation, setUserLocation] = React.useState<Location>();
+  const { userLocation, updateUserLocation } = useLocationContext();
+  const [isLocationPermission, setLocationPermission] = useState<
+    boolean | undefined
+  >();
+  const [routeFromDepartureToArrival, setRouteFromDepartureToArrival] =
+    useState<GeoJSON.Geometry | null>();
 
   const firestore = useFirestore();
   const auth = useAuth();
 
-  React.useEffect(() => {
-    getUserLocation();
+  useEffect(() => {
+    MapboxGL.setAccessToken(MAPBOX_PUBLIC_API_KEY);
+    askAndroidPermission();
   }, []);
 
-  const getUserLocation = () => {
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 15000,
-    })
-      .then((location: Location) => {
-        setUserLocation(location);
-      })
-      .catch(error => {
-        const { code, message } = error;
-        console.warn(code, message);
+  useEffect(() => {
+    if (destination) {
+      getRoutesFromTwoCoordinates({
+        departureLocation: userLocation,
+        arrivalLocation: destination,
+        overview: 'full',
+      }).then(routes => {
+        setRouteFromDepartureToArrival(routes?.geometry);
       });
+    }
+  }, [destination]);
+
+  const askAndroidPermission = async () => {
+    if (IS_ANDROID) {
+      const isGranted = await MapboxGL.requestAndroidLocationPermissions();
+      setLocationPermission(isGranted);
+      console.log('Is location permission granted :', isGranted);
+    }
   };
 
   return (
     <View style={stylesCustom.container}>
-      <MapView
-        showsUserLocation={true}
-        showsMyLocationButton={false}
-        onPanDrag={() => (closeCard !== undefined ? closeCard() : undefined)}
-        showsPointsOfInterest={false}
-        provider={PROVIDER_GOOGLE}
+      <MapboxGL.MapView
+        onPress={() => (closeCard !== undefined ? closeCard() : undefined)}
         style={stylesCustom.map}
-        region={region}>
-        {firestore.checkPoints.map(checkpoint => {
+        compassEnabled={false}>
+        {routeFromDepartureToArrival ? (
+          <MapboxGL.ShapeSource
+            id="routeSource"
+            shape={routeFromDepartureToArrival}>
+            <MapboxGL.LineLayer
+              id="routeFill"
+              style={{ lineColor: 'black', lineWidth: 2 }}
+            />
+          </MapboxGL.ShapeSource>
+        ) : null}
+        {isLocationPermission ? (
+          <MapboxGL.UserLocation
+            visible
+            onUpdate={location => {
+              console.log(location);
+              updateUserLocation({
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+              });
+            }}
+          />
+        ) : null}
+        {userLocation !== defaultAppLocation ? (
+          <MapboxGL.Camera
+            allowUpdates={false}
+            followUserLocation={false}
+            zoomLevel={15}
+            animationMode="flyTo"
+            animationDuration={3000}
+            centerCoordinate={[userLocation.longitude, userLocation.latitude]}
+          />
+        ) : null}
+        {/* {firestore.checkPoints.map(checkpoint => {
           return (
             <Marker
               key={checkpoint.name}
@@ -113,8 +151,8 @@ const Map: React.FC<Props> = ({
               />
             </Marker>
           );
-        })}
-        {auth.userInfo?.userType === PASSENGER &&
+        })} */}
+        {/* {auth.userInfo?.userType === PASSENGER &&
           destination !== undefined &&
           userLocation !== undefined && (
             <MapViewDirections
@@ -133,8 +171,8 @@ const Map: React.FC<Props> = ({
                   : undefined
               }
             />
-          )}
-        {auth.userInfo?.userType === DRIVER &&
+          )} */}
+        {/* {auth.userInfo?.userType === DRIVER &&
           destination !== undefined &&
           passengerPosition !== undefined && (
             <MapViewDirections
@@ -153,8 +191,8 @@ const Map: React.FC<Props> = ({
                   : undefined
               }
             />
-          )}
-      </MapView>
+          )} */}
+      </MapboxGL.MapView>
     </View>
   );
 };

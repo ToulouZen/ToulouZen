@@ -4,7 +4,7 @@ import { COLORS, DONE, WINDOW_WIDTH } from 'constants/Constants';
 import { useFirestore } from 'contexts/FirestoreContext';
 import I18n from 'internationalization';
 import moment from 'moment';
-import React from 'react';
+import React, { FC, useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import { Icon } from 'react-native-elements';
@@ -16,8 +16,8 @@ type Props = {
   pathPicked?: Path;
 };
 
-const PathComponent: React.FC<Props> = ({ path, isPassenger, pathPicked }) => {
-  const [isCollapsed, setIsCollapsed] = React.useState<boolean>(true);
+const PathComponent: FC<Props> = ({ path, isPassenger, pathPicked }) => {
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
 
   const firestore = useFirestore();
 
