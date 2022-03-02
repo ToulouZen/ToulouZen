@@ -3,6 +3,7 @@ import FacebookIcon from 'assets/img/facebook.svg';
 import GoogleIcon from 'assets/img/google.svg';
 import ToulouZenLogo from 'assets/img/logo-toulouzen.svg';
 import PasswordHide from 'assets/img/password-hide.svg';
+import PasswordShow from 'assets/img/password-show.svg';
 import ToulouZenCurve from 'assets/img/toulouzen-curve.svg';
 import TwitterIcon from 'assets/img/twitter.svg';
 import { styles } from 'common/styles/styles';
@@ -65,8 +66,13 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
         />
         <View style={styles.container}>
           <View style={styles.authViewContainer}>
-            <Text style={[styles.logTitle, styles.containerMargin]}>
-              {I18n.t('auth.login.title')}
+            <Text
+              style={[
+                styles.logTitle,
+                styles.containerMargin,
+                { marginBottom: 20 },
+              ]}>
+              {I18n.t('auth.login.title')?.toUpperCase()}
             </Text>
           </View>
           <View style={styles.container}>
@@ -77,6 +83,7 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
               placeholder={I18n.t('auth.email')}
               style={[
                 styles.logInputs,
+                styles.logInputText,
                 styles.containerMargin,
                 { padding: WINDOW_WIDTH * 0.04 },
               ]}
@@ -92,13 +99,13 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
                 secureTextEntry={!showPassword}
                 onChangeText={value => setPassword(value)}
                 placeholder={I18n.t('auth.login.password')}
-                style={styles.logPasswordInput}
+                style={styles.logInputText}
               />
               <TouchableOpacity
                 onPress={() => setShowPassword(!showPassword)}
                 style={{ marginHorizontal: WINDOW_WIDTH * 0.02 }}>
                 {showPassword ? (
-                  <PasswordHide
+                  <PasswordShow
                     width={WINDOW_WIDTH * 0.08}
                     height={WINDOW_WIDTH * 0.08}
                   />
@@ -120,8 +127,7 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
                   alignItems: 'flex-end',
                 },
               ]}>
-              <Text
-                style={[styles.logTexts, { textDecorationLine: 'underline' }]}>
+              <Text style={[styles.text, { borderBottomWidth: 0.5 }]}>
                 {I18n.t('auth.login.forgot_password')}
               </Text>
             </TouchableOpacity>
@@ -129,13 +135,13 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
               onPress={() => login()}
               style={[
                 styles.logButtons,
-                mail.length === 0 || password.length === 0
-                  ? styles.disabled
-                  : styles.logButtons,
                 styles.containerMargin,
+                {
+                  height: 56,
+                },
               ]}
               disabled={mail.length === 0 || password.length === 0}>
-              <Text style={styles.userTypeTextConductrice}>
+              <Text style={[styles.buttonText, { textAlign: 'center' }]}>
                 {I18n.t('auth.login.login')}
               </Text>
             </TouchableOpacity>
@@ -144,32 +150,24 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
                 alignSelf: 'center',
                 marginVertical: WINDOW_HEIGHT * 0.03,
               }}>
-              <Text style={styles.logTexts}>
+              <Text style={[styles.text, { textAlign: 'center' }]}>
                 {I18n.t('auth.login.login_with')}
               </Text>
               <View
                 style={{
+                  width: WINDOW_WIDTH * 0.4,
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  marginTop: 5,
+                  marginTop: 16,
                 }}>
                 <TouchableOpacity>
-                  <GoogleIcon
-                    width={WINDOW_WIDTH * 0.07}
-                    height={WINDOW_WIDTH * 0.07}
-                  />
+                  <GoogleIcon width={32} height={32} />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                  <FacebookIcon
-                    width={WINDOW_WIDTH * 0.07}
-                    height={WINDOW_WIDTH * 0.07}
-                  />
+                  <FacebookIcon width={32} height={32} />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                  <TwitterIcon
-                    width={WINDOW_WIDTH * 0.07}
-                    height={WINDOW_WIDTH * 0.07}
-                  />
+                  <TwitterIcon width={32} height={32} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -178,17 +176,19 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
                 styles.container,
                 { alignItems: 'center', justifyContent: 'center' },
               ]}>
-              <Text style={styles.logTexts}>
+              <Text style={[styles.text, styles.containerMargin]}>
                 {I18n.t('auth.login.no_account')}
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate('UserType')}>
                 <Text
                   style={[
-                    styles.logTexts,
+                    styles.text,
+                    styles.containerMargin,
                     {
-                      color: COLORS.peach,
-                      textDecorationLine: 'underline',
-                      fontSize: WINDOW_WIDTH * 0.055,
+                      color: COLORS.primaryColor,
+                      borderColor: COLORS.primaryColor,
+                      borderBottomWidth: 0.5,
+                      paddingBottom: 4,
                     },
                   ]}>
                   {I18n.t('auth.login.create_an_account')}

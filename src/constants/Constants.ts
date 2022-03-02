@@ -35,6 +35,12 @@ export const COLORS = {
   peach: '#E4613D',
   bluePrimary: '#7DB1AF',
   blue: '#49a987',
-  lightGrey: '#eeeeee',
+  lightGrey: '#f0f0f0',
   darkGrey: '#888888',
+  primaryColor: '#ee725a',
+  backgroundSurface: '#f8f8f8',
+  inputBorderColor: '#aebfbd',
+  inputTextColor: '#a0a3bd',
+  text: '#1e2625',
+  whiteText: '#f7f7fc',
 };

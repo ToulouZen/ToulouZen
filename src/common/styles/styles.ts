@@ -7,6 +7,20 @@ import {
 } from '../../constants/Constants';
 
 export const styles = StyleSheet.create({
+  text: {
+    color: COLORS.text,
+    lineHeight: 14,
+    letterSpacing: 0.75,
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+  },
+  buttonText: {
+    color: COLORS.whiteText,
+    lineHeight: 17,
+    letterSpacing: 0.75,
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
+  },
   blackBackgroundColor: {
     backgroundColor: '#000',
   },
@@ -91,18 +105,19 @@ export const styles = StyleSheet.create({
   },
   logTitle: {
     fontWeight: 'bold',
-    fontSize: WINDOW_WIDTH * 0.06,
-    color: COLORS.peach,
+    fontSize: 18,
+    lineHeight: 28,
+    letterSpacing: 2.75,
+    color: COLORS.primaryColor,
+    fontFamily: 'Poppins-Bold',
   },
   logButtons: {
-    width: IS_IOS ? WINDOW_WIDTH * 0.8 : WINDOW_WIDTH * 0.7,
-    borderColor: COLORS.peach,
-    borderWidth: 1,
+    width: WINDOW_WIDTH * 0.8,
     borderRadius: 50,
-    backgroundColor: COLORS.peach,
+    backgroundColor: COLORS.primaryColor,
     padding: IS_IOS ? WINDOW_WIDTH * 0.04 : WINDOW_WIDTH * 0.03,
-    alignItems: 'center',
     alignSelf: 'center',
+    justifyContent: 'center',
     // Shadow
     shadowOpacity: 0.3,
     shadowRadius: 5,
@@ -115,23 +130,23 @@ export const styles = StyleSheet.create({
   },
   logInputs: {
     width: WINDOW_WIDTH * 0.8,
-    borderColor: COLORS.darkGrey,
-    borderWidth: 3,
-    borderRadius: 50,
+    borderColor: COLORS.inputBorderColor,
+    borderWidth: 2,
+    borderRadius: 40,
     backgroundColor: COLORS.lightGrey,
     alignItems: 'center',
     alignSelf: 'center',
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowColor: '#000',
-    elevation: 8,
-    fontSize: WINDOW_WIDTH * 0.04,
-    fontWeight: 'bold',
-    color: '#000',
+  },
+  logInputText: {
+    flex: 1,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    lineHeight: 14,
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+    color: COLORS.inputTextColor,
+    padding: WINDOW_WIDTH * 0.04,
+    paddingLeft: 24,
   },
   logPasswordInput: {
     fontSize: WINDOW_WIDTH * 0.04,
@@ -146,11 +161,6 @@ export const styles = StyleSheet.create({
     fontSize: WINDOW_WIDTH * 0.042,
     fontWeight: 'bold',
     color: '#000',
-  },
-  userTypeTextConductrice: {
-    color: '#FFFFFF',
-    fontSize: WINDOW_WIDTH * 0.06,
-    fontWeight: 'bold',
   },
   userTypeTextPassagere: {
     color: COLORS.white,
