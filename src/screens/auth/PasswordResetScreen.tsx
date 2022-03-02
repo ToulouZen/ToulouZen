@@ -2,7 +2,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import React, { FC, useState } from 'react';
 import {
   Alert,
-  Image,
   ScrollView,
   Text,
   TextInput,
@@ -14,6 +13,8 @@ import { WINDOW_WIDTH } from 'constants/Constants';
 import { useAuth } from 'contexts/AuthContext';
 import { RootStackParamsList } from 'common/types/types';
 import I18n from 'internationalization';
+import ToulouZenLogo from 'assets/img/logo-toulouzen.svg';
+import ToulouZenCurve from 'assets/img/toulouzen-curve.svg';
 
 type Props = StackScreenProps<RootStackParamsList, 'PasswordReset'>;
 
@@ -41,15 +42,15 @@ const PasswordResetScreen: FC<Props> = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.container}>
-        <Image
+        <ToulouZenLogo
+          width={WINDOW_WIDTH * 0.7}
+          height={100}
           style={styles.logoHeader}
-          source={require('../../assets/img/logo_toulouzen.png')}
-          resizeMode="contain"
         />
-        <Image
-          style={{ width: WINDOW_WIDTH }}
-          source={require('../../assets/img/Courbe.png')}
-          resizeMode="contain"
+        <ToulouZenCurve
+          style={{ marginTop: -50 }}
+          width={WINDOW_WIDTH}
+          height={175}
         />
         <View style={styles.container}>
           <View style={styles.authViewContainer}>

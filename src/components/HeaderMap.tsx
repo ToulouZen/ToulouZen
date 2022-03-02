@@ -1,19 +1,19 @@
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { styles } from 'common/styles/styles';
 import { RootStackParamsList } from 'common/types/types';
-import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
+import { WINDOW_WIDTH } from 'constants/Constants';
 import I18n from 'internationalization';
 import React, { FC } from 'react';
 import {
   Alert,
-  Image,
   Linking,
   PermissionsAndroid,
   Platform,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
+import Burger from 'assets/img/menu_burger.svg';
+import SOS from 'assets/img/sos.svg';
 
 type Props = {
   navigation: DrawerNavigationProp<
@@ -87,17 +87,10 @@ const HeaderMap: FC<Props> = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => navigation.openDrawer()}
         style={styles.drawerIcon}>
-        <Icon
-          type="entypo"
-          name="menu"
-          size={WINDOW_WIDTH * 0.1}
-          color={COLORS.white}
-        />
+        <Burger width={20} height={20} color="red" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => call()}>
-        <Image
-          source={require('../assets/img/Button_SOS.png')}
-          resizeMode="contain"
+        <SOS
           style={{ width: WINDOW_WIDTH * 0.1, height: WINDOW_WIDTH * 0.1 }}
         />
       </TouchableOpacity>

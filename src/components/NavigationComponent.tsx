@@ -1,5 +1,10 @@
-/* eslint-disable react-native/no-inline-styles */
 import { Picker } from '@react-native-picker/picker';
+import CheckmarkCircle from 'assets/img/checkmark-circle.svg';
+import Circle from 'assets/img/circle.svg';
+import Clock from 'assets/img/clock.svg';
+import Marker from 'assets/img/marker.svg';
+import Star from 'assets/img/star.svg';
+import ArrowDown from 'assets/img/arrow-down.svg';
 import { styles } from 'common/styles/styles';
 import { Checkpoint } from 'common/types/types';
 import { COLORS, DONE, WINDOW_HEIGHT, WINDOW_WIDTH } from 'constants/Constants';
@@ -17,8 +22,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Icon, Overlay } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
+import Modal from 'react-native-modal';
 import AutoCompletePlace from './autoCompletePlace/AutoCompletePlace';
 
 type Props = {
@@ -115,8 +120,8 @@ const NavigationComponent: FC<Props> = ({
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
       }}>
-      <Overlay isVisible={isVisible}>
-        <>
+      <Modal isVisible={isVisible}>
+        <View style={{ backgroundColor: COLORS.white, paddingVertical: 32 }}>
           {isPosition && (
             <Picker
               style={{ width: WINDOW_WIDTH * 0.9 }}
@@ -159,7 +164,8 @@ const NavigationComponent: FC<Props> = ({
               ))}
             </Picker>
           )}
-          <Icon
+          <TouchableOpacity
+            style={styles.center}
             onPress={() => {
               if (isPosition) {
                 setIsPosition(false);
@@ -168,14 +174,15 @@ const NavigationComponent: FC<Props> = ({
                 setIsTime(false);
               }
               setIsVisible(false);
-            }}
-            name="checkmark-circle"
-            type="ionicon"
-            size={WINDOW_WIDTH * 0.1}
-            color="#52ad8d"
-          />
-        </>
-      </Overlay>
+            }}>
+            <CheckmarkCircle
+              height={WINDOW_WIDTH * 0.1}
+              width={WINDOW_WIDTH * 0.1}
+              fill="#52ad8d"
+            />
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <View
         style={[
           styles.shadowContainer,
@@ -199,23 +206,17 @@ const NavigationComponent: FC<Props> = ({
                 paddingTop: WINDOW_WIDTH * 0.08,
               }}>
               {/* icon + divider + point */}
-              <Image
-                source={require('../assets/img/localisation_itineraire.png')}
-                resizeMode="contain"
-                style={{
-                  width: WINDOW_WIDTH * 0.06,
-                  height: WINDOW_WIDTH * 0.06,
-                  tintColor: COLORS.peach,
-                }}
+              <Marker
+                width={WINDOW_WIDTH * 0.06}
+                height={WINDOW_WIDTH * 0.06}
               />
               <View
                 style={{ height: 30, width: 1, backgroundColor: COLORS.peach }}
               />
-              <Icon
-                type="entypo"
-                name="circle"
-                size={WINDOW_WIDTH * 0.03}
-                color={COLORS.green}
+              <Circle
+                height={WINDOW_WIDTH * 0.03}
+                width={WINDOW_WIDTH * 0.03}
+                fill={COLORS.green}
               />
             </View>
             <View>
@@ -261,11 +262,10 @@ const NavigationComponent: FC<Props> = ({
                     setIsTime(true);
                     setIsVisible(true);
                   }}>
-                  <Icon
-                    type="evilicon"
-                    name="clock"
-                    size={WINDOW_WIDTH * 0.06}
-                    color={COLORS.peach}
+                  <Clock
+                    height={WINDOW_WIDTH * 0.06}
+                    width={WINDOW_WIDTH * 0.06}
+                    fill={COLORS.peach}
                   />
                   <Text
                     style={{
@@ -274,15 +274,9 @@ const NavigationComponent: FC<Props> = ({
                     }}>
                     {timeDeparture}
                   </Text>
-                  <Image
-                    source={require('../assets/img/arrow.png')}
-                    resizeMode="contain"
-                    style={{
-                      width: WINDOW_WIDTH * 0.06,
-                      height: WINDOW_WIDTH * 0.06,
-                      tintColor: COLORS.peach,
-                      transform: [{ rotate: '90deg' }],
-                    }}
+                  <ArrowDown
+                    width={WINDOW_WIDTH * 0.06}
+                    height={WINDOW_WIDTH * 0.06}
                   />
                 </TouchableOpacity>
               </View>
@@ -379,15 +373,7 @@ const NavigationComponent: FC<Props> = ({
                 styles.containerPadding,
                 { flexDirection: 'row', alignItems: 'center' },
               ]}>
-              <Image
-                source={require('../assets/img/Favori.png')}
-                resizeMode="contain"
-                style={{
-                  width: WINDOW_WIDTH * 0.08,
-                  height: WINDOW_WIDTH * 0.08,
-                  tintColor: COLORS.bluePrimary,
-                }}
-              />
+              <Star width={WINDOW_WIDTH * 0.08} height={WINDOW_WIDTH * 0.08} />
               <Text
                 style={{
                   fontSize: WINDOW_WIDTH * 0.05,

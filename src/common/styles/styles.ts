@@ -1,5 +1,10 @@
-import { StyleSheet, Platform } from 'react-native';
-import { COLORS, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../constants/Constants';
+import { StyleSheet } from 'react-native';
+import {
+  COLORS,
+  IS_IOS,
+  WINDOW_HEIGHT,
+  WINDOW_WIDTH,
+} from '../../constants/Constants';
 
 export const styles = StyleSheet.create({
   blackBackgroundColor: {
@@ -90,12 +95,12 @@ export const styles = StyleSheet.create({
     color: COLORS.peach,
   },
   logButtons: {
-    width: Platform.OS == 'ios' ? WINDOW_WIDTH * 0.8 : WINDOW_WIDTH * 0.7,
+    width: IS_IOS ? WINDOW_WIDTH * 0.8 : WINDOW_WIDTH * 0.7,
     borderColor: COLORS.peach,
     borderWidth: 1,
     borderRadius: 50,
     backgroundColor: COLORS.peach,
-    padding: Platform.OS == 'ios' ? WINDOW_WIDTH * 0.04 : WINDOW_WIDTH * 0.03,
+    padding: IS_IOS ? WINDOW_WIDTH * 0.04 : WINDOW_WIDTH * 0.03,
     alignItems: 'center',
     alignSelf: 'center',
     // Shadow
@@ -191,14 +196,15 @@ export const styles = StyleSheet.create({
   },
   drawerCustomItemText: {
     color: COLORS.blackBackground,
-    fontSize: Platform.OS == 'ios' ? WINDOW_WIDTH * 0.07 : WINDOW_WIDTH * 0.05,
+    fontSize: IS_IOS ? WINDOW_WIDTH * 0.07 : WINDOW_WIDTH * 0.05,
     fontWeight: 'bold',
   },
   drawerIcon: {
-    backgroundColor: COLORS.peach,
-    borderRadius: 50,
-    borderColor: '#FFF',
-    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+    marginTop: 8,
+    padding: 8,
   },
   checkpointCardView: {
     backgroundColor: '#fff',
@@ -216,5 +222,9 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.blackBackground,
     opacity: 0.3,
     borderColor: 'transparent',
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

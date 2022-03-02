@@ -1,4 +1,8 @@
 import { StackScreenProps } from '@react-navigation/stack';
+import ArrowDownCircle from 'assets/img/arrow-down-circle.svg';
+import ArrowUpCircle from 'assets/img/arrow-up-circle.svg';
+import ToulouZenLogo from 'assets/img/logo-toulouzen.svg';
+import ToulouZenCurve from 'assets/img/toulouzen-curve.svg';
 import { styles } from 'common/styles/styles';
 import { Region, RootStackParamsList } from 'common/types/types';
 import Map from 'components/Map';
@@ -6,14 +10,8 @@ import { COLORS, STARTED, WINDOW_WIDTH } from 'constants/Constants';
 import { useFirestore } from 'contexts/FirestoreContext';
 import I18n from 'internationalization';
 import React, { FC, useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { Icon, Overlay } from 'react-native-elements';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import Modal from 'react-native-modal';
 
 type Props = StackScreenProps<RootStackParamsList, 'DriverConfirm'>;
 
@@ -51,7 +49,11 @@ const DriverConfirmScreen: FC<Props> = ({ navigation }) => {
             alignItems: 'center',
           },
         ]}>
-        <Overlay isVisible={modalVisible} fullScreen animationType="slide">
+        <Modal
+          // TODO: Must be fullscreen
+          isVisible={modalVisible}
+          animationIn="slideInLeft"
+          animationOut="slideOutRight">
           <View
             style={{
               flex: 1,
@@ -66,25 +68,25 @@ const DriverConfirmScreen: FC<Props> = ({ navigation }) => {
               passengerPosition={firestore.actualPath?.departureDestination}
             />
             <View style={{ position: 'absolute', bottom: 5 }}>
-              <Icon
-                name="arrow-down-circle"
-                type="ionicon"
-                size={WINDOW_WIDTH * 0.1}
-                color="#52ad8d"
-                onPress={() => setModalVisible(false)}
-              />
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <ArrowDownCircle
+                  height={WINDOW_WIDTH * 0.1}
+                  width={WINDOW_WIDTH * 0.1}
+                  fill="#52ad8d"
+                />
+              </TouchableOpacity>
             </View>
           </View>
-        </Overlay>
-        <Image
+        </Modal>
+        <ToulouZenLogo
+          width={WINDOW_WIDTH * 0.7}
+          height={100}
           style={styles.logoHeader}
-          source={require('../../assets/img/logo_toulouzen.png')}
-          resizeMode="contain"
         />
-        <Image
-          style={{ width: WINDOW_WIDTH }}
-          source={require('../../assets/img/Courbe.png')}
-          resizeMode="contain"
+        <ToulouZenCurve
+          style={{ marginTop: -50 }}
+          width={WINDOW_WIDTH}
+          height={175}
         />
         <View
           style={{
@@ -209,14 +211,15 @@ const DriverConfirmScreen: FC<Props> = ({ navigation }) => {
             </TouchableOpacity>
           )}
 
-          <Icon
-            name="arrow-up-circle"
-            type="ionicon"
-            size={WINDOW_WIDTH * 0.1}
-            color="#52ad8d"
+          <TouchableOpacity
             style={{ marginTop: 50 }}
-            onPress={() => setModalVisible(true)}
-          />
+            onPress={() => setModalVisible(true)}>
+            <ArrowUpCircle
+              height={WINDOW_WIDTH * 0.1}
+              width={WINDOW_WIDTH * 0.1}
+              fill="#52ad8d"
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </>

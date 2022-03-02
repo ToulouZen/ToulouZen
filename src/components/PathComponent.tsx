@@ -7,7 +7,9 @@ import moment from 'moment';
 import React, { FC, useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import Collapsible from 'react-native-collapsible';
-import { Icon } from 'react-native-elements';
+import Close from 'assets/img/close.svg';
+import ChevronUp from 'assets/img/chevron-up.svg';
+import ChevronDown from 'assets/img/chevron-down.svg';
 
 type Props = {
   path: Path;
@@ -37,6 +39,12 @@ const PathComponent: FC<Props> = ({ path, isPassenger, pathPicked }) => {
         },
       ],
     );
+  };
+
+  const chevronProps = {
+    height: WINDOW_WIDTH * 0.08,
+    width: WINDOW_WIDTH * 0.08,
+    fill: COLORS.peach,
   };
 
   return (
@@ -84,11 +92,10 @@ const PathComponent: FC<Props> = ({ path, isPassenger, pathPicked }) => {
               <TouchableOpacity
                 onPress={() => deletePath()}
                 style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Icon
-                  name="close"
-                  type="ionicon"
-                  size={WINDOW_WIDTH * 0.08}
-                  color={COLORS.peach}
+                <Close
+                  height={WINDOW_WIDTH * 0.08}
+                  width={WINDOW_WIDTH * 0.08}
+                  fill={COLORS.peach}
                 />
                 <Text
                   style={{
@@ -129,12 +136,11 @@ const PathComponent: FC<Props> = ({ path, isPassenger, pathPicked }) => {
             </View>
           </Collapsible>
           <TouchableOpacity onPress={() => setIsCollapsed(!isCollapsed)}>
-            <Icon
-              name={isCollapsed ? 'chevron-down' : 'chevron-up'}
-              type="ionicon"
-              size={WINDOW_WIDTH * 0.08}
-              color={COLORS.peach}
-            />
+            {isCollapsed ? (
+              <ChevronDown {...chevronProps} />
+            ) : (
+              <ChevronUp {...chevronProps} />
+            )}
           </TouchableOpacity>
         </>
       )}

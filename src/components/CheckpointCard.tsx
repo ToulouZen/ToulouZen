@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
+import Marker from 'assets/img/marker.svg';
 import { styles } from 'common/styles/styles';
 import { Checkpoint } from 'common/types/types';
+import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
 import I18n from 'internationalization';
+import React, { FC } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 type Props = {
   checkpoint: Checkpoint;
@@ -41,15 +42,7 @@ const CheckpointCard: FC<Props> = ({ checkpoint, goTo }) => {
         <Text style={{ color: COLORS.peach, fontSize: WINDOW_WIDTH * 0.04 }}>
           {I18n.t('common.going_there')}
         </Text>
-        <Image
-          resizeMode="contain"
-          source={require('../assets/img/localisation_itineraire.png')}
-          style={{
-            height: WINDOW_WIDTH * 0.07,
-            width: WINDOW_WIDTH * 0.07,
-            tintColor: COLORS.peach,
-          }}
-        />
+        <Marker width={WINDOW_WIDTH * 0.07} height={WINDOW_WIDTH * 0.07} />
       </TouchableOpacity>
     </View>
   );

@@ -12,8 +12,6 @@ target 'ToulouZen' do
     :hermes_enabled => true
   )
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-
   pod 'RNCPicker', :path => '../node_modules/@react-native-picker/picker'
 
   target 'ToulouZenTests' do
