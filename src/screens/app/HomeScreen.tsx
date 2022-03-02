@@ -1,4 +1,4 @@
-import { useIsFocused } from '@react-navigation/core';
+import BottomSheet from '@gorhom/bottom-sheet';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { styles } from 'common/styles/styles';
 import {
@@ -7,7 +7,6 @@ import {
   Region,
   RootStackParamsList,
 } from 'common/types/types';
-import CheckpointCard from 'components/CheckpointCard';
 import HeaderMap from 'components/HeaderMap';
 import Map from 'components/Map';
 import NavigationComponent from 'components/NavigationComponent';
@@ -15,15 +14,23 @@ import PathsComponent from 'components/PathsComponent';
 import { DONE, DRIVER, PASSENGER } from 'constants/Constants';
 import { useAuth } from 'contexts/AuthContext';
 import { useFirestore } from 'contexts/FirestoreContext';
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { View } from 'react-native';
 
 type Props = DrawerScreenProps<RootStackParamsList, 'Home'>;
 
 const HomeScreen: FC<Props> = ({ navigation }) => {
-  const isFocused = useIsFocused();
+  const bottomSheetRef = useRef<BottomSheet>(null);
   const [checkpointSelected, setCheckpointSelected] = useState<Checkpoint>();
   const [showCheckpointCard, setShowCheckpointCard] = useState<boolean>(false);
+  const [isHeaderVisible, setHeaderVisible] = useState<boolean>(true);
   const [checkpointToGo, setCheckpointToGo] = useState<Checkpoint>();
   const [region, setRegion] = useState<Region>({
     latitude: 43.604652,
@@ -34,6 +41,8 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
   const [durationPath, setDurationPath] = useState<number>(0);
   const [distancePath, setDistancePath] = useState<number>(0);
   const [passengerPosition, setPassengerPosition] = useState<Checkpoint>();
+
+  const snapPoints = useMemo(() => ['35%', '100%'], []);
 
   const auth = useAuth();
   const firestore = useFirestore();
@@ -47,7 +56,7 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
       firestore.getDriverPaths();
       firestore.getPaths();
     }
-  }, [isFocused, auth?.userInfo?.userType]);
+  }, [auth?.userInfo?.userType]);
 
   useEffect(() => {
     if (
@@ -77,7 +86,7 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
   };
 
   const goTo = (checkpoint: Checkpoint) => {
-    console.log('Go to :', checkpoint)
+    console.log('Go to :', checkpoint);
     setCheckpointToGo(checkpoint);
   };
 
@@ -91,8 +100,21 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
     setPassengerPosition(path.departureDestination);
   };
 
+  const handleOnAnimate = useCallback((fromIndex: number, toIndex: number) => {
+    setHeaderVisible(!(fromIndex === 0 && toIndex === 1));
+  }, []);
+
+  const handleSheetChanges = (index: number) => {
+    setHeaderVisible(index !== 1);
+  };
+
   return (
     <View style={styles.container}>
+      {isHeaderVisible ? (
+        <View style={{ position: 'absolute', top: 0 }}>
+          <HeaderMap navigation={navigation} />
+        </View>
+      ) : null}
       <Map
         handleCard={handleCard}
         closeCard={closeCard}
@@ -101,19 +123,19 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
         getInfoPath={getInfoPath}
         passengerPosition={passengerPosition}
       />
-      <View style={{ position: 'absolute', top: 0 }}>
-        <HeaderMap navigation={navigation} />
-        {showCheckpointCard && (
-          <CheckpointCard checkpoint={checkpointSelected!} goTo={goTo} />
-        )}
-      </View>
       {auth?.userInfo?.userType === PASSENGER && (
-        <NavigationComponent
-          handleRegion={handleRegion}
-          goTo={goTo}
-          distance={distancePath}
-          duration={durationPath}
-        />
+        <BottomSheet
+          ref={bottomSheetRef}
+          snapPoints={snapPoints}
+          onAnimate={handleOnAnimate}
+          onChange={handleSheetChanges}>
+          <NavigationComponent
+            handleRegion={handleRegion}
+            goTo={goTo}
+            distance={distancePath}
+            duration={durationPath}
+          />
+        </BottomSheet>
       )}
       {auth?.userInfo?.userType === DRIVER && (
         <PathsComponent handlePath={handlePath} navigation={navigation} />

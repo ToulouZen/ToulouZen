@@ -1,10 +1,10 @@
 import { Picker } from '@react-native-picker/picker';
+import ArrowDown from 'assets/img/arrow-down.svg';
 import CheckmarkCircle from 'assets/img/checkmark-circle.svg';
 import Circle from 'assets/img/circle.svg';
 import Clock from 'assets/img/clock.svg';
 import Marker from 'assets/img/marker.svg';
 import Star from 'assets/img/star.svg';
-import ArrowDown from 'assets/img/arrow-down.svg';
 import { styles } from 'common/styles/styles';
 import { Checkpoint } from 'common/types/types';
 import { COLORS, DONE, WINDOW_HEIGHT, WINDOW_WIDTH } from 'constants/Constants';
@@ -16,7 +16,6 @@ import React, { FC, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Image,
   Text,
   TextInput,
   TouchableOpacity,
@@ -49,12 +48,7 @@ const TIMES = [
   '02:00',
 ];
 
-const NavigationComponent: FC<Props> = ({
-  handleRegion,
-  goTo,
-  distance,
-  duration,
-}) => {
+const NavigationComponent: FC<Props> = ({ goTo }) => {
   const firestore = useFirestore();
   const { userLocation } = useLocationContext();
 
@@ -108,15 +102,13 @@ const NavigationComponent: FC<Props> = ({
   return (
     <ScrollView
       style={{
-        position: 'absolute',
-        bottom: 0,
         width: WINDOW_WIDTH,
         height:
           firestore.actualPath === undefined ||
           firestore?.actualPath?.state === DONE
             ? WINDOW_HEIGHT * 0.4
             : WINDOW_HEIGHT * 0.2,
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.white,
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
       }}>
@@ -184,15 +176,10 @@ const NavigationComponent: FC<Props> = ({
         </View>
       </Modal>
       <View
-        style={[
-          styles.shadowContainer,
-          {
-            backgroundColor: '#fff',
-            paddingVertical: WINDOW_WIDTH * 0.06,
-            borderTopRightRadius: 15,
-            borderTopLeftRadius: 15,
-          },
-        ]}>
+        style={{
+          backgroundColor: COLORS.white,
+          paddingTop: 8,
+        }}>
         {firestore.actualPath === undefined ||
         firestore?.actualPath?.state === DONE ? (
           <>

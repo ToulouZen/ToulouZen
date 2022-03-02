@@ -111,7 +111,7 @@ export const styles = StyleSheet.create({
       height: 5,
     },
     shadowColor: '#000',
-    elevation: 8,
+    elevation: 4,
   },
   logInputs: {
     width: WINDOW_WIDTH * 0.8,
