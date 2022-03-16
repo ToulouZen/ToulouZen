@@ -1,14 +1,15 @@
 import firebaseAuth from '@react-native-firebase/auth';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-// import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { styles } from 'common/styles/styles';
 import CustomDrawer from 'components/CustomDrawer';
+import { AuthContextProvider } from 'contexts/AuthContext';
+import { FirestoreContextProvider } from 'contexts/FirestoreContext';
 import { LocationContextProvider } from 'contexts/LocationContext';
 import I18n from 'internationalization';
 import React, { useEffect } from 'react';
-import { StatusBar } from 'react-native';
+import { LogBox, StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SafeAreaView from 'react-native-safe-area-view';
 import DriverConfirmScreen from 'screens/app/DriverConfirmScreen';
@@ -20,9 +21,6 @@ import PasswordResetScreen from 'screens/auth/PasswordResetScreen';
 import SignupScreen from 'screens/auth/SignupScreen';
 import UserTypeScreen from 'screens/auth/UserTypeScreen';
 import { logCurrentStorage } from 'utils/utils';
-import { AuthContextProvider } from './src/contexts/AuthContext';
-import { FirestoreContextProvider } from './src/contexts/FirestoreContext';
-import { LogBox } from 'react-native';
 
 const App = () => {
   LogBox.ignoreAllLogs(); //Ignore all log notifications
