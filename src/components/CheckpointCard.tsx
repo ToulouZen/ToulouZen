@@ -5,6 +5,7 @@ import { COLORS, WINDOW_WIDTH } from 'constants/Constants';
 import I18n from 'internationalization';
 import React, { FC } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 type Props = {
   checkpoint: Checkpoint;
@@ -39,7 +40,7 @@ const CheckpointCard: FC<Props> = ({ checkpoint, goTo }) => {
             justifyContent: 'space-around',
           },
         ]}>
-        <Text style={{ color: COLORS.peach, fontSize: WINDOW_WIDTH * 0.04 }}>
+        <Text style={{ color: COLORS.peach, fontSize: RFValue(14) }}>
           {I18n.t('common.going_there')}
         </Text>
         <Marker width={WINDOW_WIDTH * 0.07} height={WINDOW_WIDTH * 0.07} />

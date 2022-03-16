@@ -23,6 +23,7 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
+import { RFValue } from 'react-native-responsive-fontsize';
 import AutoCompletePlace from './autoCompletePlace/AutoCompletePlace';
 
 type Props = {
@@ -257,7 +258,7 @@ const NavigationComponent: FC<Props> = ({ goTo }) => {
                   <Text
                     style={{
                       color: COLORS.peach,
-                      fontSize: WINDOW_WIDTH * 0.04,
+                      fontSize: RFValue(14),
                     }}>
                     {timeDeparture}
                   </Text>

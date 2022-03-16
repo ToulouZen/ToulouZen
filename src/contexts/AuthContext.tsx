@@ -4,7 +4,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { MMKVStorage } from 'common/storage';
 import { RootStackParamsList } from 'common/types/types';
 import {
-  TOULOUZEN_AGE,
   TOULOUZEN_EMAIL,
   TOULOUZEN_FIRST_NAME,
   TOULOUZEN_LAST_NAME,
@@ -24,7 +23,6 @@ type UserInfo = {
   firstname: string | undefined;
   lastname: string | undefined;
   mail: string | undefined;
-  age: number | undefined;
   userType: string | undefined;
 };
 // Variables qui doivent être mises à disposition lors de l'utilisation du contexte
@@ -37,7 +35,6 @@ type AuthContextType = {
     password: string,
     firstname: string,
     lastname: string,
-    age: number,
     userType: string,
   ) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
@@ -47,7 +44,6 @@ type AuthContextType = {
     mail: string,
     firstname: string,
     lastname: string,
-    age: number,
     userType: string,
   ) => Promise<void>;
   resetPassword: (
@@ -80,7 +76,6 @@ export const AuthContextProvider: FC = ({ children }) => {
     firstname: '',
     lastname: '',
     mail: '',
-    age: 0,
     userType: '',
   });
 
@@ -114,7 +109,6 @@ export const AuthContextProvider: FC = ({ children }) => {
     password: string,
     firstname: string,
     lastname: string,
-    age: number,
     userType: string,
   ) => {
     const registerWithEmailAndPassword =
@@ -129,10 +123,9 @@ export const AuthContextProvider: FC = ({ children }) => {
             mail: registerWithEmailAndPassword.user.email,
             firstname,
             lastname,
-            age,
             userType,
           });
-          setUserInfo({ firstname, lastname, mail: email, age, userType });
+          setUserInfo({ firstname, lastname, mail: email, userType });
           MMKVStorage.set(
             TOULOUZEN_USER_ID,
             registerWithEmailAndPassword.user.uid,
@@ -140,7 +133,6 @@ export const AuthContextProvider: FC = ({ children }) => {
           MMKVStorage.set(TOULOUZEN_FIRST_NAME, firstname);
           MMKVStorage.set(TOULOUZEN_LAST_NAME, lastname);
           MMKVStorage.set(TOULOUZEN_EMAIL, email);
-          MMKVStorage.set(TOULOUZEN_AGE, age);
           MMKVStorage.set(TOULOUZEN_USER_TYPE, userType);
         }
       })
@@ -163,7 +155,6 @@ export const AuthContextProvider: FC = ({ children }) => {
           firstname: data?.firstname,
           lastname: data?.lastname,
           mail: data?.mail,
-          age: data?.age,
           userType: data?.userType,
         });
 
@@ -171,7 +162,6 @@ export const AuthContextProvider: FC = ({ children }) => {
         MMKVStorage.set(TOULOUZEN_FIRST_NAME, data?.firstname);
         MMKVStorage.set(TOULOUZEN_LAST_NAME, data?.lastname);
         MMKVStorage.set(TOULOUZEN_EMAIL, email);
-        MMKVStorage.set(TOULOUZEN_AGE, data?.age);
         MMKVStorage.set(TOULOUZEN_USER_TYPE, data?.userType);
       })
       .then(() => {
@@ -188,25 +178,22 @@ export const AuthContextProvider: FC = ({ children }) => {
     mail: string,
     firstname: string,
     lastname: string,
-    age: number,
     userType: string,
   ) => {
     firebaseAuth().currentUser?.updateEmail(mail);
     usersCollection
       .doc(auth.user!.uid!)
-      .set({ mail, firstname, lastname, age, userType })
+      .set({ mail, firstname, lastname, userType })
       .then(() => {
         setUserInfo({
           firstname: firstname,
           lastname: lastname,
           mail: mail,
-          age: age,
           userType: userType,
         });
         MMKVStorage.set(TOULOUZEN_FIRST_NAME, firstname);
         MMKVStorage.set(TOULOUZEN_LAST_NAME, lastname);
         MMKVStorage.set(TOULOUZEN_EMAIL, mail);
-        MMKVStorage.set(TOULOUZEN_AGE, age);
         MMKVStorage.set(TOULOUZEN_USER_TYPE, userType);
       });
   };
@@ -222,10 +209,9 @@ export const AuthContextProvider: FC = ({ children }) => {
     const firstname = MMKVStorage.getString(TOULOUZEN_FIRST_NAME);
     const lastname = MMKVStorage.getString(TOULOUZEN_LAST_NAME);
     const mail = MMKVStorage.getString(TOULOUZEN_EMAIL);
-    const age = MMKVStorage.getNumber(TOULOUZEN_AGE);
     const userType = MMKVStorage.getString(TOULOUZEN_USER_TYPE);
     setAuth({ user: { uid: uid }, isSignedIn: true });
-    setUserInfo({ firstname, lastname, mail, age, userType });
+    setUserInfo({ firstname, lastname, mail, userType });
   };
 
   // Méthode de contexte permettant l'envoi d'un e-mail pour effectuer la mise à jour du mot de passe d'une utilisatrice

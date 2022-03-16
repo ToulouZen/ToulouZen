@@ -13,6 +13,7 @@ import { useAuth } from 'contexts/AuthContext';
 import { styles } from 'common/styles/styles';
 import { RootStackParamsList } from 'common/types/types';
 import I18n from 'internationalization';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 type Props = DrawerScreenProps<RootStackParamsList, 'Settings'>;
 
@@ -32,9 +33,7 @@ const SettingsScreen: FC<Props> = ({ navigation }) => {
   const [userTypeText, setUserTypeText] = useState<string>(
     auth.userInfo!.userType!,
   );
-  const [buttonTitle, setButtonTitle] = useState<string>(
-    I18n.t('common.save'),
-  );
+  const [buttonTitle, setButtonTitle] = useState<string>(I18n.t('common.save'));
   const [disableButton, setDisableButton] = useState<boolean>(true);
 
   useEffect(() => {
@@ -77,8 +76,8 @@ const SettingsScreen: FC<Props> = ({ navigation }) => {
             style={[
               styles.logInputs,
               {
-                padding: WINDOW_WIDTH * 0.04,
-                marginVertical: WINDOW_WIDTH * 0.04,
+                padding: RFValue(14),
+                marginVertical: RFValue(14),
               },
             ]}
           />
@@ -89,8 +88,8 @@ const SettingsScreen: FC<Props> = ({ navigation }) => {
             style={[
               styles.logInputs,
               {
-                padding: WINDOW_WIDTH * 0.04,
-                marginVertical: WINDOW_WIDTH * 0.04,
+                padding: RFValue(14),
+                marginVertical: RFValue(14),
               },
             ]}
           />
@@ -101,8 +100,8 @@ const SettingsScreen: FC<Props> = ({ navigation }) => {
             style={[
               styles.logInputs,
               {
-                padding: WINDOW_WIDTH * 0.04,
-                marginVertical: WINDOW_WIDTH * 0.04,
+                padding: RFValue(14),
+                marginVertical: RFValue(14),
               },
             ]}
             keyboardType="numeric"
@@ -115,8 +114,8 @@ const SettingsScreen: FC<Props> = ({ navigation }) => {
             style={[
               styles.logInputs,
               {
-                padding: WINDOW_WIDTH * 0.04,
-                marginVertical: WINDOW_WIDTH * 0.04,
+                padding: RFValue(14),
+                marginVertical: RFValue(14),
               },
             ]}
           />
@@ -129,9 +128,7 @@ const SettingsScreen: FC<Props> = ({ navigation }) => {
                 disableButton ? styles.disabled : styles.logButtons,
                 styles.containerMargin,
               ]}>
-              <Text style={styles.userTypeTextConductrice}>
-                {buttonTitle}
-              </Text>
+              <Text style={styles.userTypeTextConductrice}>{buttonTitle}</Text>
             </TouchableOpacity>
           </View>
         </View>

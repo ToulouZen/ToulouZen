@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import {
   COLORS,
   IS_IOS,
@@ -78,7 +79,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 15,
   },
   logsInputLabel: {
-    fontSize: WINDOW_WIDTH * 0.04,
+    fontSize: RFValue(14),
     marginBottom: WINDOW_WIDTH * 0.01,
     marginLeft: WINDOW_WIDTH * 0.01,
     color: COLORS.black,
@@ -115,7 +116,7 @@ export const styles = StyleSheet.create({
     width: WINDOW_WIDTH * 0.8,
     borderRadius: 50,
     backgroundColor: COLORS.primaryColor,
-    padding: IS_IOS ? WINDOW_WIDTH * 0.04 : WINDOW_WIDTH * 0.03,
+    padding: IS_IOS ? RFValue(14) : WINDOW_WIDTH * 0.03,
     alignSelf: 'center',
     justifyContent: 'center',
     // Shadow
@@ -145,27 +146,18 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Poppins-Medium',
     color: COLORS.inputTextColor,
-    padding: WINDOW_WIDTH * 0.04,
+    padding: RFValue(14),
     paddingLeft: 24,
   },
-  logPasswordInput: {
-    fontSize: WINDOW_WIDTH * 0.04,
-    fontWeight: 'bold',
-    color: '#000',
-    flex: 1,
-    padding: WINDOW_WIDTH * 0.04,
-    borderTopLeftRadius: 50,
-    borderBottomLeftRadius: 50,
-  },
   logTexts: {
-    fontSize: WINDOW_WIDTH * 0.042,
+    fontSize: RFValue(14),
     fontWeight: 'bold',
     color: '#000',
   },
   userTypeButton: {
     marginTop: 24,
     width: WINDOW_WIDTH * 0.8,
-    padding: WINDOW_WIDTH * 0.04,
+    padding: RFValue(14),
     alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
@@ -182,7 +174,7 @@ export const styles = StyleSheet.create({
   inputAddress: {
     backgroundColor: '#dddddd',
     color: '#000',
-    fontSize: WINDOW_WIDTH * 0.04,
+    fontSize: RFValue(14),
     fontWeight: 'bold',
     alignSelf: 'center',
     width: WINDOW_WIDTH * 0.7,

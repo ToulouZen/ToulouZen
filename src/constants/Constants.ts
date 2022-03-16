@@ -20,7 +20,6 @@ export const TOULOUZEN_USER_ID = 'ToulouzenUserUID';
 export const TOULOUZEN_FIRST_NAME = 'ToulouzenFirstname';
 export const TOULOUZEN_LAST_NAME = 'ToulouzenLastname';
 export const TOULOUZEN_EMAIL = 'ToulouzenEmail';
-export const TOULOUZEN_AGE = 'ToulouzenAge';
 export const TOULOUZEN_USER_TYPE = 'ToulouzenUserType';
 export const TOULOUZEN_TOKEN = 'ToulouzenToken';
 

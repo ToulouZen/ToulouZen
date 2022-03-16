@@ -19,6 +19,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import { handleAuthErrors } from 'utils/utils';
 
 type Props = StackScreenProps<RootStackParamsList, 'Login'>;
@@ -85,7 +86,7 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
                 styles.logInputs,
                 styles.logInputText,
                 styles.containerMargin,
-                { padding: WINDOW_WIDTH * 0.04 },
+                { padding: RFValue(14) },
               ]}
             />
             <View
@@ -105,15 +106,9 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
                 onPress={() => setShowPassword(!showPassword)}
                 style={{ marginHorizontal: WINDOW_WIDTH * 0.02 }}>
                 {showPassword ? (
-                  <PasswordShow
-                    width={WINDOW_WIDTH * 0.08}
-                    height={WINDOW_WIDTH * 0.08}
-                  />
+                  <PasswordHide width={RFValue(28)} height={RFValue(28)} />
                 ) : (
-                  <PasswordHide
-                    width={WINDOW_WIDTH * 0.08}
-                    height={WINDOW_WIDTH * 0.08}
-                  />
+                  <PasswordShow width={RFValue(28)} height={RFValue(28)} />
                 )}
               </TouchableOpacity>
             </View>

@@ -15,6 +15,7 @@ import { RootStackParamsList } from 'common/types/types';
 import I18n from 'internationalization';
 import ToulouZenLogo from 'assets/img/logo-toulouzen.svg';
 import ToulouZenCurve from 'assets/img/toulouzen-curve.svg';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 type Props = StackScreenProps<RootStackParamsList, 'PasswordReset'>;
 
@@ -67,7 +68,7 @@ const PasswordResetScreen: FC<Props> = ({ navigation }) => {
               style={[
                 styles.logInputs,
                 styles.containerMargin,
-                { padding: WINDOW_WIDTH * 0.04 },
+                { padding: RFValue(14) },
               ]}
             />
 

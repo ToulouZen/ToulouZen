@@ -10,6 +10,7 @@ import Collapsible from 'react-native-collapsible';
 import Close from 'assets/img/close.svg';
 import ChevronUp from 'assets/img/chevron-up.svg';
 import ChevronDown from 'assets/img/chevron-down.svg';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 type Props = {
   path: Path;
@@ -99,7 +100,7 @@ const PathComponent: FC<Props> = ({ path, isPassenger, pathPicked }) => {
                 />
                 <Text
                   style={{
-                    fontSize: WINDOW_WIDTH * 0.04,
+                    fontSize: RFValue(14),
                     fontWeight: '400',
                     color: COLORS.peach,
                   }}>
