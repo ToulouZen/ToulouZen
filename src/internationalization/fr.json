@@ -110,6 +110,7 @@
     },
     "reset_password": {
       "title": "Réinitialisation",
+      "description": "Veuillez entrer votre adresse e-mail ci-dessous et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
       "reset_password_dialog": {
         "title": "Réinitialisation",
         "description": "En appuyant sur \"Oui\", vous allez recevoir un courrier électronique sur l'adresse e-mail que vous avez renseigné. Si vous ne recevez rien, réessayez en vérifiant que l'adresse e-mail renseignée est correcte."

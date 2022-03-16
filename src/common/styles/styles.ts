@@ -140,8 +140,6 @@ export const styles = StyleSheet.create({
   },
   logInputText: {
     flex: 1,
-    fontWeight: '500',
-    fontStyle: 'normal',
     lineHeight: 14,
     fontSize: 12,
     fontFamily: 'Poppins-Medium',

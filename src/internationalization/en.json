@@ -110,6 +110,7 @@
     },
     "reset_password": {
       "title": "Reset your password",
+      "description": "Please enter your email adress below and we will send you a link to reset your password.",
       "reset_password_dialog": {
         "title": "Reset yout password",
         "description": "If you press \"Yes\", you will receive an e-mail to the e-mail address you entered. If you do not receive anything, try again by checking that the e-mail address you entered is correct."
