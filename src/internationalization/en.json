@@ -117,9 +117,9 @@
       "action": "Send e-mail"
     },
     "user_type": {
-      "i_am": "I AM ...",
-      "driver": "a driver",
-      "passenger": "a passenger"
+      "i_am": "I AM A ...",
+      "driver": "Driver",
+      "passenger": "Passenger"
     }
   }
 }

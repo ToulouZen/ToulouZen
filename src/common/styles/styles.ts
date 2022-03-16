@@ -162,10 +162,21 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
   },
-  userTypeTextPassagere: {
-    color: COLORS.white,
-    fontSize: WINDOW_WIDTH * 0.05,
-    fontWeight: 'bold',
+  userTypeButton: {
+    marginTop: 24,
+    width: WINDOW_WIDTH * 0.8,
+    padding: WINDOW_WIDTH * 0.04,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: COLORS.primaryColor,
+    borderRadius: 50,
+  },
+  userTypeTextButton: {
+    fontSize: 14,
+    fontFamily: 'Poppins-Medium',
+    color: COLORS.primaryColor,
     textAlign: 'center',
   },
   inputAddress: {

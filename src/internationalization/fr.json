@@ -117,7 +117,7 @@
       "action": "Envoyer l'email"
     },
     "user_type": {
-      "i_am": "JE SUIS ...",
+      "i_am": "JE SUIS UNE ...",
       "driver": "Conductrice",
       "passenger": "Passagère"
     }
