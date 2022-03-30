@@ -45,6 +45,7 @@ type AuthContextType = {
     firstname: string,
     lastname: string,
     userType: string,
+    password: string,
   ) => Promise<void>;
   resetPassword: (
     mail: string,
@@ -179,8 +180,12 @@ export const AuthContextProvider: FC = ({ children }) => {
     firstname: string,
     lastname: string,
     userType: string,
+    password: string,
   ) => {
     firebaseAuth().currentUser?.updateEmail(mail);
+    if (password) {
+      firebaseAuth().currentUser?.updatePassword(password);
+    }
     usersCollection
       .doc(auth.user!.uid!)
       .set({ mail, firstname, lastname, userType })

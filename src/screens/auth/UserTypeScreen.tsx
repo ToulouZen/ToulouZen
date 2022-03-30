@@ -7,6 +7,7 @@ import { COLORS, DRIVER, PASSENGER, WINDOW_WIDTH } from 'constants/Constants';
 import I18n from 'internationalization';
 import React, { FC } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 type Props = StackScreenProps<RootStackParamsList, 'UserType'>;
 
@@ -67,7 +68,7 @@ const UserTypeScreen: FC<Props> = ({ navigation }) => {
           styles.userTypeButton,
           {
             width: WINDOW_WIDTH * 0.4,
-            padding: WINDOW_WIDTH * 0.02,
+            padding: RFValue(8),
             marginBottom: 40,
           },
         ]}>

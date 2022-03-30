@@ -1,11 +1,11 @@
-import useDebounce from 'hooks/debounce';
-import React, { useEffect, useState } from 'react';
-import { TextInput, View, Text, LogBox } from 'react-native';
 import GeoJSON, { Point } from 'geojson';
-import { autoCompleteAddress } from 'networking/adressToLocation';
-import { FlatList, TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
-import { styles as componentStyle } from './AutoCompletePlace.style';
+import useDebounce from 'hooks/debounce';
 import I18n from 'internationalization';
+import { autoCompleteAddress } from 'networking/adressToLocation';
+import React, { useEffect, useState } from 'react';
+import { LogBox, Text, TextInput, View } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { styles as componentStyle } from './AutoCompletePlace.style';
 
 const AutoCompletePlace = ({
   placeholder = '',
@@ -43,6 +43,17 @@ const AutoCompletePlace = ({
 
   return (
     <View>
+      <TextInput
+        onEndEditing={() => {
+          setAddressesResult(null);
+        }}
+        style={style}
+        placeholder={placeholder}
+        value={value}
+        onChangeText={text => {
+          onChangeText(text);
+        }}
+      />
       {addressesResult ? (
         <View
           style={[
@@ -69,17 +80,6 @@ const AutoCompletePlace = ({
           />
         </View>
       ) : null}
-      <TextInput
-        onEndEditing={() => {
-          setAddressesResult(null);
-        }}
-        style={style}
-        placeholder={placeholder}
-        value={value}
-        onChangeText={text => {
-          onChangeText(text);
-        }}
-      />
     </View>
   );
 };

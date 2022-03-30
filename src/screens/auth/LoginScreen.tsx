@@ -104,7 +104,7 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
               />
               <TouchableOpacity
                 onPress={() => setShowPassword(!showPassword)}
-                style={{ marginHorizontal: WINDOW_WIDTH * 0.02 }}>
+                style={{ marginHorizontal: RFValue(8) }}>
                 {showPassword ? (
                   <PasswordHide width={RFValue(28)} height={RFValue(28)} />
                 ) : (
@@ -127,7 +127,7 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => login()}
+              onPress={login}
               style={[
                 styles.logButtons,
                 styles.containerMargin,

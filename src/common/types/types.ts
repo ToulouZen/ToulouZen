@@ -4,6 +4,7 @@ export type RootStackParamsList = {
   Signup: {
     userType: string;
   };
+  Account: undefined;
   PasswordReset: undefined;
   AuthApp: undefined;
   LoggedApp: undefined;

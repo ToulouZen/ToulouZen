@@ -42,4 +42,5 @@ export const COLORS = {
   inputTextColor: '#a0a3bd',
   text: '#1e2625',
   whiteText: '#f7f7fc',
+  disable: '#AEBFBD',
 };

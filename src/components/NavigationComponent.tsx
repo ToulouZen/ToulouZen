@@ -27,7 +27,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import AutoCompletePlace from './autoCompletePlace/AutoCompletePlace';
 
 type Props = {
-  handleRegion: (checkpoint: Checkpoint) => void;
+  handleRegion?: (checkpoint: Checkpoint) => void;
   goTo: (checkpoint: Checkpoint) => void;
   distance?: number;
   duration?: number;
@@ -68,21 +68,6 @@ const NavigationComponent: FC<Props> = ({ goTo }) => {
   const [timeDeparture, setTimeDeparture] = useState<string>(
     I18n.t('common.now'),
   );
-
-  // useEffect(() => {
-  //   if (arrivalDestination != undefined) {
-  //     handleRegion(arrivalDestination);
-  //   }
-  // }, [arrivalDestination]);
-
-  // useEffect(() => {
-  //   reset();
-  // }, [firestore.actualPath]);
-
-  const reset = () => {
-    setArrivalDestination({ name: '', latitude: 0, longitude: 0 });
-    setTimeDeparture(I18n.t('common.now'));
-  };
 
   const finishPath = () => {
     Alert.alert(
@@ -225,11 +210,7 @@ const NavigationComponent: FC<Props> = ({ goTo }) => {
                 }
               />
               <AutoCompletePlace
-                style={[
-                  styles.containerMargin,
-                  styles.containerPadding,
-                  styles.inputAddress,
-                ]}
+                style={[styles.inputAddress, { marginTop: 1 }]}
                 placeholder={I18n.t('ride.end_ride_location')}
                 value={arrivalDestination?.name}
                 onChangeText={value =>
@@ -280,19 +261,13 @@ const NavigationComponent: FC<Props> = ({ goTo }) => {
                 }}
                 style={[
                   styles.logButtons,
-                  arrivalDestination === undefined ||
-                  departureDestination === undefined
+                  !arrivalDestination.name
                     ? styles.disabled
                     : styles.logButtons,
                   styles.containerMargin,
                 ]}
-                disabled={
-                  arrivalDestination === undefined ||
-                  departureDestination === undefined
-                    ? true
-                    : false
-                }>
-                <Text style={styles.userTypeTextPassagere}>
+                disabled={!arrivalDestination.name}>
+                <Text style={[styles.buttonText, { textAlign: 'center' }]}>
                   {I18n.t('ride.find_my_driver')}
                 </Text>
               </TouchableOpacity>

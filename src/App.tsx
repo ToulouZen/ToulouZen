@@ -1,17 +1,15 @@
 import firebaseAuth from '@react-native-firebase/auth';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { styles } from 'common/styles/styles';
-import CustomDrawer from 'components/CustomDrawer';
 import { AuthContextProvider } from 'contexts/AuthContext';
 import { FirestoreContextProvider } from 'contexts/FirestoreContext';
 import { LocationContextProvider } from 'contexts/LocationContext';
-import I18n from 'internationalization';
 import React, { useEffect } from 'react';
 import { LogBox, StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SafeAreaView from 'react-native-safe-area-view';
+import { AccountScreen } from 'screens/app/AccountScreen';
 import DriverConfirmScreen from 'screens/app/DriverConfirmScreen';
 import HomeScreen from 'screens/app/HomeScreen';
 import PathsScreen from 'screens/app/PathsScreen';
@@ -26,29 +24,22 @@ const App = () => {
   LogBox.ignoreAllLogs(); //Ignore all log notifications
 
   const AppStack = createStackNavigator();
-  const AppDrawerStack = createDrawerNavigator();
+  const AppDrawerStack = createStackNavigator();
 
   const LoggedStack = () => {
     return (
-      <AppDrawerStack.Navigator
-        drawerContent={props => <CustomDrawer {...props} />}
-        initialRouteName="Home">
+      <AppDrawerStack.Navigator initialRouteName="Home">
         <AppDrawerStack.Group screenOptions={{ headerShown: false }}>
           <AppDrawerStack.Screen
             name="Home"
             component={HomeScreen}
-            options={{ drawerLabel: I18n.t('general.drawer_menu.home') }}
+            // options={{ drawerLabel: I18n.t('general.drawer_menu.home') }}
           />
-          <AppDrawerStack.Screen
-            name="Paths"
-            component={PathsScreen}
-            options={{ drawerLabel: I18n.t('general.drawer_menu.rides') }}
-          />
-          <AppDrawerStack.Screen
-            name="Settings"
-            component={SettingsScreen}
-            options={{ drawerLabel: I18n.t('general.drawer_menu.settings') }}
-          />
+          <AppDrawerStack.Screen name="Paths" component={PathsScreen} />
+          <AppDrawerStack.Screen name="Settings" component={SettingsScreen} />
+          <AppDrawerStack.Group screenOptions={{ presentation: 'modal' }}>
+            <AppDrawerStack.Screen name="Account" component={AccountScreen} />
+          </AppDrawerStack.Group>
         </AppDrawerStack.Group>
       </AppDrawerStack.Navigator>
     );

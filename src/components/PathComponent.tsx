@@ -1,3 +1,4 @@
+import Close from 'assets/img/close.svg';
 import { styles } from 'common/styles/styles';
 import { Path } from 'common/types/types';
 import { COLORS, DONE, WINDOW_WIDTH } from 'constants/Constants';
@@ -6,10 +7,6 @@ import I18n from 'internationalization';
 import moment from 'moment';
 import React, { FC, useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import Collapsible from 'react-native-collapsible';
-import Close from 'assets/img/close.svg';
-import ChevronUp from 'assets/img/chevron-up.svg';
-import ChevronDown from 'assets/img/chevron-down.svg';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 type Props = {
@@ -114,36 +111,23 @@ const PathComponent: FC<Props> = ({ path, isPassenger, pathPicked }) => {
         </View>
       </View>
       {isPassenger && (
-        <>
-          <Collapsible collapsed={isCollapsed}>
-            <View style={styles.containerPadding}>
-              <Text
-                style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500' }}>
-                {I18n.t('ride.departure', {
-                  departure: isPassenger
-                    ? I18n.t('ride.my_current_location')
-                    : path.departureDestination.name,
-                })}
-              </Text>
-              <Text
-                style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500' }}>
-                {I18n.t('ride.arrival', {
-                  arrival:
-                    path.arrivalDestination != null
-                      ? path.arrivalDestination.name
-                      : 'Narnia',
-                })}
-              </Text>
-            </View>
-          </Collapsible>
-          <TouchableOpacity onPress={() => setIsCollapsed(!isCollapsed)}>
-            {isCollapsed ? (
-              <ChevronDown {...chevronProps} />
-            ) : (
-              <ChevronUp {...chevronProps} />
-            )}
-          </TouchableOpacity>
-        </>
+        <View style={styles.containerPadding}>
+          <Text style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500' }}>
+            {I18n.t('ride.departure', {
+              departure: isPassenger
+                ? I18n.t('ride.my_current_location')
+                : path.departureDestination.name,
+            })}
+          </Text>
+          <Text style={{ fontSize: WINDOW_WIDTH * 0.05, fontWeight: '500' }}>
+            {I18n.t('ride.arrival', {
+              arrival:
+                path.arrivalDestination != null
+                  ? path.arrivalDestination.name
+                  : 'Narnia',
+            })}
+          </Text>
+        </View>
       )}
     </View>
   );

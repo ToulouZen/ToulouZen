@@ -1,0 +1,65 @@
+Doctor = {
+    id: string
+    firstname: string,
+    lastname: string,
+    gender: string,
+    email: string 
+    patients: Patient[]
+    appoitements: Appoitment[]
+}
+
+GET /api/v1/doctors => Doctor[]
+
+GET /api/v1/doctors/:id => Doctor
+
+GET /api/v1/doctors?asc (firstname, lastname, email) => Doctor[]
+GET /api/v1/doctors?desc (firstname, lastname, email) => Doctor[]
+
+POST /api/v1/doctors {firstname, lastname, gender, email} => Doctor
+
+PUT /api/v1/doctors/:id {firstname, lastname, gender, email} => Doctor
+
+DELETE /api/v1/doctors/:id
+
+Patient = {
+    id: string
+    firstname: string,
+    lastname: string,
+    telephone: string,
+    socialSecurityNumber: string 
+    doctorID: string
+    appoitements: Appoitment[]
+}
+
+GET /api/v1/patients => Patient[]
+
+GET /api/v1/patients/:id => Patient
+
+GET /api/v1/patients?asc (firstname, lastname) => Patient[]
+GET /api/v1/patients?desc (firstname, lastname) => Patient[]
+
+POST /api/v1/patients {firstname, lastname, socialSecurityNumber, telephone, doctorID} => Patient
+
+PUT /api/v1/patients/:id {firstname, lastname, socialSecurityNumber, telephone, doctorID} => Patient
+
+DELETE /api/v1/patients/:id
+
+
+Patient = {
+    id: string
+    start: string,
+    end: string,
+    doctorID: string
+    patientID: string
+}
+
+
+GET /api/v1/appoitments => Appoitment[]
+
+GET /api/v1/appoitments/:id => Appoitment
+
+POST /api/v1/appoitments {start, end, reason, doctorID, patientID} => Appoitment
+
+PUT /api/v1/appoitments/:id {start, end, reason, doctorID, patientID} => Appoitment
+
+DELETE /api/v1/appoitments/:id

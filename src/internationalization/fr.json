@@ -3,8 +3,9 @@
     "app_name": "ToulouZen",
     "drawer_menu": {
       "home": "Accueil",
-      "rides": "Mes courses",
-      "settings": "Mes paramètres"
+      "rides": "Courses",
+      "settings": "Mes paramètres",
+      "personnal_info": "Informations personnelles"
     }
   },
   "common": {
@@ -50,13 +51,16 @@
     "is_on_the_way": "{{driver}} est en route ...",
     "end_ride": "Terminer la course",
     "saved_destinations": "Destinations enregistrées",
-    "ride_datetime": "Le {{date}} à {{time}}",
+    "ride_datetime": "{{date}} à {{time}}",
+    "driver": "Conductrice : ",
     "ride_time": "Départ à {{time}}",
     "departure": "Départ : {{departure}}",
     "arrival": "Arrivée : {{arrival}}",
     "no_ride": "Aucun trajet disponible",
-    "confirm_ride": "Valider la course",
-    "ride_in_progress": "Trajet en cours..."
+    "confirm_ride": "Valider la course {{price}}",
+    "ride_in_progress": "Trajet en cours...",
+    "follow_my_driver": "Suivre ma conductrice",
+    "ride_validated": "Course validée !"
   },
   "driver_ride": {
     "find_passenger": "Trouver un passager",

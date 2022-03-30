@@ -122,7 +122,7 @@ const SignupScreen: FC<Props> = ({ navigation, route }) => {
           />
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
-            style={{ marginHorizontal: WINDOW_WIDTH * 0.02 }}>
+            style={{ marginHorizontal: RFValue(8) }}>
             {showPassword ? (
               <PasswordHide width={RFValue(28)} height={RFValue(28)} />
             ) : (
@@ -145,7 +145,7 @@ const SignupScreen: FC<Props> = ({ navigation, route }) => {
           />
           <TouchableOpacity
             onPress={() => setShowPasswordConfirm(!showPasswordConfirm)}
-            style={{ marginHorizontal: WINDOW_WIDTH * 0.02 }}>
+            style={{ marginHorizontal: RFValue(8) }}>
             {showPasswordConfirm ? (
               <PasswordHide width={RFValue(28)} height={RFValue(28)} />
             ) : (

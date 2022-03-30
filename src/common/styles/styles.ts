@@ -8,6 +8,13 @@ import {
 } from '../../constants/Constants';
 
 export const styles = StyleSheet.create({
+  subTitle: {
+    color: COLORS.black,
+    lineHeight: RFValue(18),
+    letterSpacing: 0.75,
+    fontSize: RFValue(16),
+    fontFamily: 'Poppins-Medium',
+  },
   text: {
     color: COLORS.text,
     lineHeight: 14,
@@ -33,14 +40,14 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   containerMargin: {
-    margin: WINDOW_WIDTH * 0.02,
+    margin: RFValue(8),
   },
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
   },
   containerPadding: {
-    padding: WINDOW_WIDTH * 0.02,
+    padding: RFValue(8),
   },
   logoHeader: {
     width: WINDOW_WIDTH * 0.7,
@@ -88,7 +95,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: WINDOW_WIDTH * 0.02,
+    marginBottom: RFValue(8),
   },
   stayConnectedText: {
     fontSize: WINDOW_WIDTH * 0.05,
@@ -170,7 +177,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputAddress: {
-    backgroundColor: '#dddddd',
+    backgroundColor: '#E8E8E8',
     color: '#000',
     fontSize: RFValue(14),
     fontWeight: 'bold',
@@ -192,7 +199,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.peach,
     borderRadius: 20,
     borderWidth: 1,
-    backgroundColor: '#ddd',
+    backgroundColor: '#F6F6F6',
     justifyContent: 'space-between',
     width: WINDOW_WIDTH * 0.5,
     alignSelf: 'flex-end',
@@ -227,11 +234,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: WINDOW_WIDTH * 0.07,
-    paddingHorizontal: WINDOW_WIDTH * 0.02,
+    paddingHorizontal: RFValue(8),
   },
   disabled: {
-    backgroundColor: COLORS.blackBackground,
-    opacity: 0.3,
+    backgroundColor: COLORS.disable,
     borderColor: 'transparent',
   },
   center: {

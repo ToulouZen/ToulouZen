@@ -3,8 +3,9 @@
     "app_name": "ToulouZen",
     "drawer_menu": {
       "home": "Home",
-      "rides": "My rides",
-      "settings": "My Settings"
+      "rides": "Rides",
+      "settings": "My Settings",
+      "personnal_info": "Personal informations"
     }
   },
   "common": {
@@ -50,13 +51,16 @@
     "is_on_the_way": "{{driver}} is on its way...",
     "end_ride": "End the ride",
     "saved_destinations": "Saved destinations",
-    "ride_datetime": "The {{date}} at {{time}}",
+    "driver": "Driver : ",
+    "ride_datetime": "{{date}} at {{time}}",
     "ride_time": "Departure at {{time}}",
     "departure": "Departure : {{departure}}",
     "arrival": "Arrival : {{arrival}}",
     "no_ride": "No rides available",
-    "confirm_ride": "Confirm the ride",
-    "ride_in_progress": "Ride in progress..."
+    "confirm_ride": "Confirm the ride {{price}}",
+    "ride_in_progress": "Ride in progress...",
+    "follow_my_driver": "Follow my driver",
+    "ride_validated": "Ride validated!"
   },
   "driver_ride": {
     "find_passenger": "Find a passenger",

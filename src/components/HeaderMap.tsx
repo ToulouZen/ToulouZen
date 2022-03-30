@@ -1,4 +1,6 @@
 import { DrawerNavigationProp } from '@react-navigation/drawer';
+import UserProfile from 'assets/img/user-profile.svg';
+import SOS from 'assets/img/sos.svg';
 import { styles } from 'common/styles/styles';
 import { RootStackParamsList } from 'common/types/types';
 import { WINDOW_WIDTH } from 'constants/Constants';
@@ -12,8 +14,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Burger from 'assets/img/menu_burger.svg';
-import SOS from 'assets/img/sos.svg';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 type Props = {
   navigation: DrawerNavigationProp<
@@ -73,6 +74,10 @@ const HeaderMap: FC<Props> = ({ navigation }) => {
     );
   };
 
+  const goToAccountScreen = () => {
+    navigation.navigate('Account');
+  };
+
   return (
     <View
       style={[
@@ -80,19 +85,21 @@ const HeaderMap: FC<Props> = ({ navigation }) => {
         {
           flexDirection: 'row',
           justifyContent: 'space-between',
-          padding: WINDOW_WIDTH * 0.03,
+          alignItems: 'center',
+          padding: RFValue(12),
           width: WINDOW_WIDTH,
+          zIndex: 1,
         },
       ]}>
-      <TouchableOpacity
-        onPress={() => navigation.openDrawer()}
-        style={styles.drawerIcon}>
-        <Burger width={20} height={20} color="red" />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => call()}>
-        <SOS
-          style={{ width: WINDOW_WIDTH * 0.1, height: WINDOW_WIDTH * 0.1 }}
+      <TouchableOpacity onPress={goToAccountScreen} style={styles.drawerIcon}>
+        <UserProfile
+          width={RFValue(26)}
+          height={RFValue(26)}
+          style={{ marginTop: -RFValue(8) }}
         />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={call}>
+        <SOS style={{ width: RFValue(20), height: RFValue(20) }} />
       </TouchableOpacity>
     </View>
   );
